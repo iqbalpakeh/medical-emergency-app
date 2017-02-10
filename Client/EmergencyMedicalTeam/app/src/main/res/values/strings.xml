@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EmergencyMedicalTeam</string>
+    <string name="app_name">Emergency Medical Team</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
