@@ -3,6 +3,7 @@ package com.progremastudio.emergencymedicalteam;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -73,8 +74,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        Log.d(TAG, "@onCreate()");
 
         // Firebase related initialization
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -194,8 +193,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void updateUi(boolean showContent) {
         if (showContent) {
-            mLoginFormView.setVisibility(View.GONE);
-            mDummyContentForm.setVisibility(View.VISIBLE);
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
         } else {
             mLoginFormView.setVisibility(View.VISIBLE);
             mDummyContentForm.setVisibility(View.GONE);
@@ -214,7 +213,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (!mayRequestContacts()) {
             return;
         }
-
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -445,10 +443,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
-
-            if (success) {
-                //TODO: go to home activity
-            } else {
+            if (!success) {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
