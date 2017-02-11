@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +49,7 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    private final String TAG = "LOGIN_ACTIVITY";
+    private static final String TAG = "LOGIN_ACTIVITY";
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -72,6 +73,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private View mDummyContentForm;
+    private Button mButtonSignOut;
 
     // Firebase
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -83,6 +86,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Log.d(TAG, "@onCreate()");
+
         // Firebase related initialization
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mAuth = FirebaseAuth.getInstance();
@@ -93,9 +98,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    updateUi(true);
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
+                    updateUi(false);
                 }
                 // ...
             }
@@ -125,8 +132,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        mButtonSignOut = (Button) findViewById(R.id.button_sign_out);
+        mButtonSignOut.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+            }
+        });
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        mDummyContentForm = findViewById(R.id.dummy_content_form);
+
     }
 
     @Override
@@ -161,6 +178,37 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         // ...
                     }
                 });
+    }
+
+    private void signInWithEmailAndPassword(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithEmail", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
+    }
+
+    private void updateUi(boolean showContent) {
+        if (showContent) {
+            mLoginFormView.setVisibility(View.GONE);
+            mDummyContentForm.setVisibility(View.VISIBLE);
+        } else {
+            mLoginFormView.setVisibility(View.VISIBLE);
+            mDummyContentForm.setVisibility(View.GONE);
+        }
     }
 
     private void logEvent() {
@@ -405,6 +453,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             // TODO: register the new account here.
             createAccount(mEmail, mPassword);
+            signInWithEmailAndPassword(mEmail, mPassword);
 
             return true;
         }
@@ -415,7 +464,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                finish();
+                //finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
