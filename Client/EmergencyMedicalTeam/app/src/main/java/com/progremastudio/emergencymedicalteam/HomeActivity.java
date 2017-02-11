@@ -1,11 +1,6 @@
 package com.progremastudio.emergencymedicalteam;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,9 +20,6 @@ public class HomeActivity extends AppCompatActivity {
     // Firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
-    // Progress view
-    private View mProgressView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
