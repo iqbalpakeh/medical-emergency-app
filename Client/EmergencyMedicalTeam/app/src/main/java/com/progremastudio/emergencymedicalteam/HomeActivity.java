@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -47,8 +49,16 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        TextView mTextView = (TextView) findViewById(R.id.notification_text);
+        TextView mTextView = (TextView) findViewById(R.id.notification_message_received);
         mTextView.setText("No message");
+
+        Button mSendMessageButton = (Button) findViewById(R.id.send_message_button);
+        mSendMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUpstreamMessage();
+            }
+        });
     }
 
     @Override
@@ -72,6 +82,16 @@ public class HomeActivity extends AppCompatActivity {
     private void backToLoginPage() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    private void sendUpstreamMessage() {
+        // TODO: this implementation is still not correct. Read this, https://firebase.googleblog.com/2016/08/sending-notifications-between-android.html
+        FirebaseMessaging fm = FirebaseMessaging.getInstance();
+        fm.send(new RemoteMessage.Builder("ipakeh@gcm.googleapis.com")
+                .setMessageId("1")
+                .addData("my_message", "Hello World")
+                .addData("my_action","SAY_HELLO")
+                .build());
     }
 
 }
