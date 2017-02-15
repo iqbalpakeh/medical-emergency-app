@@ -20,9 +20,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.progremastudio.emergencymedicalteam.models.User;
 
-public class LoginActivity extends BaseActivity {
+public class SignInActivity extends BaseActivity {
 
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "SignInActivity";
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -130,7 +130,7 @@ public class LoginActivity extends BaseActivity {
                         if (task.isSuccessful()) {
                             onAuthSuccess(task.getResult().getUser());
                         } else {
-                            Toast.makeText(LoginActivity.this, "Sign In Failed",
+                            Toast.makeText(SignInActivity.this, "Sign In Failed",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -157,7 +157,7 @@ public class LoginActivity extends BaseActivity {
                         if (task.isSuccessful()) {
                             onAuthSuccess(task.getResult().getUser());
                         } else {
-                            Toast.makeText(LoginActivity.this, "Sign Up Failed",
+                            Toast.makeText(SignInActivity.this, "Sign Up Failed",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
