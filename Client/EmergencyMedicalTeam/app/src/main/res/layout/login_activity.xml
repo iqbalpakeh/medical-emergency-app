@@ -107,7 +107,7 @@
                 android:textColorHint="@color/text_secondary_white"/>
 
             <Button
-                android:id="@+id/login_button"
+                android:id="@+id/sign_in_button"
                 android:layout_width="150dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
@@ -123,7 +123,7 @@
                 android:textColor="@color/text_secondary_white"/>
 
             <Button
-                android:id="@+id/create_account_button"
+                android:id="@+id/sign_up_button"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
