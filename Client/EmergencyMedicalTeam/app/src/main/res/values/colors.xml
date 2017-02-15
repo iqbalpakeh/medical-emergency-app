@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!-- Typography color -->
+    <color name="text_primary_dark">#DE000000</color>
+    <color name="text_secondary_dark">#8A000000</color>
+    <color name="text_primary_white">#DEFFFFFF</color>
+    <color name="text_secondary_white">#8AFFFFFF</color>
+
+    <!-- Material Design Color Palette -->
+    <color name="teal_500">#009688</color>
+
 </resources>
