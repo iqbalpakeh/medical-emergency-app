@@ -12,8 +12,15 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.R.attr.author;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -22,11 +29,14 @@ public class HomeActivity extends AppCompatActivity {
     // Firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -85,13 +95,42 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void sendUpstreamMessage() {
-        // TODO: this implementation is still not correct. Read this, https://firebase.googleblog.com/2016/08/sending-notifications-between-android.html
-        FirebaseMessaging fm = FirebaseMessaging.getInstance();
-        fm.send(new RemoteMessage.Builder("ipakeh@gcm.googleapis.com")
-                .setMessageId("1")
-                .addData("my_message", "Hello World")
-                .addData("my_action","SAY_HELLO")
-                .build());
+        writeNewUser("uid00001", "user_1", "user_1@gmail.com");
+        writeNewUser("uid00002", "user_2", "user_2@gmail.com");
+        writeNewUser("uid00003", "user_3", "user_3@gmail.com");
+        writeNewUser("uid00004", "user_4", "user_4@gmail.com");
+        writeNewUser("uid00005", "user_5", "user_5@gmail.com");
+        writeNewUser("uid00006", "user_6", "user_6@gmail.com");
+    }
+
+    private void writeNewUser(String userId, String name, String email) {
+        User user = new User(name, email);
+        mDatabase.child("users").child(userId).setValue(user.toMap());
+    }
+
+    @IgnoreExtraProperties
+    public class User {
+
+        public String username;
+        public String email;
+
+        public User() {
+            // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        }
+
+        public User(String username, String email) {
+            this.username = username;
+            this.email = email;
+        }
+
+        @Exclude
+        public Map<String, Object> toMap() {
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("username", username);
+            result.put("email", email);
+            return result;
+        }
+
     }
 
 }
