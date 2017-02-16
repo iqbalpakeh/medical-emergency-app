@@ -2,5 +2,8 @@
 
     <string name="app_name">Team Bantuan Medis</string>
     <string name="menu_logut">Keluar</string>
+    <string name="heading_dashboard">Dashboard</string>
+    <string name="heading_post">Post</string>
+    <string name="heading_contact">Contact</string>
 
 </resources>
