@@ -129,7 +129,7 @@
                     android:layout_height="60dp"
                     android:layout_weight="1"
                     android:padding="8dp"
-                    android:text="Facebook"/>
+                    android:text="Registrasi"/>
 
             </LinearLayout>
 
