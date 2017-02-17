@@ -16,7 +16,7 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View rootView = inflater.inflate(R.layout.fragment_sample, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         return rootView;
 
