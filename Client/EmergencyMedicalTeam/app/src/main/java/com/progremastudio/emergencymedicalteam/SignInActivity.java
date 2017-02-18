@@ -57,6 +57,24 @@ public class SignInActivity extends BaseActivity {
             }
         });
 
+        Button googleSignInButton = (Button) findViewById(R.id.google_sign_in_button);
+        googleSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(SignInActivity.this, "To be implemented...",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button facebookSignInButton = (Button) findViewById(R.id.facebook_sign_in_button);
+        facebookSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(SignInActivity.this, "To be implemented...",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override
