@@ -3,7 +3,6 @@ package com.progremastudio.emergencymedicalteam.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,8 +70,12 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                Post post = dataSnapshot.getValue(Post.class);
-                mTextView.setText(post.content);
+                try {
+                    Post post = dataSnapshot.getValue(Post.class);
+                    mTextView.setText(post.content);
+                } catch (NullPointerException exception) {
+                    Log.w(TAG, "loadPost:onDataChange", exception);
+                }
             }
 
             @Override
@@ -148,21 +151,13 @@ public class DashboardFragment extends Fragment {
     }
 
     private void writeNewPost(String userId, String text) {
-
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
-
-        String key = mDatabase.child("posts").push().getKey();
         Post post = new Post(userId, text);
         Map<String, Object> postValues = post.toMap();
-
         Map<String, Object> childUpdates = new HashMap<>();
-//        childUpdates.put("/posts/" + key, postValues);
-//        childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
-
         childUpdates.put("/posts/", postValues);
         childUpdates.put("/user-posts/" + userId + "/", postValues);
-
         mDatabase.updateChildren(childUpdates);
     }
 
