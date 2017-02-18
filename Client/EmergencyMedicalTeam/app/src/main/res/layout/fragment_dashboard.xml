@@ -19,19 +19,31 @@
             android:textColor="@color/text_primary_white"
             android:textColorHint="@color/text_secondary_white" />
 
-        <EditText
-            android:id="@+id/edit_text"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="text input"
-            android:textColor="@color/text_primary_white"
-            android:textColorHint="@color/text_secondary_white" />
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/submit_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="Submit"/>
+                <EditText
+                    android:id="@+id/edit_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="text input"
+                    android:textColor="@color/text_primary_white"
+                    android:textColorHint="@color/text_secondary_white" />
+
+                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:id="@+id/submit_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="Submit"
+                    android:textColor="@color/text_primary_white"/>
+
+        </LinearLayout>
+
+
 
 </LinearLayout>
