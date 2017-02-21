@@ -10,22 +10,28 @@ import java.util.Map;
 public class Post {
 
     public String uid;
-    public String content;
+    public String displayName;
+    public String email;
+    public String timestamp;
+    public String locationCoordinate;
+    public String message;
+    public String pictureUrl;
+    public String emergencyType;
 
     public Post(){
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Post(String uid, String content) {
+    public Post(String uid, String message) {
         this.uid = uid;
-        this.content = content;
+        this.message = message;
     }
 
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("uid", uid);
-        result.put("content", content);
+        result.put("content", message);
         return result;
     }
 

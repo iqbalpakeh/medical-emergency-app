@@ -134,6 +134,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/forget_password_button"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"

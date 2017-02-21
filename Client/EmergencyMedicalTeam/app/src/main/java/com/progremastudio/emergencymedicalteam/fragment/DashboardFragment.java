@@ -72,7 +72,7 @@ public class DashboardFragment extends Fragment {
                 // Get Post object and use the values to update the UI
                 try {
                     Post post = dataSnapshot.getValue(Post.class);
-                    mTextView.setText(post.content);
+                    mTextView.setText(post.message);
                 } catch (NullPointerException exception) {
                     Log.w(TAG, "loadPost:onDataChange", exception);
                 }

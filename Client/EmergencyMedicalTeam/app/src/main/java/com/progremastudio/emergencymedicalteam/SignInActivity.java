@@ -73,6 +73,15 @@ public class SignInActivity extends BaseActivity {
             }
         });
 
+        Button forgetPasswordButton = (Button) findViewById(R.id.forget_password_button);
+        forgetPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(SignInActivity.this, "To be implemented...",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override

@@ -114,25 +114,16 @@ public class SignUpActivity extends BaseActivity{
 
     private void onAuthSuccess(FirebaseUser firebaseUser) {
 
-        String username = usernameFromEmail(firebaseUser.getEmail());
         String email = firebaseUser.getEmail();
         String userId = firebaseUser.getUid();
         String displayName = mDisplayNameField.getText().toString();
         String phoneNumber = mPhoneNumberField.getText().toString();
 
-        User user = new User(username, email, displayName, phoneNumber);
+        User user = new User(displayName, email, phoneNumber);
         mDatabase.child("users").child(userId).setValue(user.toMap());
 
         startActivity(new Intent(this, MainActivity.class));
         finish();
-    }
-
-    private String usernameFromEmail(String email) {
-        if (email.contains("@")) {
-            return email.split("@")[0];
-        } else {
-            return email;
-        }
     }
 
     @Override
