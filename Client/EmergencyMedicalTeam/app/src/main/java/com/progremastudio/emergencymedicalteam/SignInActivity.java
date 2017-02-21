@@ -15,10 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.progremastudio.emergencymedicalteam.models.User;
 
 public class SignInActivity extends BaseActivity {
 
@@ -82,30 +80,11 @@ public class SignInActivity extends BaseActivity {
         super.onStart();
         // Check auth on Activity start
         if (mAuth.getCurrentUser() != null) {
-            onAuthSuccess(mAuth.getCurrentUser());
+            onAuthSuccess();
         }
     }
 
-    private String usernameFromEmail(String email) {
-        if (email.contains("@")) {
-            return email.split("@")[0];
-        } else {
-            return email;
-        }
-    }
-
-    //private void writeNewUser(String userId, String name, String email) {
-    //    User user = new User(name, email);
-    //    mDatabase.child("users").child(userId).setValue(user);
-    //}
-
-    private void onAuthSuccess(FirebaseUser user) {
-        String username = usernameFromEmail(user.getEmail());
-
-        // Write new user
-        //writeNewUser(user.getUid(), username, user.getEmail());
-
-        // Go to MainActivity
+    private void onAuthSuccess() {
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
@@ -128,13 +107,16 @@ public class SignInActivity extends BaseActivity {
 
         return result;
     }
+
     private void signIn() {
+
         Log.d(TAG, "signIn");
         if (!validateForm()) {
             return;
         }
 
         showProgressDialog();
+
         String email = mEmailField.getText().toString();
         String password = mPasswordField.getText().toString();
 
@@ -146,7 +128,7 @@ public class SignInActivity extends BaseActivity {
                         hideProgressDialog();
 
                         if (task.isSuccessful()) {
-                            onAuthSuccess(task.getResult().getUser());
+                            onAuthSuccess();
                         } else {
                             Toast.makeText(SignInActivity.this, "Sign In Failed",
                                     Toast.LENGTH_SHORT).show();
@@ -156,34 +138,8 @@ public class SignInActivity extends BaseActivity {
     }
 
     private void signUp() {
-
         startActivity(new Intent(this, SignUpActivity.class));
         finish();
-
-//        Log.d(TAG, "signUp");
-//        if (!validateForm()) {
-//            return;
-//        }
-//
-//        showProgressDialog();
-//        String email = mEmailField.getText().toString();
-//        String password = mPasswordField.getText().toString();
-//
-//        mAuth.createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        Log.d(TAG, "createUser:onComplete:" + task.isSuccessful());
-//                        hideProgressDialog();
-//
-//                        if (task.isSuccessful()) {
-//                            onAuthSuccess(task.getResult().getUser());
-//                        } else {
-//                            Toast.makeText(SignInActivity.this, "Sign Up Failed",
-//                                    Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
     }
 
 }
