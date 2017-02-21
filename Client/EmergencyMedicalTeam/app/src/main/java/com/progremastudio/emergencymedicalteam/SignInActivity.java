@@ -105,7 +105,7 @@ public class SignInActivity extends BaseActivity {
         // Write new user
         writeNewUser(user.getUid(), username, user.getEmail());
 
-        // Go to MainActivityTbd
+        // Go to MainActivity
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
