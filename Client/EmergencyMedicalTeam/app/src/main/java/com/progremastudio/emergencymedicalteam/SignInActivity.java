@@ -94,16 +94,16 @@ public class SignInActivity extends BaseActivity {
         }
     }
 
-    private void writeNewUser(String userId, String name, String email) {
-        User user = new User(name, email);
-        mDatabase.child("users").child(userId).setValue(user);
-    }
+    //private void writeNewUser(String userId, String name, String email) {
+    //    User user = new User(name, email);
+    //    mDatabase.child("users").child(userId).setValue(user);
+    //}
 
     private void onAuthSuccess(FirebaseUser user) {
         String username = usernameFromEmail(user.getEmail());
 
         // Write new user
-        writeNewUser(user.getUid(), username, user.getEmail());
+        //writeNewUser(user.getUid(), username, user.getEmail());
 
         // Go to MainActivity
         startActivity(new Intent(this, MainActivity.class));
@@ -156,30 +156,34 @@ public class SignInActivity extends BaseActivity {
     }
 
     private void signUp() {
-        Log.d(TAG, "signUp");
-        if (!validateForm()) {
-            return;
-        }
 
-        showProgressDialog();
-        String email = mEmailField.getText().toString();
-        String password = mPasswordField.getText().toString();
+        startActivity(new Intent(this, SignUpActivity.class));
+        finish();
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "createUser:onComplete:" + task.isSuccessful());
-                        hideProgressDialog();
-
-                        if (task.isSuccessful()) {
-                            onAuthSuccess(task.getResult().getUser());
-                        } else {
-                            Toast.makeText(SignInActivity.this, "Sign Up Failed",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+//        Log.d(TAG, "signUp");
+//        if (!validateForm()) {
+//            return;
+//        }
+//
+//        showProgressDialog();
+//        String email = mEmailField.getText().toString();
+//        String password = mPasswordField.getText().toString();
+//
+//        mAuth.createUserWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        Log.d(TAG, "createUser:onComplete:" + task.isSuccessful());
+//                        hideProgressDialog();
+//
+//                        if (task.isSuccessful()) {
+//                            onAuthSuccess(task.getResult().getUser());
+//                        } else {
+//                            Toast.makeText(SignInActivity.this, "Sign Up Failed",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
     }
 
 }
