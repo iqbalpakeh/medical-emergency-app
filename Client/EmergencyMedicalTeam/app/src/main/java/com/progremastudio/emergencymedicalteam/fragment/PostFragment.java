@@ -11,6 +11,8 @@ import com.progremastudio.emergencymedicalteam.R;
 
 public class PostFragment extends Fragment {
 
+    private static final String TAG = "PostFragment";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
