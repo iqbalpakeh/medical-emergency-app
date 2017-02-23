@@ -28,9 +28,9 @@ public class User {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("display-name", displayName);
+        result.put("displayName", displayName);
         result.put("email", email);
-        result.put("phone-number", phoneNumber);
+        result.put("phoneNumber", phoneNumber);
         return result;
     }
 

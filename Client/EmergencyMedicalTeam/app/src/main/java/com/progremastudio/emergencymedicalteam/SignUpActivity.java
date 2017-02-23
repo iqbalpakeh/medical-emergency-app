@@ -76,6 +76,7 @@ public class SignUpActivity extends BaseActivity{
                         Log.d(TAG, "createUser:onComplete:" + task.isSuccessful());
                         hideProgressDialog();
                         if (task.isSuccessful()) {
+                            //task.getResult().getUser().updateProfile()
                             onAuthSuccess(task.getResult().getUser());
                         } else {
                             Toast.makeText(SignUpActivity.this, "Sign Up Failed",
@@ -118,6 +119,8 @@ public class SignUpActivity extends BaseActivity{
         String userId = firebaseUser.getUid();
         String displayName = mDisplayNameField.getText().toString();
         String phoneNumber = mPhoneNumberField.getText().toString();
+
+        AppContext.storeCurrentUser(this, displayName, email, phoneNumber);
 
         User user = new User(displayName, email, phoneNumber);
         mDatabase.child("users").child(userId).setValue(user.toMap());

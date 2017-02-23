@@ -9,12 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.progremastudio.emergencymedicalteam.R;
+import com.progremastudio.emergencymedicalteam.SignInActivity;
 import com.progremastudio.emergencymedicalteam.models.Post;
 import com.progremastudio.emergencymedicalteam.viewholder.PostViewHolder;
 
@@ -60,10 +62,22 @@ public class PostFragment extends Fragment {
             @Override
             protected void populateViewHolder(final PostViewHolder viewHolder, final Post post, final int position) {
 
-                Log.d(TAG, "populateViewHolder: post.displayName = " + post.uid);
+                Log.d(TAG, "populateViewHolder: post.uid = " + post.uid);
+                Log.d(TAG, "populateViewHolder: post.displayName = " + post.displayName);
+                Log.d(TAG, "populateViewHolder: post.email = " + post.email);
+                Log.d(TAG, "populateViewHolder: post.timestamp = " + post.timestamp);
+                Log.d(TAG, "populateViewHolder: post.locationCoordinate = " + post.locationCoordinate);
                 Log.d(TAG, "populateViewHolder: post.message = " + post.message);
+                Log.d(TAG, "populateViewHolder: post.pictureUrl = " + post.pictureUrl);
+                Log.d(TAG, "populateViewHolder: post.emergencyType = " + post.emergencyType);
 
-                viewHolder.bindToPost(post, null);
+                viewHolder.bindToPost(post, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "To be implemented...",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         };
         mRecycler.setAdapter(mAdapter);

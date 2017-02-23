@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.progremastudio.emergencymedicalteam.AppContext;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.Post;
@@ -109,14 +110,29 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-    private void writeNewPost(String userId, String text) {
+    private void writeNewPost(String userId, String message) {
 
-        // Create new post at /user-posts/$userid/$postid and at
-        // /posts/$postid simultaneously
+        // Create new post at /user-posts/$userid/$postid and
+        // at /posts/$postid simultaneously
 
         String key = mDatabase.child("posts").push().getKey();
 
-        Post post = new Post(userId, text);
+        String displayName = AppContext.fetchCurrentUserDisplayName(getActivity());
+        String email = AppContext.fetchCurrentUserEmail(getActivity());
+        String timestamp = "to be implemented"; //todo: get timestamp
+        String locationCoordinate ="to be implemented"; //todo: get location coordinate
+        String pictureUrl = "to be implemented"; //todo: get picture url
+        String emergencyType = "to be implemented"; //todo: get emergency type
+
+        Post post = new Post(
+                        userId,
+                        displayName,
+                        email,
+                        timestamp,
+                        locationCoordinate,
+                        message,
+                        pictureUrl,
+                        emergencyType);
 
         Map<String, Object> postValues = post.toMap();
         Map<String, Object> childUpdates = new HashMap<>();

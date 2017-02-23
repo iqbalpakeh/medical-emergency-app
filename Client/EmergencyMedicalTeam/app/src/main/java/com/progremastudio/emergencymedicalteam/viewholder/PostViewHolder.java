@@ -19,8 +19,13 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindToPost(Post post, View.OnClickListener clickListener) {
-        mNameField.setText(post.uid);
+
+        mNameField.setText(post.displayName);
+        mNameField.setOnClickListener(clickListener);
+
         mMessageField.setText(post.message);
+        mMessageField.setOnClickListener(clickListener);
+
     }
 
 }
