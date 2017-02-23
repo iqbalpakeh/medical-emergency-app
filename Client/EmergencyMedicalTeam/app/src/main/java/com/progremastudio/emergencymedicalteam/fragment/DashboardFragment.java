@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -31,10 +30,7 @@ public class DashboardFragment extends Fragment {
     private static final String REQUIRED = "Required";
 
     private DatabaseReference mDatabase;
-    private DatabaseReference mPostReference;
-    private ValueEventListener mPostListener;
 
-    private TextView mTextView;
     private EditText mEditText;
     private Button mSubmitButton;
 
@@ -46,9 +42,7 @@ public class DashboardFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mPostReference = mDatabase.child("posts");
 
-        mTextView = (TextView) rootView.findViewById(R.id.view_text);
         mEditText = (EditText) rootView.findViewById(R.id.edit_text);
 
         mSubmitButton = (Button) rootView.findViewById(R.id.submit_code);
@@ -61,41 +55,6 @@ public class DashboardFragment extends Fragment {
 
         return rootView;
 
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                try {
-//                    Post post = dataSnapshot.getValue(Post.class);
-//                    mTextView.setText(post.message);
-                } catch (NullPointerException exception) {
-                    Log.w(TAG, "loadPost:onDataChange", exception);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                Toast.makeText(getActivity(), "Failed to load post.", Toast.LENGTH_SHORT).show();
-            }
-        };
-        mPostListener = postListener;
-        mPostReference.addValueEventListener(postListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        // Remove post value event listener
-        if (mPostListener != null) {
-            mPostReference.removeEventListener(mPostListener);
-        }
     }
 
     private void submit() {
@@ -151,14 +110,20 @@ public class DashboardFragment extends Fragment {
     }
 
     private void writeNewPost(String userId, String text) {
+
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
+
         String key = mDatabase.child("posts").push().getKey();
+
         Post post = new Post(userId, text);
+
         Map<String, Object> postValues = post.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
+
         childUpdates.put("/posts/" + key, postValues);
         childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+
         mDatabase.updateChildren(childUpdates);
     }
 

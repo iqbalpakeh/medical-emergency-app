@@ -31,7 +31,7 @@ public class Post {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("uid", uid);
-        result.put("content", message);
+        result.put("message", message);
         return result;
     }
 

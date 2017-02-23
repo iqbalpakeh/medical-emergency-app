@@ -9,19 +9,17 @@ import com.progremastudio.emergencymedicalteam.models.Post;
 
 public class PostViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView mNameField;
-    private TextView mMessageField;
+    public TextView mNameField;
+    public TextView mMessageField;
 
     PostViewHolder(View itemView) {
         super(itemView);
-
         mNameField = (TextView) itemView.findViewById(R.id.display_name_field);
         mMessageField = (TextView) itemView.findViewById(R.id.message_field);
-
     }
 
-    public void bindToPost(Post post, View.OnClickListener starClickListener) {
-        mNameField.setText(post.displayName);
+    public void bindToPost(Post post, View.OnClickListener clickListener) {
+        mNameField.setText(post.uid);
         mMessageField.setText(post.message);
     }
 

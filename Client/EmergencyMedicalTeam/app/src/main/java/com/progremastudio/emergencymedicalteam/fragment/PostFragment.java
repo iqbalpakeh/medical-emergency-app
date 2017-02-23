@@ -58,12 +58,12 @@ public class PostFragment extends Fragment {
         mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_post,
                 PostViewHolder.class, postsQuery) {
             @Override
-            protected void populateViewHolder(PostViewHolder viewHolder, Post post, int position) {
+            protected void populateViewHolder(final PostViewHolder viewHolder, final Post post, final int position) {
 
-                Log.d(TAG, "populateViewHolder: post.displayName = " + post.displayName);
+                Log.d(TAG, "populateViewHolder: post.displayName = " + post.uid);
                 Log.d(TAG, "populateViewHolder: post.message = " + post.message);
 
-                viewHolder.bindToPost(post);
+                viewHolder.bindToPost(post, null);
             }
         };
         mRecycler.setAdapter(mAdapter);
@@ -73,7 +73,7 @@ public class PostFragment extends Fragment {
     public Query getQuery(DatabaseReference databaseReference) {
         // Last 100 posts, these are automatically the 100 most recent
         // due to sorting by push() keys
-        Query recentPostsQuery = databaseReference.child("posts").limitToFirst(100);
-        return recentPostsQuery;
+        return databaseReference.child("posts").limitToFirst(100);
     }
+
 }
