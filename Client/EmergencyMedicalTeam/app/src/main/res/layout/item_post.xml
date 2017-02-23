@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp">
@@ -18,7 +17,7 @@
             android:gravity="center"
             android:textSize="14sp"
             android:textColor="@color/text_secondary_dark"
-            tools:text="Iqbal Pakeh" />
+            android:text="Iqbal Pakeh" />
 
         <TextView
             android:id="@+id/message_field"
@@ -27,7 +26,7 @@
             android:gravity="center"
             android:textSize="16sp"
             android:textColor="@color/text_primary_dark"
-            tools:text="Hi, Hello World" />
+            android:text="Hi, Hello World" />
 
     </LinearLayout>
 
