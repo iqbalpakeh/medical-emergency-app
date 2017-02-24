@@ -36,4 +36,12 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/to_maps_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="To Maps Activity"
+        android:textColor="@color/text_primary_dark" />
+
 </LinearLayout>

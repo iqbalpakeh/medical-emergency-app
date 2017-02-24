@@ -1,5 +1,6 @@
 package com.progremastudio.emergencymedicalteam.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,7 +20,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.progremastudio.emergencymedicalteam.AppContext;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
+import com.progremastudio.emergencymedicalteam.MainActivity;
+import com.progremastudio.emergencymedicalteam.MapsActivity;
 import com.progremastudio.emergencymedicalteam.R;
+import com.progremastudio.emergencymedicalteam.SignInActivity;
 import com.progremastudio.emergencymedicalteam.models.Post;
 
 import java.util.HashMap;
@@ -51,6 +55,15 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 submit();
+            }
+        });
+
+        Button toMapsApiButton = (Button) rootView.findViewById(R.id.to_maps_activity);
+        toMapsApiButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), MapsActivity.class));
+                getActivity().finish();
             }
         });
 

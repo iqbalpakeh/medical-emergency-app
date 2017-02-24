@@ -16,7 +16,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.progremastudio.emergencymedicalteam.R;
-import com.progremastudio.emergencymedicalteam.SignInActivity;
 import com.progremastudio.emergencymedicalteam.models.Post;
 import com.progremastudio.emergencymedicalteam.viewholder.PostViewHolder;
 
