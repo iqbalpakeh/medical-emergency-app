@@ -13,6 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,21 +26,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.progremastudio.emergencymedicalteam.AppContext;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
-import com.progremastudio.emergencymedicalteam.MainActivity;
 import com.progremastudio.emergencymedicalteam.MapsActivity;
 import com.progremastudio.emergencymedicalteam.R;
-import com.progremastudio.emergencymedicalteam.SignInActivity;
 import com.progremastudio.emergencymedicalteam.models.Post;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = "DashboardFragment";
     private static final String REQUIRED = "Required";
 
     private DatabaseReference mDatabase;
+
+    private GoogleMap mMap;
 
     private EditText mEditText;
     private Button mSubmitButton;
@@ -47,6 +53,10 @@ public class DashboardFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         mEditText = (EditText) rootView.findViewById(R.id.edit_text);
 
@@ -69,6 +79,16 @@ public class DashboardFragment extends Fragment {
 
         return rootView;
 
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     private void submit() {

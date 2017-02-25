@@ -11,37 +11,53 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-        <EditText
-            android:id="@+id/edit_text"
-            android:layout_width="0dp"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="text input"
-            android:textColor="@color/text_primary_dark"
-            android:textColorHint="@color/text_secondary_dark" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="text input"
+                android:textColor="@color/text_primary_dark"
+                android:textColorHint="@color/text_secondary_dark" />
+
+            <Button
+                android:id="@+id/submit_code"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="Submit"
+                android:textColor="@color/text_primary_dark" />
+
+        </LinearLayout>
 
         <Button
-            android:id="@+id/submit_code"
-            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/to_maps_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="Submit"
+            android:layout_gravity="center"
+            android:text="To Maps Activity"
             android:textColor="@color/text_primary_dark" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/to_maps_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="To Maps Activity"
-        android:textColor="@color/text_primary_dark" />
 
 </LinearLayout>
