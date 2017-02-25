@@ -1,6 +1,5 @@
 package com.progremastudio.emergencymedicalteam.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,7 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.progremastudio.emergencymedicalteam.AppContext;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
-import com.progremastudio.emergencymedicalteam.MapsActivity;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.Post;
 
@@ -54,7 +52,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -68,25 +65,13 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        Button toMapsApiButton = (Button) rootView.findViewById(R.id.to_maps_activity);
-        toMapsApiButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), MapsActivity.class));
-                getActivity().finish();
-            }
-        });
-
         return rootView;
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
+        mMap = googleMap;
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
