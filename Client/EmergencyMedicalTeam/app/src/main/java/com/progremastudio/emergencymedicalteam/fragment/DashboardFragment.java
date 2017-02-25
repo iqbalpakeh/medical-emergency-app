@@ -1,8 +1,12 @@
 package com.progremastudio.emergencymedicalteam.fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +40,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "DashboardFragment";
     private static final String REQUIRED = "Required";
 
+    private final int LOCATION_PERMISSION_REQUEST_CODE = 0;
+
     private DatabaseReference mDatabase;
 
     private GoogleMap mMap;
@@ -65,7 +71,30 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        enableMyLocation();
+
         return rootView;
+    }
+
+    private void enableMyLocation() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the location is missing.
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        } else if (mMap != null) {
+            // Access to the location has been granted to the app.
+            mMap.setMyLocationEnabled(true);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+            return;
+        }
+        // Enable the my location layer if the permission has been granted.
+        enableMyLocation();
     }
 
     @Override
@@ -138,19 +167,19 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         String displayName = AppContext.fetchCurrentUserDisplayName(getActivity());
         String email = AppContext.fetchCurrentUserEmail(getActivity());
         String timestamp = "to be implemented"; //todo: get timestamp
-        String locationCoordinate ="to be implemented"; //todo: get location coordinate
+        String locationCoordinate = "to be implemented"; //todo: get location coordinate
         String pictureUrl = "to be implemented"; //todo: get picture url
         String emergencyType = "to be implemented"; //todo: get emergency type
 
         Post post = new Post(
-                        userId,
-                        displayName,
-                        email,
-                        timestamp,
-                        locationCoordinate,
-                        message,
-                        pictureUrl,
-                        emergencyType);
+                userId,
+                displayName,
+                email,
+                timestamp,
+                locationCoordinate,
+                message,
+                pictureUrl,
+                emergencyType);
 
         Map<String, Object> postValues = post.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
