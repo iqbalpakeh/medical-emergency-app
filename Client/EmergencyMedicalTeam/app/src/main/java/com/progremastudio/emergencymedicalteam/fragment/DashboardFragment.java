@@ -1,9 +1,12 @@
 package com.progremastudio.emergencymedicalteam.fragment;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,6 +34,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.progremastudio.emergencymedicalteam.AddressService;
 import com.progremastudio.emergencymedicalteam.AppContext;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.R;
@@ -51,6 +55,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mGoogleMap;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
+    private AddressResultReceiver mResultReceiver;
+    private  Boolean mAddressRequested;
 
     private EditText mEditText;
     private Button mSubmitButton;
@@ -61,6 +67,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+        mAddressRequested = false;
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -82,14 +90,20 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                         @Override
                         public void onConnected(@Nullable Bundle bundle) {
+
                             try {
                                 mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                             } catch (SecurityException exception) {
                                 Log.e(TAG, exception.getStackTrace().toString());
                             }
+
                             if (mLastLocation != null) {
                                 Log.d(TAG, "Latitude = " + String.valueOf(mLastLocation.getLatitude()));
                                 Log.d(TAG, "Longitude = " + String.valueOf(mLastLocation.getLongitude()));
+                            }
+
+                            if (mAddressRequested) {
+                                startIntentService();
                             }
                         }
 
@@ -108,6 +122,25 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     .build();
         }
 
+        Button fetchLocationButton = (Button) rootView.findViewById(R.id.fetch_address_button);
+        fetchLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Only start the service to fetch the address if GoogleApiClient is
+                // connected.
+                if (mGoogleApiClient.isConnected() && mLastLocation != null) {
+                    startIntentService();
+                }
+                // If GoogleApiClient isn't connected, process the user's request by
+                // setting mAddressRequested to true. Later, when GoogleApiClient connects,
+                // launch the service to fetch the address. As far as the user is
+                // concerned, pressing the Fetch Address button
+                // immediately kicks off the process of getting the address.
+                mAddressRequested = true;
+                //todo: do necessary ui update here!
+            }
+        });
+
         return rootView;
     }
 
@@ -122,6 +155,13 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             Log.d(TAG, "setMyLocationEnabled(true)");
             mGoogleMap.setMyLocationEnabled(true);
         }
+    }
+
+    protected void startIntentService() {
+        Intent intent = new Intent(getActivity(), AddressService.class);
+        intent.putExtra(AddressService.Constants.RECEIVER, mResultReceiver);
+        intent.putExtra(AddressService.Constants.LOCATION_DATA_EXTRA, mLastLocation);
+        getActivity().startService(intent);
     }
 
     @Override
@@ -239,6 +279,30 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
 
         mDatabase.updateChildren(childUpdates);
+    }
+
+    class AddressResultReceiver extends ResultReceiver {
+
+        private String mAddressOutput;
+
+        public AddressResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+
+            // Display the address string
+            // or an error message sent from the intent service.
+            mAddressOutput = resultData.getString(AddressService.Constants.RESULT_DATA_KEY);
+            Log.d(TAG, "Address = " + mAddressOutput);
+
+            // Show a toast message if an address was found.
+            if (resultCode == AddressService.Constants.SUCCESS_RESULT) {
+                Log.d(TAG, "Address found");
+            }
+
+        }
     }
 
 }
