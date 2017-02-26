@@ -56,7 +56,7 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private AddressResultReceiver mResultReceiver;
-    private  Boolean mAddressRequested;
+    private Boolean mAddressRequested;
 
     private EditText mEditText;
     private Button mSubmitButton;
@@ -69,6 +69,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         mAddressRequested = false;
+
+        mResultReceiver = new AddressResultReceiver(new Handler());
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
