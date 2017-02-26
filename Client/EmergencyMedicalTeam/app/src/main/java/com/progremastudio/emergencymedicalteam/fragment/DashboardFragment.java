@@ -26,6 +26,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -44,20 +45,27 @@ import com.progremastudio.emergencymedicalteam.models.Post;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DashboardFragment extends Fragment implements OnMapReadyCallback {
+public class DashboardFragment extends Fragment implements
+        OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "DashboardFragment";
     private static final String REQUIRED = "Required";
+
+    private static final String ADDRESS_REQUESTED_KEY = "address-request-pending";
+    private static final String LOCATION_ADDRESS_KEY = "location-address";
 
     private final int PERMISSION_FINE_LOCATION_REQUEST = 0;
 
     private DatabaseReference mDatabase;
 
     private GoogleMap mGoogleMap;
+    private MapView mMapView;
     private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
     private AddressResultReceiver mResultReceiver;
+
+    private Location mLastLocation;
     private Boolean mAddressRequested;
+    private String mAddressOutput;
 
     private EditText mEditText;
     private Button mSubmitButton;
@@ -71,14 +79,20 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
         View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        mAddressRequested = false;
+        mMapView = (MapView) rootView.findViewById(R.id.map);
+        mMapView.onCreate(savedInstanceState);
+        mMapView.getMapAsync(this);
 
-        mResultReceiver = new AddressResultReceiver(new Handler());
+        buildGoogleApiClient();
+
+        updateValuesFromBundle(savedInstanceState);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mAddressRequested = false;
+        mAddressOutput = "";
+
+        mResultReceiver = new AddressResultReceiver(new Handler());
 
         mEditText = (EditText) rootView.findViewById(R.id.edit_text);
 
@@ -89,43 +103,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                 submit();
             }
         });
-
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                        @Override
-                        public void onConnected(@Nullable Bundle bundle) {
-
-                            try {
-                                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                            } catch (SecurityException exception) {
-                                Log.e(TAG, exception.getStackTrace().toString());
-                            }
-
-                            if (mLastLocation != null) {
-                                Log.d(TAG, "Latitude = " + String.valueOf(mLastLocation.getLatitude()));
-                                Log.d(TAG, "Longitude = " + String.valueOf(mLastLocation.getLongitude()));
-                            }
-
-                            if (mAddressRequested) {
-                                startIntentService();
-                            }
-                        }
-
-                        @Override
-                        public void onConnectionSuspended(int i) {
-
-                        }
-                    })
-                    .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                        @Override
-                        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-                        }
-                    })
-                    .addApi(LocationServices.API)
-                    .build();
-        }
 
         mFetchLocationButton = (Button) rootView.findViewById(R.id.fetch_address_button);
         mFetchLocationButton.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +125,29 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         mAddressTextView = (TextView) rootView.findViewById(R.id.address_text);
 
         return rootView;
+    }
+
+    private void updateValuesFromBundle(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            // Check savedInstanceState to see if the address was previously requested.
+            if (savedInstanceState.keySet().contains(ADDRESS_REQUESTED_KEY)) {
+                mAddressRequested = savedInstanceState.getBoolean(ADDRESS_REQUESTED_KEY);
+            }
+            // Check savedInstanceState to see if the location address string was previously found
+            // and stored in the Bundle. If it was found, display the address string in the UI.
+            if (savedInstanceState.keySet().contains(LOCATION_ADDRESS_KEY)) {
+                mAddressOutput = savedInstanceState.getString(LOCATION_ADDRESS_KEY);
+                mAddressTextView.setText(mAddressOutput);
+            }
+        }
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
     }
 
     private void enableMyLocation() {
@@ -190,6 +190,39 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        try {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        } catch (SecurityException exception) {
+            Log.e(TAG, exception.getStackTrace().toString());
+        }
+
+        if (mLastLocation != null) {
+            Log.d(TAG, "Latitude = " + String.valueOf(mLastLocation.getLatitude()));
+            Log.d(TAG, "Longitude = " + String.valueOf(mLastLocation.getLongitude()));
+        }
+
+        if (mAddressRequested) {
+            startIntentService();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        // The connection to Google Play services was lost for some reason. We call connect() to
+        // attempt to re-establish the connection.
+        Log.i(TAG, "Connection suspended");
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
+        // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
+        // onConnectionFailed.
+        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
+    }
+
+    @Override
     public void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
@@ -201,6 +234,36 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         super.onStop();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save whether the address has been requested.
+        savedInstanceState.putBoolean(ADDRESS_REQUESTED_KEY, mAddressRequested);
+
+        // Save the address string.
+        savedInstanceState.putString(LOCATION_ADDRESS_KEY, mAddressOutput);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        mMapView.onResume();
+        super.onResume();
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+    }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
+    }
 
     private void submit() {
 
@@ -288,8 +351,6 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     }
 
     class AddressResultReceiver extends ResultReceiver {
-
-        private String mAddressOutput;
 
         public AddressResultReceiver(Handler handler) {
             super(handler);
