@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -60,6 +61,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
 
     private EditText mEditText;
     private Button mSubmitButton;
+    private Button mFetchLocationButton;
+    private TextView mAddressTextView;
 
     @Nullable
     @Override
@@ -124,8 +127,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                     .build();
         }
 
-        Button fetchLocationButton = (Button) rootView.findViewById(R.id.fetch_address_button);
-        fetchLocationButton.setOnClickListener(new View.OnClickListener() {
+        mFetchLocationButton = (Button) rootView.findViewById(R.id.fetch_address_button);
+        mFetchLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Only start the service to fetch the address if GoogleApiClient is
@@ -139,9 +142,10 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
                 // concerned, pressing the Fetch Address button
                 // immediately kicks off the process of getting the address.
                 mAddressRequested = true;
-                //todo: do necessary ui update here!
             }
         });
+
+        mAddressTextView = (TextView) rootView.findViewById(R.id.address_text);
 
         return rootView;
     }
@@ -298,6 +302,8 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             // or an error message sent from the intent service.
             mAddressOutput = resultData.getString(AddressService.Constants.RESULT_DATA_KEY);
             Log.d(TAG, "Address = " + mAddressOutput);
+
+            mAddressTextView.setText(mAddressOutput);
 
             // Show a toast message if an address was found.
             if (resultCode == AddressService.Constants.SUCCESS_RESULT) {
