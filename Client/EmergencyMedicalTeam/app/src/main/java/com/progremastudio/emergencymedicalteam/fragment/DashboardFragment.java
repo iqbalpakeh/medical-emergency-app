@@ -2,6 +2,7 @@ package com.progremastudio.emergencymedicalteam.fragment;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,11 +44,13 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "DashboardFragment";
     private static final String REQUIRED = "Required";
 
-    private final int LOCATION_PERMISSION_REQUEST_CODE = 0;
+    private final int PERMISSION_FINE_LOCATION_REQUEST = 0;
 
     private DatabaseReference mDatabase;
 
-    private GoogleMap mMap;
+    private GoogleMap mGoogleMap;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
 
     private EditText mEditText;
     private Button mSubmitButton;
@@ -71,7 +77,36 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        enableMyLocation();
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                        @Override
+                        public void onConnected(@Nullable Bundle bundle) {
+                            try {
+                                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                            } catch (SecurityException exception) {
+                                Log.e(TAG, exception.getStackTrace().toString());
+                            }
+                            if (mLastLocation != null) {
+                                Log.d(TAG, "Latitude = " + String.valueOf(mLastLocation.getLatitude()));
+                                Log.d(TAG, "Longitude = " + String.valueOf(mLastLocation.getLongitude()));
+                            }
+                        }
+
+                        @Override
+                        public void onConnectionSuspended(int i) {
+
+                        }
+                    })
+                    .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                        @Override
+                        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+                        }
+                    })
+                    .addApi(LocationServices.API)
+                    .build();
+        }
 
         return rootView;
     }
@@ -80,17 +115,19 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-        } else if (mMap != null) {
+            Log.d(TAG, "Request FINE ACCESS Permission");
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_FINE_LOCATION_REQUEST);
+        } else if (mGoogleMap != null) {
             // Access to the location has been granted to the app.
-            mMap.setMyLocationEnabled(true);
+            Log.d(TAG, "setMyLocationEnabled(true)");
+            mGoogleMap.setMyLocationEnabled(true);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+        if (requestCode != PERMISSION_FINE_LOCATION_REQUEST) {
             return;
         }
         // Enable the my location layer if the permission has been granted.
@@ -100,10 +137,24 @@ public class DashboardFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         LatLng sydney = new LatLng(-34, 151);
-        mMap = googleMap;
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mGoogleMap = googleMap;
+        mGoogleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        enableMyLocation();
     }
+
+    @Override
+    public void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
 
     private void submit() {
 
