@@ -3,6 +3,7 @@ package com.progremastudio.emergencymedicalteam.fragment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,7 +36,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.progremastudio.emergencymedicalteam.AddressService;
+import com.progremastudio.emergencymedicalteam.FetchAddressIntentService;
 import com.progremastudio.emergencymedicalteam.AppContext;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.R;
@@ -47,28 +48,36 @@ import java.util.Map;
 public class DashboardFragment extends Fragment implements
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    private static final String TAG = "DashboardFragment";
-    private static final String REQUIRED = "Required";
+    private static final String TAG = "dashboard-fragment";
 
-    private static final String ADDRESS_REQUESTED_KEY = "address-request-pending";
-    private static final String LOCATION_ADDRESS_KEY = "location-address";
+    private static final String ADDRESS_REQUESTED_KEY = "address-request-key";
+
+    private static final String LOCATION_ADDRESS_KEY = "location-address-key";
 
     private final int PERMISSION_FINE_LOCATION_REQUEST = 0;
 
     private DatabaseReference mDatabase;
 
     private GoogleMap mGoogleMap;
+
     private MapView mMapView;
+
     private GoogleApiClient mGoogleApiClient;
+
     private AddressResultReceiver mResultReceiver;
 
     private Location mLastLocation;
+
     private Boolean mAddressRequested;
+
     private String mAddressOutput;
 
     private EditText mEditText;
+
     private Button mSubmitButton;
+
     private Button mFetchLocationButton;
+
     private TextView mAddressTextView;
 
     @Nullable
@@ -78,20 +87,18 @@ public class DashboardFragment extends Fragment implements
 
         View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        mMapView = (MapView) rootView.findViewById(R.id.map);
-        mMapView.onCreate(savedInstanceState);
-        mMapView.getMapAsync(this);
-
-        buildGoogleApiClient();
-
         updateValuesFromBundle(savedInstanceState);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        buildGoogleApiClient();
         mAddressRequested = false;
         mAddressOutput = "";
-
         mResultReceiver = new AddressResultReceiver(new Handler());
+
+        mMapView = (MapView) rootView.findViewById(R.id.map);
+        mMapView.onCreate(savedInstanceState);
+        mMapView.getMapAsync(this);
 
         mEditText = (EditText) rootView.findViewById(R.id.edit_text);
 
@@ -107,17 +114,7 @@ public class DashboardFragment extends Fragment implements
         mFetchLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Only start the service to fetch the address if GoogleApiClient is
-                // connected.
-                if (mGoogleApiClient.isConnected() && mLastLocation != null) {
-                    startIntentService();
-                }
-                // If GoogleApiClient isn't connected, process the user's request by
-                // setting mAddressRequested to true. Later, when GoogleApiClient connects,
-                // launch the service to fetch the address. As far as the user is
-                // concerned, pressing the Fetch Address button
-                // immediately kicks off the process of getting the address.
-                mAddressRequested = true;
+                fetchLocationAddress();
             }
         });
 
@@ -126,14 +123,19 @@ public class DashboardFragment extends Fragment implements
         return rootView;
     }
 
+    private void fetchLocationAddress() {
+        if (mGoogleApiClient.isConnected() && mLastLocation != null) {
+            startIntentService();
+        }
+        mAddressRequested = true;
+        //TODO: implement progress bar showing the progress of address fetching
+    }
+
     private void updateValuesFromBundle(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            // Check savedInstanceState to see if the address was previously requested.
             if (savedInstanceState.keySet().contains(ADDRESS_REQUESTED_KEY)) {
                 mAddressRequested = savedInstanceState.getBoolean(ADDRESS_REQUESTED_KEY);
             }
-            // Check savedInstanceState to see if the location address string was previously found
-            // and stored in the Bundle. If it was found, display the address string in the UI.
             if (savedInstanceState.keySet().contains(LOCATION_ADDRESS_KEY)) {
                 mAddressOutput = savedInstanceState.getString(LOCATION_ADDRESS_KEY);
                 mAddressTextView.setText(mAddressOutput);
@@ -152,30 +154,26 @@ public class DashboardFragment extends Fragment implements
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            // Permission to access the location is missing.
             Log.d(TAG, "Request FINE ACCESS Permission");
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_FINE_LOCATION_REQUEST);
         } else if (mGoogleMap != null) {
-            // Access to the location has been granted to the app.
             Log.d(TAG, "setMyLocationEnabled(true)");
             mGoogleMap.setMyLocationEnabled(true);
         }
     }
 
     protected void startIntentService() {
-        Intent intent = new Intent(getActivity(), AddressService.class);
-        intent.putExtra(AddressService.Constants.RECEIVER, mResultReceiver);
-        intent.putExtra(AddressService.Constants.LOCATION_DATA_EXTRA, mLastLocation);
+        Intent intent = new Intent(getActivity(), FetchAddressIntentService.class);
+        intent.putExtra(FetchAddressIntentService.Constants.RECEIVER, mResultReceiver);
+        intent.putExtra(FetchAddressIntentService.Constants.LOCATION_DATA_EXTRA, mLastLocation);
         getActivity().startService(intent);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode != PERMISSION_FINE_LOCATION_REQUEST) {
             return;
         }
-        // Enable the my location layer if the permission has been granted.
         enableMyLocation();
     }
 
@@ -190,55 +188,57 @@ public class DashboardFragment extends Fragment implements
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+
         try {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         } catch (SecurityException exception) {
+            // Access is not granted by user
             Log.e(TAG, exception.getStackTrace().toString());
         }
 
         if (mLastLocation != null) {
+
             Log.d(TAG, "Latitude = " + String.valueOf(mLastLocation.getLatitude()));
             Log.d(TAG, "Longitude = " + String.valueOf(mLastLocation.getLongitude()));
-        }
+            if (!Geocoder.isPresent()) {
+                Toast.makeText(getActivity(), "No Geocoder available", Toast.LENGTH_LONG).show();
+                return;
+            }
 
-        if (mAddressRequested) {
-            startIntentService();
+            if (mAddressRequested) {
+                startIntentService();
+            }
         }
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        // The connection to Google Play services was lost for some reason. We call connect() to
-        // attempt to re-establish the connection.
         Log.i(TAG, "Connection suspended");
         mGoogleApiClient.connect();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult result) {
-        // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
-        // onConnectionFailed.
         Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
     }
 
     @Override
     public void onStart() {
-        mGoogleApiClient.connect();
         super.onStart();
+        mGoogleApiClient.connect();
     }
 
     @Override
     public void onStop() {
-        mGoogleApiClient.disconnect();
         super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save whether the address has been requested.
         savedInstanceState.putBoolean(ADDRESS_REQUESTED_KEY, mAddressRequested);
-
-        // Save the address string.
         savedInstanceState.putString(LOCATION_ADDRESS_KEY, mAddressOutput);
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -269,7 +269,7 @@ public class DashboardFragment extends Fragment implements
         final String content = mEditText.getText().toString();
 
         if (TextUtils.isEmpty(content)) {
-            mEditText.setError(REQUIRED);
+            mEditText.setError("Required");
             return;
         }
 
@@ -357,19 +357,12 @@ public class DashboardFragment extends Fragment implements
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-
-            // Display the address string
-            // or an error message sent from the intent service.
-            mAddressOutput = resultData.getString(AddressService.Constants.RESULT_DATA_KEY);
+            mAddressOutput = resultData.getString(FetchAddressIntentService.Constants.RESULT_DATA_KEY);
             Log.d(TAG, "Address = " + mAddressOutput);
-
             mAddressTextView.setText(mAddressOutput);
-
-            // Show a toast message if an address was found.
-            if (resultCode == AddressService.Constants.SUCCESS_RESULT) {
+            if (resultCode == FetchAddressIntentService.Constants.SUCCESS_RESULT) {
                 Log.d(TAG, "Address found");
             }
-
         }
     }
 

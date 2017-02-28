@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class AddressService extends IntentService{
+public class FetchAddressIntentService extends IntentService{
 
-    private final static String TAG = "AddressService";
+    private final static String TAG = "address-service";
 
     protected ResultReceiver mReceiver;
 
-    public AddressService() {
+    public FetchAddressIntentService() {
         super(TAG);
     }
 

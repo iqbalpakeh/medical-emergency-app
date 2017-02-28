@@ -45,7 +45,7 @@
             android:screenOrientation="portrait"></activity>
 
         <service
-            android:name=".AddressService"
+            android:name=".FetchAddressIntentService"
             android:exported="false"/>
 
     </application>
