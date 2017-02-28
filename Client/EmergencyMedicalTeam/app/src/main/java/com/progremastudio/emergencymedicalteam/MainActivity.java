@@ -18,6 +18,8 @@ import com.progremastudio.emergencymedicalteam.fragment.PostFragment;
 
 public class MainActivity extends BaseActivity {
 
+    // Test
+    
     private static final String TAG = "MainActivity";
 
     private Toolbar mToolbar;
