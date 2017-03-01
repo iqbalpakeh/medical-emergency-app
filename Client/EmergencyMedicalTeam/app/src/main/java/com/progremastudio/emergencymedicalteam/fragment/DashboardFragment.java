@@ -179,10 +179,13 @@ public class DashboardFragment extends Fragment implements
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng sydney = new LatLng(-34, 151);
+        LatLng sydney = new LatLng(1.1252494, 104.0668836);
         mGoogleMap = googleMap;
         mGoogleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // TODO: to improve camera zoom position
+        mGoogleMap.setMinZoomPreference(14.0f);
+        mGoogleMap.setMaxZoomPreference(22.0f);
         enableMyLocation();
     }
 
@@ -198,8 +201,15 @@ public class DashboardFragment extends Fragment implements
 
         if (mLastLocation != null) {
 
-            Log.d(TAG, "Latitude = " + String.valueOf(mLastLocation.getLatitude()));
-            Log.d(TAG, "Longitude = " + String.valueOf(mLastLocation.getLongitude()));
+            String latitude = String.valueOf(mLastLocation.getLatitude());
+            String longitude = String.valueOf(mLastLocation.getLatitude());
+
+            AppContext.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
+            AppContext.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
+
+            Log.d(TAG, "Latitude = " + latitude);
+            Log.d(TAG, "Longitude = " + longitude);
+
             if (!Geocoder.isPresent()) {
                 Toast.makeText(getActivity(), "No Geocoder available", Toast.LENGTH_LONG).show();
                 return;

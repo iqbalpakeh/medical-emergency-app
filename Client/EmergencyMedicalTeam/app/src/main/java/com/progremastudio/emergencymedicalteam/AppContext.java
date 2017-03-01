@@ -5,10 +5,16 @@ import android.content.SharedPreferences;
 
 public class AppContext {
 
-    private static final String CONTEXT_APP = "CONTEXT_APP";
-    private static final String CONTEXT_USER_EMAIL = "CONTEXT_USER_EMAIL";
-    private static final String CONTEXT_USER_PHONE_NUMBER = "CONTEXT_USER_PHONE_NUMBER";
-    private static final String CONTEXT_USER_DISPLAY_NAME = "CONTEXT_USER_DISPLAY_NAME";
+    private static final String APP_CONTEXT = "app-context";
+    private static final String USER_EMAIL = "user-email";
+    private static final String USER_PHONE_NUMBER = "user-phone-number";
+    private static final String USER_DISPLAY_NAME = "user-display-name";
+    private static final String LAST_LOCATION_LATITUDE = "last-location-latitude";
+    private static final String LAST_LOCATION_LONGITUDE = "last-location-longitude";
+
+    public static void logOutCurrenUser(Context context) {
+        storeCurrentUser(context, "", "", "");
+    }
 
     public static void storeCurrentUser(Context context,
                                         String displayName,
@@ -21,41 +27,63 @@ public class AppContext {
     }
 
     public static void storeCurrentUserDisplayName(Context context, String displayName) {
-        SharedPreferences appContext = context.getSharedPreferences(CONTEXT_APP, 0);
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         SharedPreferences.Editor editor = appContext.edit();
-        editor.putString(CONTEXT_USER_DISPLAY_NAME, displayName);
+        editor.putString(USER_DISPLAY_NAME, displayName);
         editor.commit();
     }
 
     public static String fetchCurrentUserDisplayName(Context context) {
-        SharedPreferences appContext = context.getSharedPreferences(CONTEXT_APP, 0);
-        return appContext.getString(CONTEXT_USER_DISPLAY_NAME, "");
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        return appContext.getString(USER_DISPLAY_NAME, "");
     }
 
     public static void storeCurrentUserEmail(Context context, String email) {
-        SharedPreferences appContext = context.getSharedPreferences(CONTEXT_APP, 0);
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         SharedPreferences.Editor editor = appContext.edit();
-        editor.putString(CONTEXT_USER_EMAIL, email);
+        editor.putString(USER_EMAIL, email);
         editor.commit();
     }
 
     public static String fetchCurrentUserEmail(Context context) {
-        SharedPreferences appContext = context.getSharedPreferences(CONTEXT_APP, 0);
-        return appContext.getString(CONTEXT_USER_EMAIL, "");
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        return appContext.getString(USER_EMAIL, "");
     }
 
     public static void storeCurrentUserPhoneNumber(Context context, String phoneNumber) {
-        SharedPreferences appContext = context.getSharedPreferences(CONTEXT_APP, 0);
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         SharedPreferences.Editor editor = appContext.edit();
-        editor.putString(CONTEXT_USER_PHONE_NUMBER, phoneNumber);
+        editor.putString(USER_PHONE_NUMBER, phoneNumber);
         editor.commit();
     }
 
     public static String fetchCurrentUserPhoneNumber(Context context) {
-        SharedPreferences appContext = context.getSharedPreferences(CONTEXT_APP, 0);
-        return appContext.getString(CONTEXT_USER_PHONE_NUMBER, "");
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        return appContext.getString(USER_PHONE_NUMBER, "");
     }
 
+    public static void storeCurrentUserLastLatitudeLocation(Context context, String latitude) {
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        SharedPreferences.Editor editor = appContext.edit();
+        editor.putString(LAST_LOCATION_LATITUDE, latitude);
+        editor.commit();
+    }
 
+    public static String fetchCurrentUserLastLatitudeLocation(Context context) {
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        return appContext.getString(LAST_LOCATION_LATITUDE, "");
+    }
+
+    public static void storeCurrentUserLastLongitudeLocation(Context context, String latitude) {
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        SharedPreferences.Editor editor = appContext.edit();
+        editor.putString(LAST_LOCATION_LONGITUDE, latitude);
+        editor.commit();
+    }
+
+    public static String fetchCurrentUserLastLongitudeLocation(Context context) {
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        return appContext.getString(LAST_LOCATION_LONGITUDE, "");
+    }
 
 }

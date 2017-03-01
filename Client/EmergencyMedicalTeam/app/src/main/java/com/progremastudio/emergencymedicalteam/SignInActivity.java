@@ -15,14 +15,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class SignInActivity extends BaseActivity {
 
-    private static final String TAG = "SignInActivity";
+    private static final String TAG = "sign-in-activity";
 
-    private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
     private EditText mEmailField;
@@ -33,7 +30,6 @@ public class SignInActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
         mEmailField = (EditText) findViewById(R.id.email_field);
@@ -59,6 +55,7 @@ public class SignInActivity extends BaseActivity {
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO: to implement Google Sign-In procedure
                 Toast.makeText(SignInActivity.this, "To be implemented...",
                         Toast.LENGTH_SHORT).show();
             }
@@ -68,6 +65,7 @@ public class SignInActivity extends BaseActivity {
         facebookSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO: to implement Faceboook Sign-In procedure
                 Toast.makeText(SignInActivity.this, "To be implemented...",
                         Toast.LENGTH_SHORT).show();
             }
@@ -77,6 +75,7 @@ public class SignInActivity extends BaseActivity {
         forgetPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO: to implement Forget Password procedure
                 Toast.makeText(SignInActivity.this, "To be implemented...",
                         Toast.LENGTH_SHORT).show();
             }
@@ -87,19 +86,27 @@ public class SignInActivity extends BaseActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check auth on Activity start
         if (mAuth.getCurrentUser() != null) {
             onAuthSuccess();
         }
     }
 
     private void onAuthSuccess() {
+
+        String displayName = ""; // TODO: retrieve display name from Firebase
+        String email = mEmailField.getText().toString();
+        String phoneNumber = ""; // TODO: retrieve display name from Firebase
+
+        AppContext.storeCurrentUser(this, displayName, email, phoneNumber);
+
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
     private boolean validateForm() {
+
         boolean result = true;
+
         if (TextUtils.isEmpty(mEmailField.getText().toString())) {
             mEmailField.setError("Required");
             result = false;
@@ -113,6 +120,8 @@ public class SignInActivity extends BaseActivity {
         } else {
             mPasswordField.setError(null);
         }
+
+        // TODO: to add more comprehensive password checking
 
         return result;
     }

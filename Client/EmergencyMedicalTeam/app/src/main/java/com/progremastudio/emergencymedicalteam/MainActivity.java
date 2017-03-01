@@ -18,9 +18,7 @@ import com.progremastudio.emergencymedicalteam.fragment.PostFragment;
 
 public class MainActivity extends BaseActivity {
 
-    // Test
-    
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "main-activity";
 
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
@@ -81,10 +79,17 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.action_logout) {
+
+            AppContext.logOutCurrenUser(this);
+
             FirebaseAuth.getInstance().signOut();
+
             startActivity(new Intent(this, SignInActivity.class));
+
             finish();
+
             return true;
+
         } else {
             return super.onOptionsItemSelected(item);
         }

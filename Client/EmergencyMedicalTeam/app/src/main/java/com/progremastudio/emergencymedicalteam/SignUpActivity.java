@@ -22,7 +22,7 @@ import com.progremastudio.emergencymedicalteam.models.User;
 
 public class SignUpActivity extends BaseActivity{
 
-    private static final String TAG = "SignUpActivity";
+    private static final String TAG = "sign-up-activity";
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -76,7 +76,6 @@ public class SignUpActivity extends BaseActivity{
                         Log.d(TAG, "createUser:onComplete:" + task.isSuccessful());
                         hideProgressDialog();
                         if (task.isSuccessful()) {
-                            //task.getResult().getUser().updateProfile()
                             onAuthSuccess(task.getResult().getUser());
                         } else {
                             Toast.makeText(SignUpActivity.this, "Sign Up Failed",
