@@ -36,7 +36,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.progremastudio.emergencymedicalteam.FetchAddressIntentService;
+import com.progremastudio.emergencymedicalteam.AddressService;
 import com.progremastudio.emergencymedicalteam.AppContext;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.R;
@@ -128,7 +128,7 @@ public class DashboardFragment extends Fragment implements
             startIntentService();
         }
         mAddressRequested = true;
-        //TODO: implement progress bar showing the progress of address fetching
+        ((BaseActivity) getActivity()).showProgressDialog();
     }
 
     private void updateValuesFromBundle(Bundle savedInstanceState) {
@@ -163,9 +163,9 @@ public class DashboardFragment extends Fragment implements
     }
 
     protected void startIntentService() {
-        Intent intent = new Intent(getActivity(), FetchAddressIntentService.class);
-        intent.putExtra(FetchAddressIntentService.Constants.RECEIVER, mResultReceiver);
-        intent.putExtra(FetchAddressIntentService.Constants.LOCATION_DATA_EXTRA, mLastLocation);
+        Intent intent = new Intent(getActivity(), AddressService.class);
+        intent.putExtra(AddressService.Constants.RECEIVER, mResultReceiver);
+        intent.putExtra(AddressService.Constants.LOCATION_DATA_EXTRA, mLastLocation);
         getActivity().startService(intent);
     }
 
@@ -179,14 +179,21 @@ public class DashboardFragment extends Fragment implements
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng sydney = new LatLng(1.1252494, 104.0668836);
+
+        LatLng currentLocation = fetchCurrentLocation();
         mGoogleMap = googleMap;
-        mGoogleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mGoogleMap.addMarker(new MarkerOptions().position(currentLocation).title("Marker in Sydney"));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+
         // TODO: to improve camera zoom position
         mGoogleMap.setMinZoomPreference(14.0f);
         mGoogleMap.setMaxZoomPreference(22.0f);
         enableMyLocation();
+    }
+
+    private LatLng fetchCurrentLocation() {
+        // TODO: Map should goes to user current location automatically
+        return new LatLng(1.1252494, 104.0668836);
     }
 
     @Override
@@ -367,10 +374,11 @@ public class DashboardFragment extends Fragment implements
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            mAddressOutput = resultData.getString(FetchAddressIntentService.Constants.RESULT_DATA_KEY);
+            mAddressOutput = resultData.getString(AddressService.Constants.RESULT_DATA_KEY);
             Log.d(TAG, "Address = " + mAddressOutput);
             mAddressTextView.setText(mAddressOutput);
-            if (resultCode == FetchAddressIntentService.Constants.SUCCESS_RESULT) {
+            if (resultCode == AddressService.Constants.SUCCESS_RESULT) {
+                ((BaseActivity) getActivity()).hideProgressDialog();
                 Log.d(TAG, "Address found");
             }
         }

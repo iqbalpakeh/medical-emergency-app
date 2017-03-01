@@ -18,11 +18,9 @@ public class User {
     }
 
     public User(String displayName, String email, String phoneNumber) {
-
         this.email = email;
         this.displayName = displayName;
         this.phoneNumber = phoneNumber;
-
     }
 
     @Exclude

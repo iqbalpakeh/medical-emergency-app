@@ -85,7 +85,6 @@ public class MainActivity extends BaseActivity {
             FirebaseAuth.getInstance().signOut();
 
             startActivity(new Intent(this, SignInActivity.class));
-
             finish();
 
             return true;

@@ -15,7 +15,6 @@ public class BaseActivity extends AppCompatActivity {
             mProgressDialog.setCancelable(false);
             mProgressDialog.setMessage("Loading...");
         }
-
         mProgressDialog.show();
     }
 
