@@ -42,6 +42,7 @@ import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.Post;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +54,8 @@ public class DashboardFragment extends Fragment implements
     private static final String ADDRESS_REQUESTED_KEY = "address-request-key";
 
     private static final String LOCATION_ADDRESS_KEY = "location-address-key";
+
+    private static final String DEFAULT_EMERGENCY_TYPE = "Kecelakaan";
 
     private final int PERMISSION_FINE_LOCATION_REQUEST = 0;
 
@@ -70,7 +73,9 @@ public class DashboardFragment extends Fragment implements
 
     private Boolean mAddressRequested;
 
-    private String mAddressOutput;
+    private String mCurrentAddress;
+
+    private String mEmergencyType;
 
     private EditText mEditText;
 
@@ -89,7 +94,8 @@ public class DashboardFragment extends Fragment implements
 
         buildGoogleApiClient();
         mAddressRequested = false;
-        mAddressOutput = "";
+        mCurrentAddress = "";
+        mEmergencyType = DEFAULT_EMERGENCY_TYPE;
         mResultReceiver = new AddressResultReceiver(new Handler());
 
         mMapView = (MapView) rootView.findViewById(R.id.map);
@@ -102,7 +108,7 @@ public class DashboardFragment extends Fragment implements
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submit();
+                submitPost();
             }
         });
 
@@ -111,6 +117,48 @@ public class DashboardFragment extends Fragment implements
         updateValuesFromBundle(savedInstanceState);
 
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean(ADDRESS_REQUESTED_KEY, mAddressRequested);
+        savedInstanceState.putString(LOCATION_ADDRESS_KEY, mCurrentAddress);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        mMapView.onResume();
+        super.onResume();
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+    }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
     }
 
     private void fetchLocationAddress() {
@@ -127,8 +175,8 @@ public class DashboardFragment extends Fragment implements
                 mAddressRequested = savedInstanceState.getBoolean(ADDRESS_REQUESTED_KEY);
             }
             if (savedInstanceState.keySet().contains(LOCATION_ADDRESS_KEY)) {
-                mAddressOutput = savedInstanceState.getString(LOCATION_ADDRESS_KEY);
-                mAddressTextView.setText(mAddressOutput);
+                mCurrentAddress = savedInstanceState.getString(LOCATION_ADDRESS_KEY);
+                mAddressTextView.setText(mCurrentAddress);
             }
         }
     }
@@ -238,49 +286,7 @@ public class DashboardFragment extends Fragment implements
         Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putBoolean(ADDRESS_REQUESTED_KEY, mAddressRequested);
-        savedInstanceState.putString(LOCATION_ADDRESS_KEY, mAddressOutput);
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        mMapView.onResume();
-        super.onResume();
-    }
-    @Override
-    public void onPause() {
-        super.onPause();
-        mMapView.onPause();
-    }
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mMapView.onDestroy();
-    }
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mMapView.onLowMemory();
-    }
-
-    private void submit() {
+    private void submitPost() {
 
         final String content = mEditText.getText().toString();
 
@@ -332,10 +338,10 @@ public class DashboardFragment extends Fragment implements
 
         String displayName = AppContext.fetchCurrentUserDisplayName(getActivity());
         String email = AppContext.fetchCurrentUserEmail(getActivity());
-        String timestamp = "to be implemented"; //todo: get timestamp
-        String locationCoordinate = "to be implemented"; //todo: get location coordinate
+        String timestamp = currentTimestamp();
+        String locationCoordinate = mCurrentAddress;
         String pictureUrl = "to be implemented"; //todo: get picture url
-        String emergencyType = "to be implemented"; //todo: get emergency type
+        String emergencyType = mEmergencyType; // todo: to have list option
 
         Post post = new Post(
                 userId,
@@ -356,6 +362,10 @@ public class DashboardFragment extends Fragment implements
         mDatabase.updateChildren(childUpdates);
     }
 
+    private String currentTimestamp() {
+        return String.valueOf(Calendar.getInstance().getTimeInMillis());
+    }
+
     class AddressResultReceiver extends ResultReceiver {
 
         public AddressResultReceiver(Handler handler) {
@@ -364,9 +374,9 @@ public class DashboardFragment extends Fragment implements
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            mAddressOutput = resultData.getString(AddressService.Constants.RESULT_DATA_KEY);
-            Log.d(TAG, "Address = " + mAddressOutput);
-            mAddressTextView.setText(mAddressOutput);
+            mCurrentAddress = resultData.getString(AddressService.Constants.RESULT_DATA_KEY);
+            Log.d(TAG, "Address = " + mCurrentAddress);
+            mAddressTextView.setText(mCurrentAddress);
             if (resultCode == AddressService.Constants.SUCCESS_RESULT) {
                 ((BaseActivity) getActivity()).hideProgressDialog();
                 Log.d(TAG, "Address found");
