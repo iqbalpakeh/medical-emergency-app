@@ -12,10 +12,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -68,13 +72,11 @@ public class DashboardFragment extends Fragment implements
 
     private String mAddressOutput;
 
-//    private EditText mEditText;
-//
-//    private Button mSubmitButton;
-//
-//    private Button mFetchLocationButton;
-//
-//    private TextView mAddressTextView;
+    private EditText mEditText;
+
+    private Button mSubmitButton;
+
+    private TextView mAddressTextView;
 
     @Nullable
     @Override
@@ -82,8 +84,6 @@ public class DashboardFragment extends Fragment implements
         super.onCreateView(inflater, container, savedInstanceState);
 
         View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
-        updateValuesFromBundle(savedInstanceState);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -96,25 +96,19 @@ public class DashboardFragment extends Fragment implements
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(this);
 
-//        mEditText = (EditText) rootView.findViewById(R.id.edit_text);
-//
-//        mSubmitButton = (Button) rootView.findViewById(R.id.submit_code);
-//        mSubmitButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                submit();
-//            }
-//        });
-//
-//        mFetchLocationButton = (Button) rootView.findViewById(R.id.fetch_address_button);
-//        mFetchLocationButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                fetchLocationAddress();
-//            }
-//        });
-//
-//        mAddressTextView = (TextView) rootView.findViewById(R.id.address_text);
+        mEditText = (EditText) rootView.findViewById(R.id.edit_text);
+
+        mSubmitButton = (Button) rootView.findViewById(R.id.submit_code);
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submit();
+            }
+        });
+
+        mAddressTextView = (TextView) rootView.findViewById(R.id.address_text);
+
+        updateValuesFromBundle(savedInstanceState);
 
         return rootView;
     }
@@ -134,7 +128,7 @@ public class DashboardFragment extends Fragment implements
             }
             if (savedInstanceState.keySet().contains(LOCATION_ADDRESS_KEY)) {
                 mAddressOutput = savedInstanceState.getString(LOCATION_ADDRESS_KEY);
-                //mAddressTextView.setText(mAddressOutput);
+                mAddressTextView.setText(mAddressOutput);
             }
         }
     }
@@ -184,6 +178,15 @@ public class DashboardFragment extends Fragment implements
         // TODO: to improve camera zoom position
         mGoogleMap.setMinZoomPreference(14.0f);
         mGoogleMap.setMaxZoomPreference(22.0f);
+
+        mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                fetchLocationAddress();
+                return false;
+            }
+        });
+
         enableMyLocation();
     }
 
@@ -279,15 +282,15 @@ public class DashboardFragment extends Fragment implements
 
     private void submit() {
 
-        final String content = ""; //mEditText.getText().toString();
-//
-//        if (TextUtils.isEmpty(content)) {
-//            mEditText.setError("Required");
-//            return;
-//        }
+        final String content = mEditText.getText().toString();
 
-        setEditingEnabled(false);
+        if (TextUtils.isEmpty(content)) {
+            mEditText.setError("Required");
+            return;
+        }
+
         Toast.makeText(getActivity(), "Posting...", Toast.LENGTH_SHORT).show();
+        ((BaseActivity)getActivity()).showProgressDialog();
 
         final String userId = ((BaseActivity) getActivity()).getUid();
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
@@ -309,24 +312,15 @@ public class DashboardFragment extends Fragment implements
                         }
 
                         // Finish this Activity, back to the stream
-                        setEditingEnabled(true);
+                        ((BaseActivity)getActivity()).hideProgressDialog();
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                        setEditingEnabled(true);
+                        ((BaseActivity)getActivity()).hideProgressDialog();
                     }
                 });
-    }
-
-    private void setEditingEnabled(boolean enabled) {
-//        mEditText.setEnabled(enabled);
-//        if (enabled) {
-//            mSubmitButton.setVisibility(View.VISIBLE);
-//        } else {
-//            mSubmitButton.setVisibility(View.GONE);
-//        }
     }
 
     private void writeNewPost(String userId, String message) {
@@ -372,7 +366,7 @@ public class DashboardFragment extends Fragment implements
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             mAddressOutput = resultData.getString(AddressService.Constants.RESULT_DATA_KEY);
             Log.d(TAG, "Address = " + mAddressOutput);
-            //mAddressTextView.setText(mAddressOutput);
+            mAddressTextView.setText(mAddressOutput);
             if (resultCode == AddressService.Constants.SUCCESS_RESULT) {
                 ((BaseActivity) getActivity()).hideProgressDialog();
                 Log.d(TAG, "Address found");
