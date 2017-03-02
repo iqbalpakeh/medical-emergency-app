@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     tools:context=".MainActivity">
 
@@ -21,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="Jl. Sisingamangaraja, No 2A Medan Sumatra Utara"
+            android:hint="Lokasi sekarang..."
             android:textSize="16sp" />
 
         <LinearLayout
@@ -45,15 +46,30 @@
 
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/edit_text"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_margin="8dp"
-                android:hint="Berita singkat"
-                android:textColor="@color/text_primary_dark"
-                android:textColorHint="@color/text_secondary_dark" />
+                android:orientation="horizontal"
+                android:gravity="top">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    app:srcCompat="@drawable/ic_account_circle_black_36dp"/>
+
+                <EditText
+                    android:id="@+id/edit_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:hint="Berita singkat"
+                    android:textColor="@color/text_primary_dark"
+                    android:textColorHint="@color/text_secondary_dark" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,7 +85,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
                     android:background="@drawable/button_background"
-                    android:src="@drawable/ic_action_camera" />
+                    android:src="@drawable/ic_add_a_photo_black_24dp" />
 
                 <ImageButton
                     android:id="@+id/submit_code"
@@ -78,7 +94,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
                     android:background="@drawable/button_background"
-                    android:src="@drawable/ic_action_camera"
+                    android:src="@drawable/ic_send_black_24dp"
                     android:text="Unggah Berita" />
 
             </LinearLayout>
