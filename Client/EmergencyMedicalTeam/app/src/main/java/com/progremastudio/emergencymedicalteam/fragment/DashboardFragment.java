@@ -76,6 +76,8 @@ public class DashboardFragment extends Fragment implements
 //
 //    private TextView mAddressTextView;
 
+    // Test 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
