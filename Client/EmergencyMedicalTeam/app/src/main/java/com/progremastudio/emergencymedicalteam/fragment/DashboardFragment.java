@@ -17,8 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,11 +74,9 @@ public class DashboardFragment extends Fragment implements
 
     private EditText mEditText;
 
-    private Button mSubmitButton;
+    private ImageButton mSubmitButton;
 
     private TextView mAddressTextView;
-
-    // Test 
 
     @Nullable
     @Override
@@ -100,7 +98,7 @@ public class DashboardFragment extends Fragment implements
 
         mEditText = (EditText) rootView.findViewById(R.id.edit_text);
 
-        mSubmitButton = (Button) rootView.findViewById(R.id.submit_code);
+        mSubmitButton = (ImageButton) rootView.findViewById(R.id.submit_code);
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
