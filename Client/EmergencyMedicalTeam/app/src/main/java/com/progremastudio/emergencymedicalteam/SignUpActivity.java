@@ -27,7 +27,6 @@ public class SignUpActivity extends BaseActivity{
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
-    private EditText mNameField;
     private EditText mEmailField;
     private EditText mPasswordField;
     private EditText mDisplayNameField;
@@ -41,7 +40,6 @@ public class SignUpActivity extends BaseActivity{
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
-        mNameField = (EditText) findViewById(R.id.display_name_field);
         mEmailField = (EditText) findViewById(R.id.email_field);
         mPasswordField = (EditText) findViewById(R.id.password_field);
         mDisplayNameField = (EditText) findViewById(R.id.display_name_field);
@@ -88,8 +86,8 @@ public class SignUpActivity extends BaseActivity{
     private boolean validateForm() {
         boolean result = true;
 
-        if (TextUtils.isEmpty(mNameField.getText().toString())) {
-            mNameField.setError("Required");
+        if (TextUtils.isEmpty(mDisplayNameField.getText().toString())) {
+            mDisplayNameField.setError("Required");
             result = false;
         } else {
             mEmailField.setError(null);
