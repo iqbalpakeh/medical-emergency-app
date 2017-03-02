@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity {
         int i = item.getItemId();
         if (i == R.id.action_logout) {
 
-            AppContext.logOutCurrenUser(this);
+            AppContext.logOutCurrentUser(this);
 
             FirebaseAuth.getInstance().signOut();
 

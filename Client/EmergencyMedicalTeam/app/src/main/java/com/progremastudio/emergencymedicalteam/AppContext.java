@@ -12,7 +12,7 @@ public class AppContext {
     private static final String LAST_LOCATION_LATITUDE = "last-location-latitude";
     private static final String LAST_LOCATION_LONGITUDE = "last-location-longitude";
 
-    public static void logOutCurrenUser(Context context) {
+    public static void logOutCurrentUser(Context context) {
         storeCurrentUser(context, "", "", "");
     }
 
