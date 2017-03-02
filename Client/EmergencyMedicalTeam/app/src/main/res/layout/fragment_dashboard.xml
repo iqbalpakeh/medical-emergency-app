@@ -13,6 +13,14 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textSize="16sp"
+        android:text="Jl. Sisingamangaraja, No 2A Medan Sumatra Utara"
+        android:id="@+id/textView" />
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -25,50 +33,95 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/edit_text"
+                android:id="@+id/accident_description_text"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:hint="text input"
+                android:layout_margin="8dp"
+                android:layout_gravity="bottom"
                 android:textColor="@color/text_primary_dark"
                 android:textColorHint="@color/text_secondary_dark" />
 
-            <Button
-                android:id="@+id/submit_code"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="Submit"
-                android:textColor="@color/text_primary_dark" />
+            <ImageButton
+                android:id="@+id/baby_input_image"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:background="@drawable/button_background"
+                android:src="@drawable/ic_action_camera" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/address_text"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:hint="Location address"
-                android:textColor="@color/text_primary_dark"
-                android:textColorHint="@color/text_secondary_dark" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:padding="4dp">
 
             <Button
-                android:id="@+id/fetch_address_button"
-                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="Location"
-                android:textColor="@color/text_primary_dark" />
+                android:text="Unggah Berita"
+                android:textColor="@color/text_primary_dark"
+                android:id="@+id/button2" />
 
         </LinearLayout>
+
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/edit_text"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:hint="text input"-->
+                <!--android:textColor="@color/text_primary_dark"-->
+                <!--android:textColorHint="@color/text_secondary_dark" />-->
+
+            <!--<Button-->
+                <!--android:id="@+id/submit_code"-->
+                <!--style="?android:attr/borderlessButtonStyle"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="right"-->
+                <!--android:text="Submit"-->
+                <!--android:textColor="@color/text_primary_dark" />-->
+
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/address_text"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:hint="Location address"-->
+                <!--android:textColor="@color/text_primary_dark"-->
+                <!--android:textColorHint="@color/text_secondary_dark" />-->
+
+            <!--<Button-->
+                <!--android:id="@+id/fetch_address_button"-->
+                <!--style="?android:attr/borderlessButtonStyle"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="right"-->
+                <!--android:text="Location"-->
+                <!--android:textColor="@color/text_primary_dark" />-->
+
+        <!--</LinearLayout>-->
 
     </LinearLayout>
 
