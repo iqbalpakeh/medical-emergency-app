@@ -116,7 +116,7 @@ public class DashboardFragment extends Fragment implements
 
         updateValuesFromBundle(savedInstanceState);
 
-        Log.d(TAG, "Display Name = " + ((BaseActivity) getActivity()).getDisplayName());
+        Log.d(TAG, "Display Name = " + AppContext.fetchCurrentUserDisplayName(getContext()));
 
         return rootView;
     }
@@ -124,12 +124,14 @@ public class DashboardFragment extends Fragment implements
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart");
         mGoogleApiClient.connect();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        Log.d(TAG, "onStop");
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
@@ -137,6 +139,7 @@ public class DashboardFragment extends Fragment implements
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
+        Log.d(TAG, "onSaveInstanceState");
         savedInstanceState.putBoolean(ADDRESS_REQUESTED_KEY, mAddressRequested);
         savedInstanceState.putString(LOCATION_ADDRESS_KEY, mCurrentAddress);
         super.onSaveInstanceState(savedInstanceState);
@@ -144,22 +147,26 @@ public class DashboardFragment extends Fragment implements
 
     @Override
     public void onResume() {
-        mMapView.onResume();
         super.onResume();
+        Log.d(TAG, "onResume");
+        mMapView.onResume();
     }
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause");
         mMapView.onPause();
     }
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy");
         mMapView.onDestroy();
     }
     @Override
     public void onLowMemory() {
         super.onLowMemory();
+        Log.d(TAG, "onLowMemory");
         mMapView.onLowMemory();
     }
 
