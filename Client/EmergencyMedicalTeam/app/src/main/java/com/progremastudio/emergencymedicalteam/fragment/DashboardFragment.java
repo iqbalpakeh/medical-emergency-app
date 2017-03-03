@@ -116,6 +116,8 @@ public class DashboardFragment extends Fragment implements
 
         updateValuesFromBundle(savedInstanceState);
 
+        Log.d(TAG, "Display Name = " + ((BaseActivity) getActivity()).getDisplayName());
+
         return rootView;
     }
 
@@ -336,8 +338,8 @@ public class DashboardFragment extends Fragment implements
 
         String key = mDatabase.child("posts").push().getKey();
 
-        String displayName = AppContext.fetchCurrentUserDisplayName(getActivity());
-        String email = AppContext.fetchCurrentUserEmail(getActivity());
+        String displayName = ((BaseActivity) getActivity()).getDisplayName();
+        String email = ((BaseActivity) getActivity()).getUserEmail();
         String timestamp = currentTimestamp();
         String locationCoordinate = mCurrentAddress;
         String pictureUrl = "to be implemented"; //todo: get picture url

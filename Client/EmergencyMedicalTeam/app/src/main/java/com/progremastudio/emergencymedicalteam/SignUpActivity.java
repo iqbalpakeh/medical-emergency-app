@@ -1,6 +1,7 @@
 package com.progremastudio.emergencymedicalteam;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.progremastudio.emergencymedicalteam.models.User;
@@ -118,6 +120,19 @@ public class SignUpActivity extends BaseActivity{
         String phoneNumber = mPhoneNumberField.getText().toString();
 
         AppContext.storeCurrentUser(this, displayName, email, phoneNumber);
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(displayName)
+                .setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg")) // TODO: implement user photo url
+                .build();
+
+        firebaseUser.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.d(TAG, "Display Name is updated");
+            }
+        });
 
         User user = new User(displayName, email, phoneNumber);
         mDatabase.child("users").child(userId).setValue(user.toMap());

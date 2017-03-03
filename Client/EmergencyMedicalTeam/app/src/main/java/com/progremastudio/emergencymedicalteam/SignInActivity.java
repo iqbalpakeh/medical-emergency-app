@@ -93,7 +93,7 @@ public class SignInActivity extends BaseActivity {
 
     private void onAuthSuccess() {
 
-        String displayName = ""; // TODO: retrieve display name from Firebase
+        String displayName = getDisplayName();
         String email = mEmailField.getText().toString();
         String phoneNumber = ""; // TODO: retrieve display name from Firebase
 

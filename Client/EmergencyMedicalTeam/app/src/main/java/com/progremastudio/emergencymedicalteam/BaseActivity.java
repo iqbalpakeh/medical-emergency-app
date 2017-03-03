@@ -7,6 +7,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class BaseActivity extends AppCompatActivity {
 
+    private final static String TAG = "app-compat-activity";
+
     private ProgressDialog mProgressDialog;
 
     public void showProgressDialog() {
@@ -26,6 +28,14 @@ public class BaseActivity extends AppCompatActivity {
 
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+    public String getDisplayName() {
+        return FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+    }
+
+    public String getUserEmail() {
+        return FirebaseAuth.getInstance().getCurrentUser().getEmail();
     }
 
 }
