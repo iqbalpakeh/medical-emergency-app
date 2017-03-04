@@ -16,7 +16,6 @@ import com.flurgle.camerakit.CameraView;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Calendar;
 
 public class CameraActivity extends BaseActivity {
 
@@ -57,6 +56,9 @@ public class CameraActivity extends BaseActivity {
                 mBitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
 
                 saveBitmapOnDirectory();
+
+                startActivity(new Intent(CameraActivity.this, MainActivity.class));
+                finish();
 
             }
 
@@ -101,8 +103,6 @@ public class CameraActivity extends BaseActivity {
 
     private void saveBitmapOnDirectory() {
 
-        String timestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
-
         try {
 
             File directoryPath = new File(this.getFilesDir(), "post");
@@ -110,7 +110,7 @@ public class CameraActivity extends BaseActivity {
                 directoryPath.mkdirs();
             }
 
-            File filePath = new File(directoryPath.getPath() + File.separator + timestamp + ".jpg");
+            File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
             FileOutputStream outputStream = new FileOutputStream(filePath.getPath());
 
             mUri = Uri.parse("file://" + filePath.getPath());

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ import com.progremastudio.emergencymedicalteam.CameraActivity;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.Post;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -84,6 +87,8 @@ public class DashboardFragment extends Fragment implements
 
     private ImageButton mCameraButton;
 
+    private ImageView mImageView;
+
     private TextView mAddressTextView;
 
     @Nullable
@@ -124,6 +129,9 @@ public class DashboardFragment extends Fragment implements
         });
 
         mAddressTextView = (TextView) rootView.findViewById(R.id.address_text);
+
+        mImageView = (ImageView) rootView.findViewById(R.id.image_view);
+        showImageView();
 
         updateValuesFromBundle(savedInstanceState);
 
@@ -179,6 +187,22 @@ public class DashboardFragment extends Fragment implements
         super.onLowMemory();
         Log.d(TAG, "onLowMemory");
         mMapView.onLowMemory();
+    }
+
+    private void showImageView() {
+
+        try {
+
+            File directoryPath = new File(getActivity().getFilesDir(), "post");
+            File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
+            if (filePath.exists()) {
+                mImageView.setImageURI(Uri.parse("file://" + filePath.getPath()));
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
     }
 
     private void openCamera() {
