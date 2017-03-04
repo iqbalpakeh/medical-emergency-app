@@ -34,18 +34,18 @@
             <LinearLayout
                 android:id="@+id/picture_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_margin="8dp"
                 android:gravity="center"
                 android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/image_view"
-                    android:rotation="90"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:layout_gravity="center_horizontal"
-                    android:adjustViewBounds="true" />
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"/>
 
             </LinearLayout>
 

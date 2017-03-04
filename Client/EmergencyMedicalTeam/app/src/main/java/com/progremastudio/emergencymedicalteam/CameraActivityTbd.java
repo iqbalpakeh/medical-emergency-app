@@ -17,7 +17,7 @@ import com.flurgle.camerakit.CameraView;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class CameraActivity extends BaseActivity {
+public class CameraActivityTbd extends BaseActivity {
 
     private static final String TAG = "camera-activity";
 
@@ -32,7 +32,7 @@ public class CameraActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera);
+        setContentView(R.layout.activity_camera_tbd);
 
         mCameraView = (CameraView) findViewById(R.id.camera);
         mCameraView.setCameraListener(new CameraListener() {
@@ -57,7 +57,7 @@ public class CameraActivity extends BaseActivity {
 
                 saveBitmapOnDirectory();
 
-                startActivity(new Intent(CameraActivity.this, MainActivity.class));
+                startActivity(new Intent(CameraActivityTbd.this, MainActivity.class));
                 finish();
 
             }

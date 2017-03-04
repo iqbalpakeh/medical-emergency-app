@@ -41,7 +41,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.progremastudio.emergencymedicalteam.AddressService;
 import com.progremastudio.emergencymedicalteam.AppContext;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
-import com.progremastudio.emergencymedicalteam.CameraActivity;
+import com.progremastudio.emergencymedicalteam.CameraActivityTbd;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.Post;
 
@@ -206,7 +206,7 @@ public class DashboardFragment extends Fragment implements
     }
 
     private void openCamera() {
-        startActivity(new Intent(getContext(), CameraActivity.class));
+        startActivity(new Intent(getContext(), CameraActivityTbd.class));
     }
 
     private void fetchLocationAddress() {
