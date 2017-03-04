@@ -39,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.progremastudio.emergencymedicalteam.AddressService;
 import com.progremastudio.emergencymedicalteam.AppContext;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
+import com.progremastudio.emergencymedicalteam.CameraActivity;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.Post;
 
@@ -81,6 +82,8 @@ public class DashboardFragment extends Fragment implements
 
     private ImageButton mSubmitButton;
 
+    private ImageButton mCameraButton;
+
     private TextView mAddressTextView;
 
     @Nullable
@@ -109,6 +112,14 @@ public class DashboardFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 submitPost();
+            }
+        });
+
+        mCameraButton = (ImageButton) rootView.findViewById(R.id.camera_button);
+        mCameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCamera();
             }
         });
 
@@ -170,6 +181,10 @@ public class DashboardFragment extends Fragment implements
         mMapView.onLowMemory();
     }
 
+    private void openCamera() {
+        startActivity(new Intent(getContext(), CameraActivity.class));
+    }
+
     private void fetchLocationAddress() {
         if (mGoogleApiClient.isConnected() && mLastLocation != null) {
             startIntentService();
@@ -229,7 +244,7 @@ public class DashboardFragment extends Fragment implements
 
         LatLng currentLocation = fetchCurrentLocation();
         mGoogleMap = googleMap;
-        mGoogleMap.addMarker(new MarkerOptions().position(currentLocation).title("Marker in Sydney"));
+        mGoogleMap.addMarker(new MarkerOptions().position(currentLocation).title("TBM APPS User location"));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
 
         // TODO: to improve camera zoom position

@@ -36,7 +36,8 @@
                 android:layout_height="150dp"
                 android:background="@color/card_shadow"
                 android:layout_margin="8dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:visibility="gone">
 
                 <!-- Dummy layout for picture -->
                 <TextView
@@ -79,7 +80,7 @@
                 android:padding="4dp">
 
                 <ImageButton
-                    android:id="@+id/take_picture_button"
+                    android:id="@+id/camera_button"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
