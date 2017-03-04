@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.YuvImage;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -14,6 +15,8 @@ import com.flurgle.camerakit.CameraListener;
 import com.flurgle.camerakit.CameraView;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Calendar;
 
 public class CameraActivity extends BaseActivity {
 
@@ -22,6 +25,10 @@ public class CameraActivity extends BaseActivity {
     private CameraView mCameraView;
 
     private ImageButton mCaptureButton;
+
+    private Uri mUri;
+
+    private Bitmap mBitmap;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +54,10 @@ public class CameraActivity extends BaseActivity {
                 Log.d(TAG, "picture taken");
 
                 // Create a bitmap
-                Bitmap result = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
+                mBitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
+
+                saveBitmapOnDirectory();
+
             }
 
             @Override
@@ -87,6 +97,31 @@ public class CameraActivity extends BaseActivity {
         super.onBackPressed();
         startActivity(new Intent(this, MainActivity.class));
         finish();
+    }
+
+    private void saveBitmapOnDirectory() {
+
+        String timestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
+
+        try {
+
+            File directoryPath = new File(this.getFilesDir(), "post");
+            if (!directoryPath.exists()) {
+                directoryPath.mkdirs();
+            }
+
+            File filePath = new File(directoryPath.getPath() + File.separator + timestamp + ".jpg");
+            FileOutputStream outputStream = new FileOutputStream(filePath.getPath());
+
+            mUri = Uri.parse("file://" + filePath.getPath());
+            mBitmap.compress(Bitmap.CompressFormat.PNG, 90, outputStream);
+
+            outputStream.flush();
+            outputStream.close();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
 }
