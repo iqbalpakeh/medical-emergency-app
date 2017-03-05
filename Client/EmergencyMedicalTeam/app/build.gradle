@@ -34,6 +34,8 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.+'
     compile 'com.firebaseui:firebase-ui-database:1.0.0'
     compile 'com.flurgle:camerakit:0.9.12'
+    compile 'com.github.florent37:camerafragment:1.0.5'
+    compile 'com.jakewharton:butterknife:7.0.1'
     testCompile 'junit:junit:4.12'
 }
 
