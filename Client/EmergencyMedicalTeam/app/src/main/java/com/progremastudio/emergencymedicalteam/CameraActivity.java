@@ -102,7 +102,7 @@ public class CameraActivity extends AppCompatActivity {
                                                        @Override
                                                        public void onPhotoTaken(byte[] bytes, String filePath) {
                                                            Toast.makeText(getBaseContext(), "onPhotoTaken " + filePath, Toast.LENGTH_SHORT).show();
-                                                           startActivity(PreviewActivity.newIntentPhoto(CameraActivity.this, filePath));
+                                                           startActivityForResult(PreviewActivity.newIntentPhoto(CameraActivity.this, filePath), 0);
                                                        }
                                                    },
                     mUri.toString(),
@@ -153,6 +153,16 @@ public class CameraActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length != 0) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             addCamera();
         }
     }
@@ -162,8 +172,19 @@ public class CameraActivity extends AppCompatActivity {
         addCameraButton.setVisibility(View.GONE);
         cameraLayout.setVisibility(View.VISIBLE);
 
-        final CameraFragment cameraFragment = CameraFragment.newInstance(new Configuration.Builder()
-                .setCamera(Configuration.CAMERA_FACE_REAR).build());
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        final CameraFragment cameraFragment =
+                CameraFragment.newInstance(new Configuration.Builder().setCamera(Configuration.CAMERA_FACE_REAR).build());
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, cameraFragment, FRAGMENT_TAG)
                 .commitAllowingStateLoss();
@@ -330,6 +351,8 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
+
 }
