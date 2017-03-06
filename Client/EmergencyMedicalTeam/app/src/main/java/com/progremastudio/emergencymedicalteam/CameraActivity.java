@@ -60,8 +60,6 @@ public class CameraActivity extends AppCompatActivity {
 
     @Bind(R.id.cameraLayout)
     View cameraLayout;
-    @Bind(R.id.addCameraButton)
-    View addCameraButton;
 
     private Uri mUri;
 
@@ -71,6 +69,29 @@ public class CameraActivity extends AppCompatActivity {
         setContentView(R.layout.activity_camera);
         ButterKnife.bind(this);
         createFilePath();
+        requestPermissions();
+    }
+
+    private void requestPermissions() {
+        if (Build.VERSION.SDK_INT > 15) {
+            final String[] permissions = {
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE};
+
+            final List<String> permissionsToRequest = new ArrayList<>();
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                    permissionsToRequest.add(permission);
+                }
+            }
+            if (!permissionsToRequest.isEmpty()) {
+                ActivityCompat.requestPermissions(this, permissionsToRequest.toArray(new String[permissionsToRequest.size()]), REQUEST_CAMERA_PERMISSIONS);
+            } else addCamera();
+        } else {
+            addCamera();
+        }
     }
 
     @OnClick(R.id.flash_switch_view)
@@ -93,18 +114,19 @@ public class CameraActivity extends AppCompatActivity {
     public void onRecordButtonClicked() {
         final CameraFragmentApi cameraFragment = getCameraFragment();
         if (cameraFragment != null) {
-            cameraFragment.takePhotoOrCaptureVideo(new CameraFragmentResultAdapter() {
-                                                       @Override
-                                                       public void onVideoRecorded(String filePath) {
-                                                           Toast.makeText(getBaseContext(), "onVideoRecorded " + filePath, Toast.LENGTH_SHORT).show();
-                                                       }
+            cameraFragment.takePhotoOrCaptureVideo(
+                    new CameraFragmentResultAdapter() {
+                        @Override
+                        public void onVideoRecorded(String filePath) {
+                            Toast.makeText(getBaseContext(), "onVideoRecorded " + filePath, Toast.LENGTH_SHORT).show();
+                        }
 
-                                                       @Override
-                                                       public void onPhotoTaken(byte[] bytes, String filePath) {
-                                                           Toast.makeText(getBaseContext(), "onPhotoTaken " + filePath, Toast.LENGTH_SHORT).show();
-                                                           startActivityForResult(PreviewActivity.newIntentPhoto(CameraActivity.this, filePath), 0);
-                                                       }
-                                                   },
+                        @Override
+                        public void onPhotoTaken(byte[] bytes, String filePath) {
+                            Toast.makeText(getBaseContext(), "onPhotoTaken " + filePath, Toast.LENGTH_SHORT).show();
+                            startActivityForResult(PreviewActivity.newIntentPhoto(CameraActivity.this, filePath), 0);
+                        }
+                    },
                     mUri.toString(),
                     "accident");
         }
@@ -123,29 +145,6 @@ public class CameraActivity extends AppCompatActivity {
         final CameraFragmentApi cameraFragment = getCameraFragment();
         if (cameraFragment != null) {
             cameraFragment.switchActionPhotoVideo();
-        }
-    }
-
-    @OnClick(R.id.addCameraButton)
-    public void onAddCameraClicked() {
-        if (Build.VERSION.SDK_INT > 15) {
-            final String[] permissions = {
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.RECORD_AUDIO,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE};
-
-            final List<String> permissionsToRequest = new ArrayList<>();
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-                    permissionsToRequest.add(permission);
-                }
-            }
-            if (!permissionsToRequest.isEmpty()) {
-                ActivityCompat.requestPermissions(this, permissionsToRequest.toArray(new String[permissionsToRequest.size()]), REQUEST_CAMERA_PERMISSIONS);
-            } else addCamera();
-        } else {
-            addCamera();
         }
     }
 
@@ -169,9 +168,6 @@ public class CameraActivity extends AppCompatActivity {
 
     @RequiresPermission(Manifest.permission.CAMERA)
     public void addCamera() {
-        addCameraButton.setVisibility(View.GONE);
-        cameraLayout.setVisibility(View.VISIBLE);
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -340,11 +336,14 @@ public class CameraActivity extends AppCompatActivity {
                 directoryPath.mkdirs();
             }
 
-//            File directoryPath = new File(Environment.getExternalStoragePublicDirectory(
-//                    Environment.DIRECTORY_PICTURES), "post");
-//            if (!directoryPath.exists()) {
-//                directoryPath.mkdirs();
-//            }
+            /* // debug code to save data on the external storage
+             *
+            File directoryPath = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES), "post");
+            if (!directoryPath.exists()) {
+                directoryPath.mkdirs();
+            }
+             */
 
             mUri = Uri.parse(directoryPath.getPath());
 

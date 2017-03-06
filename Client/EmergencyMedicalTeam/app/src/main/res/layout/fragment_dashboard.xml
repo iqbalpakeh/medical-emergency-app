@@ -45,6 +45,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
                     android:adjustViewBounds="true"
+                    android:baselineAlignBottom="true"
                     android:scaleType="fitCenter"/>
 
             </LinearLayout>
