@@ -340,6 +340,12 @@ public class CameraActivity extends AppCompatActivity {
                 directoryPath.mkdirs();
             }
 
+//            File directoryPath = new File(Environment.getExternalStoragePublicDirectory(
+//                    Environment.DIRECTORY_PICTURES), "post");
+//            if (!directoryPath.exists()) {
+//                directoryPath.mkdirs();
+//            }
+
             mUri = Uri.parse(directoryPath.getPath());
 
         } catch (Exception exception) {
