@@ -3,9 +3,12 @@ package com.progremastudio.emergencymedicalteam.fragment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.location.Geocoder;
 import android.location.Location;
-import android.net.Uri;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -118,6 +121,7 @@ public class DashboardFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 submitPost();
+                clearPost();
             }
         });
 
@@ -132,6 +136,7 @@ public class DashboardFragment extends Fragment implements
         mAddressTextView = (TextView) rootView.findViewById(R.id.address_text);
 
         mImageView = (ImageView) rootView.findViewById(R.id.image_view);
+
         showImageView();
 
         updateValuesFromBundle(savedInstanceState);
@@ -195,18 +200,36 @@ public class DashboardFragment extends Fragment implements
 
     private void showImageView() {
 
-        try {
+        File directoryPath = new File(getActivity().getFilesDir(), "post");
+        File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
 
-            File directoryPath = new File(getActivity().getFilesDir(), "post");
-            File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
-            if (filePath.exists()) {
-                mImageView.setImageURI(Uri.parse("file://" + filePath.getPath()));
+        if (!filePath.exists()) {
+            return;
+        }
+
+        try {
+            Bitmap myBitmap = BitmapFactory.decodeFile(filePath.getAbsolutePath());
+
+            ExifInterface exif = new ExifInterface(filePath.getAbsolutePath());
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+            Log.d("EXIF", "Exif: " + orientation);
+            Matrix matrix = new Matrix();
+            if (orientation == 6) {
+                matrix.postRotate(90);
+            } else if (orientation == 3) {
+                matrix.postRotate(180);
+            } else if (orientation == 8) {
+                matrix.postRotate(270);
             }
+
+            myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true); // rotating bitmap
+
+            mImageView.setVisibility(View.VISIBLE);
+            mImageView.setImageBitmap(myBitmap);
 
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-
     }
 
     private void openCamera() {
@@ -344,6 +367,24 @@ public class DashboardFragment extends Fragment implements
         Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
     }
 
+    private void clearPost() {
+
+        // clear location
+        mAddressTextView.setText("");
+
+        // clear message
+        mEditText.getText().clear();
+
+        // clear image
+        File directoryPath = new File(getActivity().getFilesDir(), "post");
+        File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
+        if (filePath.exists()) {
+            filePath.delete();
+            mImageView.setVisibility(View.GONE);
+        }
+
+    }
+
     private void submitPost() {
 
         final String content = mEditText.getText().toString();
@@ -354,7 +395,7 @@ public class DashboardFragment extends Fragment implements
         }
 
         Toast.makeText(getActivity(), "Posting...", Toast.LENGTH_SHORT).show();
-        ((BaseActivity)getActivity()).showProgressDialog();
+        ((BaseActivity) getActivity()).showProgressDialog();
 
         final String userId = ((BaseActivity) getActivity()).getUid();
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
@@ -376,13 +417,13 @@ public class DashboardFragment extends Fragment implements
                         }
 
                         // Finish this Activity, back to the stream
-                        ((BaseActivity)getActivity()).hideProgressDialog();
+                        ((BaseActivity) getActivity()).hideProgressDialog();
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                        ((BaseActivity)getActivity()).hideProgressDialog();
+                        ((BaseActivity) getActivity()).hideProgressDialog();
                     }
                 });
     }
