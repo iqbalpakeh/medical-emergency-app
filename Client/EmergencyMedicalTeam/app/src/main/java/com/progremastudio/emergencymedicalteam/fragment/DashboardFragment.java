@@ -389,8 +389,10 @@ public class DashboardFragment extends Fragment implements
 
     private void writeNewPost(String userId, String message) {
 
-        // Create new post at /user-posts/$userid/$postid and
-        // at /posts/$postid simultaneously
+        /**
+         * Create new post at /user-posts/$userid/$postid and
+         * at /posts/$postid simultaneously
+         */
 
         String key = mDatabase.child("posts").push().getKey();
 

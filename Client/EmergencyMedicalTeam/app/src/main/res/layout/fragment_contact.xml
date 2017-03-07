@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/sample_text"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Hello World"
-        android:textColor="@color/text_primary_dark"/>
+        android:layout_gravity="center_horizontal"
+        android:adjustViewBounds="true"
+        android:padding="8dp" />
 
 </RelativeLayout>
