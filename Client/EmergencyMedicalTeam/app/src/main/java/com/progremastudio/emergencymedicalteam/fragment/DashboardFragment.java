@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.location.Geocoder;
 import android.location.Location;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -37,11 +38,16 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.progremastudio.emergencymedicalteam.AddressService;
 import com.progremastudio.emergencymedicalteam.AppContext;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
@@ -49,6 +55,7 @@ import com.progremastudio.emergencymedicalteam.CameraActivity;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.Post;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +68,8 @@ public class DashboardFragment extends Fragment implements
     private final int PERMISSION_FINE_LOCATION_REQUEST = 0;
 
     private DatabaseReference mDatabase;
+
+    private FirebaseStorage mStorage;
 
     private GoogleMap mGoogleMap;
 
@@ -92,12 +101,17 @@ public class DashboardFragment extends Fragment implements
         View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         /**
-         * Initial Firebase Real-time DB reference
+         * Initialize Firebase Real-time DB reference
          */
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         /**
-         * Initial Google-Map API
+         * Initialize FIrebase Storage reference
+         */
+        mStorage = FirebaseStorage.getInstance();
+
+        /**
+         * Initialize Google-Map API
          */
         buildGoogleApiClient();
         mMapView = (MapView) rootView.findViewById(R.id.map);
@@ -105,7 +119,7 @@ public class DashboardFragment extends Fragment implements
         mMapView.getMapAsync(this);
 
         /**
-         * Initial Location Address Service
+         * Initialize Location Address Service
          */
         mResultReceiver = new AddressResultReceiver(new Handler());
 
@@ -120,7 +134,7 @@ public class DashboardFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 submitPost();
-                clearPost();
+                //clearPost();
             }
         });
         mCameraButton = (ImageButton) rootView.findViewById(R.id.camera_button);
@@ -383,6 +397,8 @@ public class DashboardFragment extends Fragment implements
                             Toast.makeText(getActivity(), "Error: could not fetch user.", Toast.LENGTH_SHORT).show();
                         } else {
                             writeNewPost(userId, content);
+                            dummyStorageTesting();
+                            clearPost();
                         }
                         ((BaseActivity) getActivity()).hideProgressDialog();
                     }
@@ -394,6 +410,39 @@ public class DashboardFragment extends Fragment implements
                     }
 
                 });
+    }
+
+    private void dummyStorageTesting() {
+
+        StorageReference imageRef = mStorage.getReference().child("post1/accident.jpg");
+
+        File directoryPath = new File(getActivity().getFilesDir(), "post");
+        File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
+
+        if(filePath.exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(filePath.getAbsolutePath());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+            UploadTask uploadTask = imageRef.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                    Log.d(TAG, "Upload fail");
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    Log.d(TAG, "donwload Url " + downloadUrl.toString());
+                }
+            });
+
+        }
+
     }
 
     private void writeNewPost(String userId, String message) {
