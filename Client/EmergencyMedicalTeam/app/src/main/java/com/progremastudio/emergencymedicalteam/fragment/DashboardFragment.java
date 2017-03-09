@@ -440,7 +440,8 @@ public class DashboardFragment extends Fragment implements
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
 
-            mLastLocationAddress = resultData.getString(AddressService.Constants.RESULT_DATA_KEY);
+            String address = resultData.getString(AddressService.Constants.RESULT_DATA_KEY);
+            mLastLocationAddress = address.replace("\n", ", ");
             mAddressTextView.setText(mLastLocationAddress);
 
             Log.d(TAG, "Address = " + mLastLocationAddress);

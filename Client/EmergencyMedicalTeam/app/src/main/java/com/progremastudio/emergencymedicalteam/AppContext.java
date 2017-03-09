@@ -12,8 +12,8 @@ public class AppContext {
     private static final String LAST_LOCATION_LATITUDE = "last-location-latitude";
     private static final String LAST_LOCATION_LONGITUDE = "last-location-longitude";
 
-    private static final String DEFAULT_LATITUDE = "27.746974";
-    private static final String DEFAULT_LONGITUDE= "85.301582";
+    private static final String DEFAULT_LATITUDE = "1.1252494";
+    private static final String DEFAULT_LONGITUDE= "104.0668836";
 
     public static void logOutCurrentUser(Context context) {
         storeCurrentUser(context, "", "", "");
