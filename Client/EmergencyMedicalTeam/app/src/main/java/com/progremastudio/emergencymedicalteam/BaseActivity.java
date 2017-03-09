@@ -1,10 +1,11 @@
 package com.progremastudio.emergencymedicalteam;
 
 import android.app.ProgressDialog;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Calendar;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -43,8 +44,14 @@ public class BaseActivity extends AppCompatActivity {
         return FirebaseAuth.getInstance().getCurrentUser().getEmail();
     }
 
-    public Uri getUserPhotoUrl() {
-        return FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+    public String currentTimestamp() {
+        return String.valueOf(Calendar.getInstance().getTimeInMillis());
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        hideProgressDialog();
     }
 
 }

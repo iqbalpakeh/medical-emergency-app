@@ -50,7 +50,6 @@ import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.Post;
 
 import java.io.File;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -273,10 +272,6 @@ public class DashboardFragment extends Fragment implements
         mGoogleMap.addMarker(new MarkerOptions().position(currentLocation).title("TBM APPS User location"));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
 
-        // TODO: to improve camera zoom position
-        mGoogleMap.setMinZoomPreference(14.0f);
-        mGoogleMap.setMaxZoomPreference(22.0f);
-
         mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
@@ -289,8 +284,14 @@ public class DashboardFragment extends Fragment implements
     }
 
     private LatLng fetchCurrentLocation() {
-        // TODO: Map should goes to user current location automatically
-        return new LatLng(1.1252494, 104.0668836);
+
+        String latitude = AppContext.fetchCurrentUserLastLatitudeLocation(getActivity());
+        String longitude = AppContext.fetchCurrentUserLastLongitudeLocation(getActivity());
+
+        Log.d(TAG, "Latitude = " + latitude);
+        Log.d(TAG, "Longitude = " + longitude);
+
+        return new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
     }
 
     @Override
@@ -299,10 +300,9 @@ public class DashboardFragment extends Fragment implements
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
+            // ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
+            // public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             return;
@@ -376,21 +376,14 @@ public class DashboardFragment extends Fragment implements
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get text value
-                        Post post = dataSnapshot.getValue(Post.class);
 
+                        Post post = dataSnapshot.getValue(Post.class);
                         if (post == null) {
-                            // User is null, error out
                             Log.e(TAG, "User " + userId + " is unexpectedly null");
-                            Toast.makeText(getActivity(),
-                                    "Error: could not fetch user.",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Error: could not fetch user.", Toast.LENGTH_SHORT).show();
                         } else {
-                            // Write new post
                             writeNewPost(userId, content);
                         }
-
-                        // Finish this Activity, back to the stream
                         ((BaseActivity) getActivity()).hideProgressDialog();
                     }
 
@@ -399,6 +392,7 @@ public class DashboardFragment extends Fragment implements
                         Log.w(TAG, "getUser:onCancelled", databaseError.toException());
                         ((BaseActivity) getActivity()).hideProgressDialog();
                     }
+
                 });
     }
 
@@ -413,7 +407,7 @@ public class DashboardFragment extends Fragment implements
 
         String displayName = ((BaseActivity) getActivity()).getDisplayName();
         String email = ((BaseActivity) getActivity()).getUserEmail();
-        String timestamp = currentTimestamp();
+        String timestamp = ((BaseActivity) getActivity()).currentTimestamp();
         String locationCoordinate = mLastLocationAddress;
         String pictureUrl = "to be implemented"; //todo: get picture url
         String emergencyType = "Kecelakaan"; // todo: to have list option
@@ -437,21 +431,20 @@ public class DashboardFragment extends Fragment implements
         mDatabase.updateChildren(childUpdates);
     }
 
-    private String currentTimestamp() {
-        return String.valueOf(Calendar.getInstance().getTimeInMillis());
-    }
+    private class AddressResultReceiver extends ResultReceiver {
 
-    class AddressResultReceiver extends ResultReceiver {
-
-        public AddressResultReceiver(Handler handler) {
+        AddressResultReceiver(Handler handler) {
             super(handler);
         }
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
+
             mLastLocationAddress = resultData.getString(AddressService.Constants.RESULT_DATA_KEY);
-            Log.d(TAG, "Address = " + mLastLocationAddress);
             mAddressTextView.setText(mLastLocationAddress);
+
+            Log.d(TAG, "Address = " + mLastLocationAddress);
+
             if (resultCode == AddressService.Constants.SUCCESS_RESULT) {
                 ((BaseActivity) getActivity()).hideProgressDialog();
                 Log.d(TAG, "Address found");
