@@ -59,12 +59,6 @@ public class DashboardFragment extends Fragment implements
 
     private static final String TAG = "dashboard-fragment";
 
-    private static final String ADDRESS_REQUESTED_KEY = "address-request-key";
-
-    private static final String LOCATION_ADDRESS_KEY = "location-address-key";
-
-    private static final String DEFAULT_EMERGENCY_TYPE = "Kecelakaan";
-
     private final int PERMISSION_FINE_LOCATION_REQUEST = 0;
 
     private DatabaseReference mDatabase;
@@ -77,13 +71,9 @@ public class DashboardFragment extends Fragment implements
 
     private AddressResultReceiver mResultReceiver;
 
-    private Location mLastLocation;
+    private Location mLastLocationCoordinate;
 
-    private Boolean mAddressRequested;
-
-    private String mCurrentAddress;
-
-    private String mEmergencyType;
+    private String mLastLocationAddress;
 
     private EditText mEditText;
 
@@ -102,20 +92,30 @@ public class DashboardFragment extends Fragment implements
 
         View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
+        /**
+         * Initial Firebase Real-time DB reference
+         */
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        /**
+         * Initial Google-Map API
+         */
         buildGoogleApiClient();
-        mAddressRequested = false;
-        mCurrentAddress = "";
-        mEmergencyType = DEFAULT_EMERGENCY_TYPE;
-        mResultReceiver = new AddressResultReceiver(new Handler());
-
         mMapView = (MapView) rootView.findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(this);
 
-        mEditText = (EditText) rootView.findViewById(R.id.edit_text);
+        /**
+         * Initial Location Address Service
+         */
+        mResultReceiver = new AddressResultReceiver(new Handler());
 
+        /**
+         * Initialize Widget
+         */
+        mAddressTextView = (TextView) rootView.findViewById(R.id.address_text);
+        mImageView = (ImageView) rootView.findViewById(R.id.image_view);
+        mEditText = (EditText) rootView.findViewById(R.id.edit_text);
         mSubmitButton = (ImageButton) rootView.findViewById(R.id.submit_code);
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +124,6 @@ public class DashboardFragment extends Fragment implements
                 clearPost();
             }
         });
-
         mCameraButton = (ImageButton) rootView.findViewById(R.id.camera_button);
         mCameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,15 +132,10 @@ public class DashboardFragment extends Fragment implements
             }
         });
 
-        mAddressTextView = (TextView) rootView.findViewById(R.id.address_text);
-
-        mImageView = (ImageView) rootView.findViewById(R.id.image_view);
-
+        /**
+         * Show picture taken by user
+         */
         showImageView();
-
-        updateValuesFromBundle(savedInstanceState);
-
-        Log.d(TAG, "Display Name = " + AppContext.fetchCurrentUserDisplayName(getContext()));
 
         return rootView;
     }
@@ -160,14 +154,6 @@ public class DashboardFragment extends Fragment implements
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        Log.d(TAG, "onSaveInstanceState");
-        savedInstanceState.putBoolean(ADDRESS_REQUESTED_KEY, mAddressRequested);
-        savedInstanceState.putString(LOCATION_ADDRESS_KEY, mCurrentAddress);
-        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
@@ -204,15 +190,18 @@ public class DashboardFragment extends Fragment implements
         File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
 
         if (!filePath.exists()) {
+            // Shows nothing if picture is not exist
             return;
         }
 
         try {
-            Bitmap myBitmap = BitmapFactory.decodeFile(filePath.getAbsolutePath());
 
+            Bitmap myBitmap = BitmapFactory.decodeFile(filePath.getAbsolutePath());
             ExifInterface exif = new ExifInterface(filePath.getAbsolutePath());
             int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-            Log.d("EXIF", "Exif: " + orientation);
+
+            Log.d(TAG, "Picture orientation: " + orientation);
+
             Matrix matrix = new Matrix();
             if (orientation == 6) {
                 matrix.postRotate(90);
@@ -222,7 +211,8 @@ public class DashboardFragment extends Fragment implements
                 matrix.postRotate(270);
             }
 
-            myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true); // rotating bitmap
+            // rotating bitmap
+            myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true);
 
             mImageView.setVisibility(View.VISIBLE);
             mImageView.setImageBitmap(myBitmap);
@@ -237,23 +227,10 @@ public class DashboardFragment extends Fragment implements
     }
 
     private void fetchLocationAddress() {
-        if (mGoogleApiClient.isConnected() && mLastLocation != null) {
-            startIntentService();
+        if (mGoogleApiClient.isConnected() && mLastLocationCoordinate != null) {
+            startAddressProviderService();
         }
-        mAddressRequested = true;
         ((BaseActivity) getActivity()).showProgressDialog();
-    }
-
-    private void updateValuesFromBundle(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            if (savedInstanceState.keySet().contains(ADDRESS_REQUESTED_KEY)) {
-                mAddressRequested = savedInstanceState.getBoolean(ADDRESS_REQUESTED_KEY);
-            }
-            if (savedInstanceState.keySet().contains(LOCATION_ADDRESS_KEY)) {
-                mCurrentAddress = savedInstanceState.getString(LOCATION_ADDRESS_KEY);
-                mAddressTextView.setText(mCurrentAddress);
-            }
-        }
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -267,18 +244,16 @@ public class DashboardFragment extends Fragment implements
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG, "Request FINE ACCESS Permission");
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_FINE_LOCATION_REQUEST);
         } else if (mGoogleMap != null) {
-            Log.d(TAG, "setMyLocationEnabled(true)");
             mGoogleMap.setMyLocationEnabled(true);
         }
     }
 
-    protected void startIntentService() {
+    protected void startAddressProviderService() {
         Intent intent = new Intent(getActivity(), AddressService.class);
         intent.putExtra(AddressService.Constants.RECEIVER, mResultReceiver);
-        intent.putExtra(AddressService.Constants.LOCATION_DATA_EXTRA, mLastLocation);
+        intent.putExtra(AddressService.Constants.LOCATION_DATA_EXTRA, mLastLocationCoordinate);
         getActivity().startService(intent);
     }
 
@@ -332,12 +307,13 @@ public class DashboardFragment extends Fragment implements
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        if (mLastLocation != null) {
+        mLastLocationCoordinate = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-            String latitude = String.valueOf(mLastLocation.getLatitude());
-            String longitude = String.valueOf(mLastLocation.getLatitude());
+        if (mLastLocationCoordinate != null) {
+
+            String latitude = String.valueOf(mLastLocationCoordinate.getLatitude());
+            String longitude = String.valueOf(mLastLocationCoordinate.getLatitude());
 
             AppContext.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
             AppContext.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
@@ -350,9 +326,7 @@ public class DashboardFragment extends Fragment implements
                 return;
             }
 
-            if (mAddressRequested) {
-                startIntentService();
-            }
+            startAddressProviderService();
         }
     }
 
@@ -440,9 +414,9 @@ public class DashboardFragment extends Fragment implements
         String displayName = ((BaseActivity) getActivity()).getDisplayName();
         String email = ((BaseActivity) getActivity()).getUserEmail();
         String timestamp = currentTimestamp();
-        String locationCoordinate = mCurrentAddress;
+        String locationCoordinate = mLastLocationAddress;
         String pictureUrl = "to be implemented"; //todo: get picture url
-        String emergencyType = mEmergencyType; // todo: to have list option
+        String emergencyType = "Kecelakaan"; // todo: to have list option
 
         Post post = new Post(
                 userId,
@@ -475,9 +449,9 @@ public class DashboardFragment extends Fragment implements
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            mCurrentAddress = resultData.getString(AddressService.Constants.RESULT_DATA_KEY);
-            Log.d(TAG, "Address = " + mCurrentAddress);
-            mAddressTextView.setText(mCurrentAddress);
+            mLastLocationAddress = resultData.getString(AddressService.Constants.RESULT_DATA_KEY);
+            Log.d(TAG, "Address = " + mLastLocationAddress);
+            mAddressTextView.setText(mLastLocationAddress);
             if (resultCode == AddressService.Constants.SUCCESS_RESULT) {
                 ((BaseActivity) getActivity()).hideProgressDialog();
                 Log.d(TAG, "Address found");

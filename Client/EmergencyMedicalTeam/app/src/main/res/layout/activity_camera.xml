@@ -96,7 +96,8 @@
                 android:layout_toEndOf="@+id/record_size_mb_text"
                 android:layout_toRightOf="@+id/record_size_mb_text"
                 android:checked="false"
-                android:gravity="center" />
+                android:gravity="center"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 

@@ -15,7 +15,9 @@
         <com.google.android.gms.maps.MapView
             android:id="@+id/map"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="350dp"
+            android:background="@drawable/rectangular"
+            android:elevation="4dp"/>
 
         <TextView
             android:id="@+id/address_text"
@@ -37,7 +39,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:adjustViewBounds="true"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
