@@ -70,7 +70,7 @@ public class PostFragment extends Fragment {
                 Log.d(TAG, "populateViewHolder: post.pictureUrl = " + post.pictureUrl);
                 Log.d(TAG, "populateViewHolder: post.emergencyType = " + post.emergencyType);
 
-                viewHolder.bindToPost(post, new View.OnClickListener() {
+                viewHolder.bindToPost(getContext(), post, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(getActivity(), "To be implemented...",
