@@ -1,5 +1,6 @@
 package com.progremastudio.emergencymedicalteam.viewholder;
 
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -33,6 +34,27 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         mTimestampField.setText(post.timestamp);
         mEmergencyTypeField.setText(post.emergencyType);
         mPictureUrlField.setText(post.pictureUrl);
+    }
+
+    private class ThumbnailTasks extends AsyncTask {
+
+        private PostViewHolder mHolder;
+        private String mUrl;
+
+        public ThumbnailTasks(PostViewHolder holder, String url) {
+            mHolder = holder;
+            mUrl = url;
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+        }
     }
 
 }
