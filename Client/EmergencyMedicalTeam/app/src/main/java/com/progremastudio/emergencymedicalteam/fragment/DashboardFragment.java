@@ -393,13 +393,15 @@ public class DashboardFragment extends Fragment implements
 
                         Post post = dataSnapshot.getValue(Post.class);
                         if (post == null) {
+
                             Log.e(TAG, "User " + userId + " is unexpectedly null");
                             Toast.makeText(getActivity(), "Error: could not fetch user.", Toast.LENGTH_SHORT).show();
+
                         } else {
-                            writeNewPost(userId, content);
-                            dummyStorageTesting();
+                            uploadPost(userId, content);
                             clearPost();
                         }
+
                         ((BaseActivity) getActivity()).hideProgressDialog();
                     }
 
@@ -412,53 +414,58 @@ public class DashboardFragment extends Fragment implements
                 });
     }
 
-    private void dummyStorageTesting() {
+    private void uploadPost(final String userId, final String message) {
 
-        StorageReference imageRef = mStorage.getReference().child("post1/accident.jpg");
+        final String key = mDatabase.child("posts").push().getKey();
+
+        StorageReference pictureReference = mStorage.getReference().child("post").child(key).child("accident.jpg");
 
         File directoryPath = new File(getActivity().getFilesDir(), "post");
         File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
 
         if(filePath.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(filePath.getAbsolutePath());
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] data = baos.toByteArray();
 
-            UploadTask uploadTask = imageRef.putBytes(data);
+            Bitmap bitmap = BitmapFactory.decodeFile(filePath.getAbsolutePath());
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] data = stream.toByteArray();
+
+            UploadTask uploadTask = pictureReference.putBytes(data);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle unsuccessful uploads
                     Log.d(TAG, "Upload fail");
                 }
+
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     Log.d(TAG, "donwload Url " + downloadUrl.toString());
+
+                    writeNewPost(userId, message, downloadUrl.toString(), key);
+
                 }
             });
+
+        } else {
+
+            writeNewPost(userId, message, "No Picture", key);
 
         }
 
     }
 
-    private void writeNewPost(String userId, String message) {
-
-        /**
-         * Create new post at /user-posts/$userid/$postid and
-         * at /posts/$postid simultaneously
-         */
-
-        String key = mDatabase.child("posts").push().getKey();
+    private void writeNewPost(String userId, String message, String downloadUrl, String key) {
 
         String displayName = ((BaseActivity) getActivity()).getDisplayName();
         String email = ((BaseActivity) getActivity()).getUserEmail();
         String timestamp = ((BaseActivity) getActivity()).currentTimestamp();
         String locationCoordinate = mLastLocationAddress;
-        String pictureUrl = "to be implemented"; //todo: get picture url
+        String pictureUrl = downloadUrl;
         String emergencyType = "Kecelakaan"; // todo: to have list option
 
         Post post = new Post(
