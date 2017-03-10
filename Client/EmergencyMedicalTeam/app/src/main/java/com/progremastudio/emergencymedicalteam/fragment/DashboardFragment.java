@@ -106,7 +106,7 @@ public class DashboardFragment extends Fragment implements
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         /**
-         * Initialize FIrebase Storage reference
+         * Initialize Firebase Storage reference
          */
         mStorage = FirebaseStorage.getInstance();
 
@@ -134,7 +134,6 @@ public class DashboardFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 submitPost();
-                //clearPost();
             }
         });
         mCameraButton = (ImageButton) rootView.findViewById(R.id.camera_button);
@@ -398,8 +397,10 @@ public class DashboardFragment extends Fragment implements
                             Toast.makeText(getActivity(), "Error: could not fetch user.", Toast.LENGTH_SHORT).show();
 
                         } else {
+                            /**
+                             * Upload Post to Firebase and sync with other user
+                             */
                             uploadPost(userId, content);
-                            clearPost();
                         }
 
                         ((BaseActivity) getActivity()).hideProgressDialog();
@@ -485,6 +486,8 @@ public class DashboardFragment extends Fragment implements
         childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
 
         mDatabase.updateChildren(childUpdates);
+
+        clearPost();
     }
 
     private class AddressResultReceiver extends ResultReceiver {

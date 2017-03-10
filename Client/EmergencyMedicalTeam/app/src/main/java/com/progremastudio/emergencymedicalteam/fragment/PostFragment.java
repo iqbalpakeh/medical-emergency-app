@@ -21,7 +21,7 @@ import com.progremastudio.emergencymedicalteam.viewholder.PostViewHolder;
 
 public class PostFragment extends Fragment {
 
-    private static final String TAG = "PostFragment";
+    private static final String TAG = "post-fragment";
 
     private DatabaseReference mDatabase;
 
