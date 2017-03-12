@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.progremastudio.emergencymedicalteam.fragment.ContactFragment;
+import com.progremastudio.emergencymedicalteam.fragment.ChatFragment;
 import com.progremastudio.emergencymedicalteam.fragment.DashboardFragment;
 import com.progremastudio.emergencymedicalteam.fragment.PostFragment;
 
@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity {
             private final Fragment[] mFragments = new Fragment[] {
                     new DashboardFragment(),
                     new PostFragment(),
-                    new ContactFragment(),
+                    new ChatFragment(),
             };
             private final String[] mFragmentNames = new String[] {
                     getString(R.string.heading_dashboard),

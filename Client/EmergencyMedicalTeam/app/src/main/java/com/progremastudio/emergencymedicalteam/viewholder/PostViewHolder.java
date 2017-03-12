@@ -1,5 +1,6 @@
 package com.progremastudio.emergencymedicalteam.viewholder;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -34,16 +35,36 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         mTimestampField = (TextView) itemView.findViewById(R.id.timestamp_field);
         mEmergencyTypeField = (TextView) itemView.findViewById(R.id.emergency_type_field);
         mPictureField = (ImageView) itemView.findViewById(R.id.picture_field);
+
     }
 
+    @SuppressLint("SetTextI18n")
     public void bindToPost(Context context, Post post, View.OnClickListener clickListener) {
 
+        /**
+         * Show user diplay name
+         */
         mNameField.setText(post.displayName);
+
+        /**
+         * Show user post message
+         */
         mMessageField.setText(post.message);
-        mAddressField.setText(post.locationCoordinate);
+
+        /**
+         * Show user location address
+         */
+        mAddressField.setText("@" + post.locationCoordinate);
+
+        /**
+         * Show relative time span
+         */
         mTimestampField.setText("- " + DateUtils.getRelativeTimeSpanString(Long.parseLong(post.timestamp)));
-        mEmergencyTypeField.setText(post.emergencyType);
-        mPictureField.setVisibility(View.GONE);
+
+        /**
+         * Show emergency type
+         */
+        mEmergencyTypeField.setText("#" + post.emergencyType);
 
         /**
          * Show picture if exist
@@ -55,6 +76,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
                     .using(new FirebaseImageLoader())
                     .load(storageReference)
                     .into(mPictureField);
+        } else {
+            mPictureField.setVisibility(View.GONE);
         }
 
     }

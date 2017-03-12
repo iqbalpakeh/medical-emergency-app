@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.progremastudio.emergencymedicalteam.R;
 
-public class ContactFragment extends Fragment {
+public class ChatFragment extends Fragment {
 
     @Nullable
     @Override
