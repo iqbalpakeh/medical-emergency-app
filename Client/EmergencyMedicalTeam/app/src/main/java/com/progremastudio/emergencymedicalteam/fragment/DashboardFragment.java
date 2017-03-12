@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -67,6 +68,8 @@ public class DashboardFragment extends Fragment implements
 
     private final int PERMISSION_FINE_LOCATION_REQUEST = 0;
 
+    private final int PERMISSION_CALL_PHONE = 1;
+
     private DatabaseReference mDatabase;
 
     private FirebaseStorage mStorage;
@@ -88,6 +91,8 @@ public class DashboardFragment extends Fragment implements
     private ImageButton mSubmitButton;
 
     private ImageButton mCameraButton;
+
+    private Button mAmbulanceButton;
 
     private ImageView mImageView;
 
@@ -141,6 +146,13 @@ public class DashboardFragment extends Fragment implements
             @Override
             public void onClick(View view) {
                 openCamera();
+            }
+        });
+        mAmbulanceButton = (Button) rootView.findViewById(R.id.call_ambulance_button);
+        mAmbulanceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callAmbulance();
             }
         });
 
@@ -236,6 +248,27 @@ public class DashboardFragment extends Fragment implements
 
     private void openCamera() {
         startActivity(new Intent(getContext(), CameraActivity.class));
+    }
+
+    private void callAmbulance() {
+        if(!checkCallAccess()) {
+            Log.d(TAG, "No access to phone call");
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        // TODO: Get ambulance phone number
+        intent.setData(Uri.parse("tel:" + "081321850963"));
+        getContext().startActivity(intent);
+    }
+
+    private boolean checkCallAccess() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, PERMISSION_CALL_PHONE);
+            return false;
+        } else  {
+            return true;
+        }
     }
 
     private void fetchLocationAddress() {
@@ -467,7 +500,7 @@ public class DashboardFragment extends Fragment implements
         String timestamp = ((BaseActivity) getActivity()).currentTimestamp();
         String locationCoordinate = mLastLocationAddress;
         String pictureUrl = downloadUrl;
-        String emergencyType = "#Kecelakaan"; // todo: to have list option
+        String emergencyType = "Kecelakaan"; // todo: to have list option
 
         Post post = new Post(
                 userId,
