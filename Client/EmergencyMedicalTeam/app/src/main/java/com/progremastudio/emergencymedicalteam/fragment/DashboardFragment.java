@@ -86,7 +86,7 @@ public class DashboardFragment extends Fragment implements
 
     private String mLastLocationAddress;
 
-    private EditText mEditText;
+    private EditText mMessageEditText;
 
     private ImageButton mSubmitButton;
 
@@ -105,35 +105,35 @@ public class DashboardFragment extends Fragment implements
 
         View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        /**
-         * Initialize Firebase Real-time DB reference
+        /*
+        Initialize Firebase Real-time DB reference
          */
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        /**
-         * Initialize Firebase Storage reference
+        /*
+        Initialize Firebase Storage reference
          */
         mStorage = FirebaseStorage.getInstance();
 
-        /**
-         * Initialize Google-Map API
+        /*
+        Initialize Google-Map API
          */
         buildGoogleApiClient();
         mMapView = (MapView) rootView.findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(this);
 
-        /**
-         * Initialize Location Address Service
+        /*
+        Initialize Location Address Service
          */
         mResultReceiver = new AddressResultReceiver(new Handler());
 
-        /**
-         * Initialize Widget
+        /*
+        Initialize Widget
          */
         mAddressTextView = (TextView) rootView.findViewById(R.id.address_text);
         mImageView = (ImageView) rootView.findViewById(R.id.image_view);
-        mEditText = (EditText) rootView.findViewById(R.id.edit_text);
+        mMessageEditText = (EditText) rootView.findViewById(R.id.edit_text);
         mSubmitButton = (ImageButton) rootView.findViewById(R.id.submit_code);
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,8 +156,8 @@ public class DashboardFragment extends Fragment implements
             }
         });
 
-        /**
-         * Show picture taken by user
+        /*
+        Show picture taken by user
          */
         showImageView();
 
@@ -208,24 +208,38 @@ public class DashboardFragment extends Fragment implements
         mMapView.onLowMemory();
     }
 
+    /**
+     * Show image taken by user. This picture will be posted if User press sending post button
+     */
     private void showImageView() {
 
+        /*
+        Get access to picture file
+         */
         File directoryPath = new File(getActivity().getFilesDir(), "post");
         File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
 
+        /*
+        Shows nothing if picture is not exist
+         */
         if (!filePath.exists()) {
-            // Shows nothing if picture is not exist
             return;
         }
 
         try {
 
+            /*
+            Get picture bitmap
+             */
             Bitmap myBitmap = BitmapFactory.decodeFile(filePath.getAbsolutePath());
             ExifInterface exif = new ExifInterface(filePath.getAbsolutePath());
             int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
 
             Log.d(TAG, "Picture orientation: " + orientation);
 
+            /*
+            Prepare the matrix for bitmap rotation
+             */
             Matrix matrix = new Matrix();
             if (orientation == 6) {
                 matrix.postRotate(90);
@@ -235,9 +249,14 @@ public class DashboardFragment extends Fragment implements
                 matrix.postRotate(270);
             }
 
-            // rotating bitmap
+            /*
+            Rotate the bitmap
+             */
             myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true);
 
+            /*
+            Present the picture
+             */
             mImageView.setVisibility(View.VISIBLE);
             mImageView.setImageBitmap(myBitmap);
 
@@ -246,18 +265,34 @@ public class DashboardFragment extends Fragment implements
         }
     }
 
+    /**
+     * Open Camera Activity after User click Open Camera button
+     */
     private void openCamera() {
         startActivity(new Intent(getContext(), CameraActivity.class));
     }
 
+    /**
+     * Call Ambulance after User click Call Ambulance button
+     */
     private void callAmbulance() {
+        /*
+        Check Call permission access
+         */
         if(!checkCallAccess()) {
             Log.d(TAG, "No access to phone call");
             return;
         }
+
+        /*
+        Make a phone call to predefined ambulance if permission is granted
+         */
+        makePhoneCall();
+    }
+
+    private void makePhoneCall() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        // TODO: Get ambulance phone number
-        intent.setData(Uri.parse("tel:" + "081321850963"));
+        intent.setData(Uri.parse("tel:" + getString(R.string.Ambulance_Phone_Number)));
         getContext().startActivity(intent);
     }
 
@@ -274,8 +309,9 @@ public class DashboardFragment extends Fragment implements
     private void fetchLocationAddress() {
 
         if (mGoogleApiClient.isConnected() && mLastLocationCoordinate != null) {
-            /**
-             * Save current address
+
+            /*
+            Start to show progress dialog
              */
             String latitude = String.valueOf(mLastLocationCoordinate.getLatitude());
             String longitude = String.valueOf(mLastLocationCoordinate.getLongitude());
@@ -286,14 +322,14 @@ public class DashboardFragment extends Fragment implements
             AppContext.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
             AppContext.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
 
-            /**
-             * Start address provider service
+            /*
+            Start to show progress dialog
              */
             startAddressProviderService();
         }
 
-        /**
-         * Start showing progress dialog
+        /*
+        Start to show progress dialog
          */
         ((BaseActivity) getActivity()).showProgressDialog();
     }
@@ -324,10 +360,19 @@ public class DashboardFragment extends Fragment implements
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode != PERMISSION_FINE_LOCATION_REQUEST) {
-            return;
+        /*
+        Continue enable My Location feature after User give permission
+         */
+        if (requestCode == PERMISSION_FINE_LOCATION_REQUEST) {
+            enableMyLocation();
         }
-        enableMyLocation();
+
+        /*
+        Continue making a phone call after User give permission
+         */
+        if (requestCode == PERMISSION_CALL_PHONE) {
+            makePhoneCall();
+        }
     }
 
     @Override
@@ -367,12 +412,6 @@ public class DashboardFragment extends Fragment implements
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            // ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            // public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
 
@@ -400,15 +439,15 @@ public class DashboardFragment extends Fragment implements
         Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
     }
 
+    /**
+     * Clear post details after sending message
+     */
     private void clearPost() {
 
-        // clear location
         mAddressTextView.setText("");
 
-        // clear message
-        mEditText.getText().clear();
+        mMessageEditText.getText().clear();
 
-        // clear image
         File directoryPath = new File(getActivity().getFilesDir(), "post");
         File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
         if (filePath.exists()) {
@@ -420,10 +459,10 @@ public class DashboardFragment extends Fragment implements
 
     private void submitPost() {
 
-        final String content = mEditText.getText().toString();
+        final String content = mMessageEditText.getText().toString();
 
         if (TextUtils.isEmpty(content)) {
-            mEditText.setError("Required");
+            mMessageEditText.setError("Required");
             return;
         }
 
