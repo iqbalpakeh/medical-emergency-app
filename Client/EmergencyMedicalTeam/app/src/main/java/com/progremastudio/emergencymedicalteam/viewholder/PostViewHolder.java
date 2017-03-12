@@ -26,7 +26,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     private TextView mEmergencyTypeField;
     private ImageView mPictureField;
 
-    PostViewHolder(View itemView) {
+    public PostViewHolder(View itemView) {
         super(itemView);
 
         mNameField = (TextView) itemView.findViewById(R.id.display_name_field);
