@@ -2,6 +2,7 @@ package com.progremastudio.emergencymedicalteam.viewholder;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,15 +41,16 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         mNameField.setText(post.displayName);
         mMessageField.setText(post.message);
         mAddressField.setText(post.locationCoordinate);
-        mTimestampField.setText(post.timestamp);
+        mTimestampField.setText("- " + DateUtils.getRelativeTimeSpanString(Long.parseLong(post.timestamp)));
         mEmergencyTypeField.setText(post.emergencyType);
+        mPictureField.setVisibility(View.GONE);
 
+        /**
+         * Show picture if exist
+         */
         if (!post.pictureUrl.equals("No Picture")) {
-
             mPictureField.setVisibility(View.VISIBLE);
-
             StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(post.pictureUrl);
-
             Glide.with(context)
                     .using(new FirebaseImageLoader())
                     .load(storageReference)

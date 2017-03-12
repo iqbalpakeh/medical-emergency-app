@@ -467,7 +467,7 @@ public class DashboardFragment extends Fragment implements
         String timestamp = ((BaseActivity) getActivity()).currentTimestamp();
         String locationCoordinate = mLastLocationAddress;
         String pictureUrl = downloadUrl;
-        String emergencyType = "Kecelakaan"; // todo: to have list option
+        String emergencyType = "#Kecelakaan"; // todo: to have list option
 
         Post post = new Post(
                 userId,

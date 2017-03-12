@@ -16,7 +16,7 @@ public class BaseActivity extends AppCompatActivity {
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setCancelable(false);
+            mProgressDialog.setCancelable(true);
             mProgressDialog.setMessage("Loading...");
         }
         mProgressDialog.show();
@@ -46,12 +46,6 @@ public class BaseActivity extends AppCompatActivity {
 
     public String currentTimestamp() {
         return String.valueOf(Calendar.getInstance().getTimeInMillis());
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        hideProgressDialog();
     }
 
 }
