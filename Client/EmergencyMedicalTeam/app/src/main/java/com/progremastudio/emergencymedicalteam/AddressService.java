@@ -35,6 +35,9 @@ public class AddressService extends IntentService {
         // Get the location passed to this service through an extra.
         Location location = intent.getParcelableExtra(Constants.LOCATION_DATA_EXTRA);
 
+        Log.d(TAG, String.valueOf(location.getLatitude()));
+        Log.d(TAG, String.valueOf(location.getLongitude()));
+
         List<Address> addresses = null;
 
         try {

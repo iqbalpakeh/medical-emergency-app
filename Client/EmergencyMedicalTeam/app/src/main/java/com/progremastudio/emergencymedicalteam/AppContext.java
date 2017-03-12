@@ -12,8 +12,8 @@ public class AppContext {
     private static final String LAST_LOCATION_LATITUDE = "last-location-latitude";
     private static final String LAST_LOCATION_LONGITUDE = "last-location-longitude";
 
-    private static final String DEFAULT_LATITUDE = "1.1252494";
-    private static final String DEFAULT_LONGITUDE= "104.0668836";
+    private static final String DEFAULT_LATITUDE = "3.58333";
+    private static final String DEFAULT_LONGITUDE= "98.66667";
 
     public static void logOutCurrentUser(Context context) {
         storeCurrentUser(context, "", "", "");
@@ -77,10 +77,10 @@ public class AppContext {
         return appContext.getString(LAST_LOCATION_LATITUDE, DEFAULT_LATITUDE);
     }
 
-    public static void storeCurrentUserLastLongitudeLocation(Context context, String latitude) {
+    public static void storeCurrentUserLastLongitudeLocation(Context context, String longitude) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         SharedPreferences.Editor editor = appContext.edit();
-        editor.putString(LAST_LOCATION_LONGITUDE, latitude);
+        editor.putString(LAST_LOCATION_LONGITUDE, longitude);
         editor.commit();
     }
 

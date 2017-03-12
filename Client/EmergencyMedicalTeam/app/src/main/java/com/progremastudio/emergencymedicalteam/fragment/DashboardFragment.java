@@ -272,9 +272,29 @@ public class DashboardFragment extends Fragment implements
     }
 
     private void fetchLocationAddress() {
+
         if (mGoogleApiClient.isConnected() && mLastLocationCoordinate != null) {
+            /**
+             * Save current address
+             */
+            String latitude = String.valueOf(mLastLocationCoordinate.getLatitude());
+            String longitude = String.valueOf(mLastLocationCoordinate.getLongitude());
+
+            Log.d(TAG, "Latitude = " + latitude);
+            Log.d(TAG, "Longitude = " + longitude);
+
+            AppContext.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
+            AppContext.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
+
+            /**
+             * Start address provider service
+             */
             startAddressProviderService();
         }
+
+        /**
+         * Start showing progress dialog
+         */
         ((BaseActivity) getActivity()).showProgressDialog();
     }
 
@@ -314,10 +334,12 @@ public class DashboardFragment extends Fragment implements
     public void onMapReady(GoogleMap googleMap) {
 
         LatLng currentLocation = fetchCurrentLocation();
+
         mGoogleMap = googleMap;
         mGoogleMap.addMarker(new MarkerOptions().position(currentLocation).title("TBM APPS User location"));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-
+        mGoogleMap.setMinZoomPreference(14.0f);
+        mGoogleMap.setMaxZoomPreference(15.0f);
         mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
@@ -357,15 +379,6 @@ public class DashboardFragment extends Fragment implements
         mLastLocationCoordinate = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         if (mLastLocationCoordinate != null) {
-
-            String latitude = String.valueOf(mLastLocationCoordinate.getLatitude());
-            String longitude = String.valueOf(mLastLocationCoordinate.getLatitude());
-
-            AppContext.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
-            AppContext.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
-
-            Log.d(TAG, "Latitude = " + latitude);
-            Log.d(TAG, "Longitude = " + longitude);
 
             if (!Geocoder.isPresent()) {
                 Toast.makeText(getActivity(), "No Geocoder available", Toast.LENGTH_LONG).show();
