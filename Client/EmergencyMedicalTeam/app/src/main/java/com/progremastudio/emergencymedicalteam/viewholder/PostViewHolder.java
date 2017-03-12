@@ -27,6 +27,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     private ImageView mPictureField;
 
     public PostViewHolder(View itemView) {
+
         super(itemView);
 
         mNameField = (TextView) itemView.findViewById(R.id.display_name_field);
@@ -35,14 +36,13 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         mTimestampField = (TextView) itemView.findViewById(R.id.timestamp_field);
         mEmergencyTypeField = (TextView) itemView.findViewById(R.id.emergency_type_field);
         mPictureField = (ImageView) itemView.findViewById(R.id.picture_field);
-
     }
 
     @SuppressLint("SetTextI18n")
     public void bindToPost(Context context, Post post, View.OnClickListener clickListener) {
 
         /**
-         * Show user diplay name
+         * Show user display name
          */
         mNameField.setText(post.displayName);
 

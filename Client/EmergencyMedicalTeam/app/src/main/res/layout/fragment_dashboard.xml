@@ -9,28 +9,28 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="bottom">
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/map"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             android:background="@drawable/rectangular"
-            android:elevation="4dp"/>
+            android:elevation="4dp" />
 
         <TextView
             android:id="@+id/address_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Lokasi sekarang..."
+            android:hint="@string/str_Current_location"
             android:padding="8dp"
             android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ImageView
@@ -40,7 +40,7 @@
                 android:layout_gravity="center_horizontal"
                 android:adjustViewBounds="true"
                 android:padding="8dp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
-                    android:hint="Berita singkat"
+                    android:hint="@string/str_Short_story"
                     android:textColor="@color/text_primary_dark"
                     android:textColorHint="@color/text_secondary_dark" />
 
@@ -80,7 +80,8 @@
                     android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
-                    android:background="@drawable/button_background"
+                    android:background="@android:color/white"
+                    android:elevation="4dp"
                     android:src="@drawable/ic_add_a_photo_black_24dp" />
 
                 <ImageButton
@@ -89,23 +90,24 @@
                     android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
-                    android:background="@drawable/button_background"
-                    android:src="@drawable/ic_send_black_24dp"
-                    android:text="Unggah Berita" />
+                    android:elevation="4dp"
+                    android:background="@android:color/white"
+                    android:src="@drawable/ic_send_black_24dp" />
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/call_ambulance_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="8dp"
-                android:background="@android:color/holo_red_light"
-                android:text="Telepon Ambulans"
-                android:textColor="@color/text_primary_white"/>
-
         </LinearLayout>
+
+        <Button
+            android:id="@+id/call_ambulance_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:background="@color/colorAccent"
+            android:elevation="4dp"
+            android:text="@string/str_Call_for_help"
+            android:textColor="@color/text_primary_white" />
 
     </LinearLayout>
 

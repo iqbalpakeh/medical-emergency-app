@@ -4,6 +4,10 @@
     <string name="menu_logut">Keluar</string>
     <string name="heading_dashboard">Dashboard</string>
     <string name="heading_post">Post</string>
-    <string name="heading_contact">Contact</string>
+    <string name="heading_chat">Chat</string>
+
+    <string name="str_Current_location">Lokasi sekarang...</string>
+    <string name="str_Short_story">Berita singkat</string>
+    <string name="str_Call_for_help">Panggil Bantuan</string>
 
 </resources>

@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
             private final String[] mFragmentNames = new String[] {
                     getString(R.string.heading_dashboard),
                     getString(R.string.heading_post),
-                    getString(R.string.heading_contact)
+                    getString(R.string.heading_chat)
             };
             @Override
             public Fragment getItem(int position) {
