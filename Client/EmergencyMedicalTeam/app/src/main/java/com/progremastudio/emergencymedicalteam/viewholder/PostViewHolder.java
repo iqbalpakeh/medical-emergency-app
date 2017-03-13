@@ -2,6 +2,7 @@ package com.progremastudio.emergencymedicalteam.viewholder;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.View;
@@ -24,6 +25,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     private TextView mAddressField;
     private TextView mTimestampField;
     private TextView mEmergencyTypeField;
+    private TextView mEmailField;
+    private TextView mPhoneField;
     private ImageView mPictureField;
 
     public PostViewHolder(View itemView) {
@@ -36,38 +39,52 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         mTimestampField = (TextView) itemView.findViewById(R.id.timestamp_field);
         mEmergencyTypeField = (TextView) itemView.findViewById(R.id.emergency_type_field);
         mPictureField = (ImageView) itemView.findViewById(R.id.picture_field);
+        mEmailField = (TextView) itemView.findViewById(R.id.email_field);
+        mPhoneField = (TextView) itemView.findViewById(R.id.phone_field);
     }
 
     @SuppressLint("SetTextI18n")
     public void bindToPost(Context context, Post post, View.OnClickListener clickListener) {
 
-        /**
-         * Show user display name
+        /*
+        Show user display name
          */
         mNameField.setText(post.displayName);
 
-        /**
-         * Show user post message
+        /*
+        Show user post message
          */
         mMessageField.setText(post.message);
 
-        /**
-         * Show user location address
+        /*
+        Show user location address
          */
         mAddressField.setText("@" + post.locationCoordinate);
 
-        /**
-         * Show relative time span
+        /*
+        Show relative time span
          */
         mTimestampField.setText("- " + DateUtils.getRelativeTimeSpanString(Long.parseLong(post.timestamp)));
 
-        /**
-         * Show emergency type
+        /*
+        Show User phone number
+         */
+        mPhoneField.setText(post.phoneNumber);
+        mPhoneField.setPaintFlags(mPhoneField.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        /*
+        Show User email
+         */
+        mEmailField.setText(post.email);
+        mEmailField.setPaintFlags(mEmailField.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        /*
+        Show emergency type
          */
         mEmergencyTypeField.setText("#" + post.emergencyType);
 
-        /**
-         * Show picture if exist
+        /*
+        Show picture if exist
          */
         if (!post.pictureUrl.equals("No Picture")) {
             mPictureField.setVisibility(View.VISIBLE);

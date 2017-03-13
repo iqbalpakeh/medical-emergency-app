@@ -551,8 +551,8 @@ public class DashboardFragment extends Fragment implements
         String email = ((BaseActivity) getActivity()).getUserEmail();
         String timestamp = ((BaseActivity) getActivity()).currentTimestamp();
         String locationCoordinate = mLastLocationAddress;
-        String pictureUrl = downloadUrl;
         String emergencyType = "Kecelakaan"; // todo: to have list option
+        String phoneNumber = AppContext.fetchCurrentUserPhoneNumber(getContext());
 
         Post post = new Post(
                 userId,
@@ -561,8 +561,9 @@ public class DashboardFragment extends Fragment implements
                 timestamp,
                 locationCoordinate,
                 message,
-                pictureUrl,
-                emergencyType);
+                downloadUrl,
+                emergencyType,
+                phoneNumber);
 
         Map<String, Object> postValues = post.toMap();
         Map<String, Object> childUpdates = new HashMap<>();

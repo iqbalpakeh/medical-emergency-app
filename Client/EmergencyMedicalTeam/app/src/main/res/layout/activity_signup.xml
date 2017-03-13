@@ -90,7 +90,7 @@
                 android:textColorHint="@color/text_secondary_white"/>
 
             <EditText
-                android:id="@+id/phone_number_field"
+                android:id="@+id/phone_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

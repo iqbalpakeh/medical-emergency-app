@@ -17,6 +17,7 @@ public class Post {
     public String message;
     public String pictureUrl;
     public String emergencyType;
+    public String phoneNumber;
 
     public Post(){
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -29,7 +30,8 @@ public class Post {
                 String locationCoordinate,
                 String message,
                 String pictureUrl,
-                String emergencyType) {
+                String emergencyType,
+                String phoneNumber) {
 
         this.uid = uid;
         this.displayName = displayName;
@@ -39,6 +41,7 @@ public class Post {
         this.message = message;
         this.pictureUrl = pictureUrl;
         this.emergencyType = emergencyType;
+        this.phoneNumber = phoneNumber;
     }
 
     @Exclude
@@ -52,6 +55,7 @@ public class Post {
         result.put("message", message);
         result.put("pictureUrl", pictureUrl);
         result.put("emergencyType", emergencyType);
+        result.put("phoneNumber", phoneNumber);
         return result;
     }
 

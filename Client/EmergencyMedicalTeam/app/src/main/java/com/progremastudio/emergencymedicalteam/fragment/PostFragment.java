@@ -69,6 +69,7 @@ public class PostFragment extends Fragment {
                 Log.d(TAG, "populateViewHolder: post.message = " + post.message);
                 Log.d(TAG, "populateViewHolder: post.pictureUrl = " + post.pictureUrl);
                 Log.d(TAG, "populateViewHolder: post.emergencyType = " + post.emergencyType);
+                Log.d(TAG, "populateViewHolder: post.phoneNumber = " + post.phoneNumber);
 
                 viewHolder.bindToPost(getContext(), post, new View.OnClickListener() {
                     @Override
