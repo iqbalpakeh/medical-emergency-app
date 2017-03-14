@@ -55,6 +55,7 @@ import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.CameraActivity;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.Post;
+import com.progremastudio.emergencymedicalteam.models.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -311,7 +312,7 @@ public class DashboardFragment extends Fragment implements
         if (mGoogleApiClient.isConnected() && mLastLocationCoordinate != null) {
 
             /*
-            Start to show progress dialog
+            Save current location coordinate for next request
              */
             String latitude = String.valueOf(mLastLocationCoordinate.getLatitude());
             String longitude = String.valueOf(mLastLocationCoordinate.getLongitude());
@@ -323,7 +324,7 @@ public class DashboardFragment extends Fragment implements
             AppContext.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
 
             /*
-            Start to show progress dialog
+            Start Address Provider service
              */
             startAddressProviderService();
         }
@@ -396,6 +397,11 @@ public class DashboardFragment extends Fragment implements
         enableMyLocation();
     }
 
+    /**
+     * Fetch user address. Default value is Medan City, next request value return user last address
+     *
+     * @return location coordinate
+     */
     private LatLng fetchCurrentLocation() {
 
         String latitude = AppContext.fetchCurrentUserLastLatitudeLocation(getActivity());
@@ -409,34 +415,40 @@ public class DashboardFragment extends Fragment implements
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
+        /*
+        Check location permission
+         */
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
+        /*
+        Fetch location coordinate from Google Map Api
+         */
         mLastLocationCoordinate = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
+        /*
+        Start address provider service if location coordinate returned by Google Map Api
+         */
         if (mLastLocationCoordinate != null) {
-
             if (!Geocoder.isPresent()) {
-                Toast.makeText(getActivity(), "No Geocoder available", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.str_No_Geocoder_available), Toast.LENGTH_LONG).show();
                 return;
             }
-
             startAddressProviderService();
         }
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.i(TAG, "Connection suspended");
+        Log.i(TAG, getString(R.string.str_Connection_suspended));
         mGoogleApiClient.connect();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult result) {
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
+        Log.i(TAG, getString(R.string.str_Connection_failed) + result.getErrorCode());
     }
 
     /**
@@ -444,10 +456,19 @@ public class DashboardFragment extends Fragment implements
      */
     private void clearPost() {
 
+        /*
+        Clear address text
+         */
         mAddressTextView.setText("");
 
+        /*
+        Clear message text
+         */
         mMessageEditText.getText().clear();
 
+        /*
+        Show picture if image is exist
+         */
         File directoryPath = new File(getActivity().getFilesDir(), "post");
         File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
         if (filePath.exists()) {
@@ -457,37 +478,59 @@ public class DashboardFragment extends Fragment implements
 
     }
 
+    /**
+     * Submit Post to Firebase. Picture taken by user is sent to Firebase-Storage and remaining
+     * details is sent to Firebase-RealtimeDb.
+     */
     private void submitPost() {
 
+        /*
+        Get user message and check as it's required field
+         */
         final String content = mMessageEditText.getText().toString();
-
         if (TextUtils.isEmpty(content)) {
             mMessageEditText.setError("Required");
             return;
         }
 
-        Toast.makeText(getActivity(), "Posting...", Toast.LENGTH_SHORT).show();
+        /*
+        Shows posting message to user and progress bar
+         */
+        Toast.makeText(getActivity(), getString(R.string.str_Posting), Toast.LENGTH_SHORT).show();
         ((BaseActivity) getActivity()).showProgressDialog();
 
+        /*
+        Listen for data change under users path and submit the post
+         */
         final String userId = ((BaseActivity) getActivity()).getUid();
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        Post post = dataSnapshot.getValue(Post.class);
-                        if (post == null) {
+                        /*
+                        Get User object from datasnapshot
+                         */
+                        User user = dataSnapshot.getValue(User.class);
 
+                        if (user == null) {
+                            /*
+                            Show error log if User is unexpectedly NULL
+                             */
                             Log.e(TAG, "User " + userId + " is unexpectedly null");
                             Toast.makeText(getActivity(), "Error: could not fetch user.", Toast.LENGTH_SHORT).show();
 
                         } else {
-                            /**
-                             * Upload Post to Firebase and sync with other user
+                            /*
+                            Upload Post to Firebase and sync with other user
                              */
+                            Log.d(TAG, "User:" + user.toString());
                             uploadPost(userId, content);
                         }
 
+                        /*
+                        Hide progress bar
+                         */
                         ((BaseActivity) getActivity()).hideProgressDialog();
                     }
 
@@ -500,53 +543,97 @@ public class DashboardFragment extends Fragment implements
                 });
     }
 
+    /**
+     * One of the main code portion to load the message. This method loads the image taken by user,
+     * and if it's success, code continue to load remaining details and use download url generated
+     * by Firebase
+     *
+     * @param userId userId of current posting action
+     * @param message message to show at post fragment
+     */
     private void uploadPost(final String userId, final String message) {
 
+        /*
+        Generate random key for addressing every new post
+         */
         final String key = mDatabase.child("posts").push().getKey();
 
+        /*
+        Create storage reference used by Firebase
+         */
         StorageReference pictureReference = mStorage.getReference().child("post").child(key).child("accident.jpg");
 
+        /*
+        Create access to posting image and check if it's exist
+         */
         File directoryPath = new File(getActivity().getFilesDir(), "post");
         File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
 
+        /*
+        Check image file existency
+         */
         if(filePath.exists()) {
 
+            /*
+            Create bitmap for image posting
+             */
             Bitmap bitmap = BitmapFactory.decodeFile(filePath.getAbsolutePath());
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] data = stream.toByteArray();
 
+            /*
+            Upload image to Firebase-Storage server
+             */
             UploadTask uploadTask = pictureReference.putBytes(data);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
+                    /*
+                    Handle unsuccessful uploads
+                     */
                     Log.d(TAG, "Upload fail");
                 }
 
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    /*
+                    taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                     */
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     Log.d(TAG, "donwload Url " + downloadUrl.toString());
 
+                    /*
+                    Write remaining details of post with image exist
+                     */
                     writeNewPost(userId, message, downloadUrl.toString(), key);
 
                 }
             });
 
         } else {
-
+            /*
+            Write remaining details of post without image exist
+             */
             writeNewPost(userId, message, "No Picture", key);
-
         }
-
     }
 
+    /**
+     * Write post details to Firebase-RealtimeDb. Details are written at two location
+     * "/posts/" and "/user-post/" for efficient data retrieval.
+     *
+     * @param userId userId of current posting action
+     * @param message message to show at post fragment
+     * @param downloadUrl url generated by Firebase-Storage for post image reference
+     * @param key random generated key for addressing every new post
+     */
     private void writeNewPost(String userId, String message, String downloadUrl, String key) {
 
+        /*
+        Prepare local data for Post object creation
+         */
         String displayName = ((BaseActivity) getActivity()).getDisplayName();
         String email = ((BaseActivity) getActivity()).getUserEmail();
         String timestamp = ((BaseActivity) getActivity()).currentTimestamp();
@@ -554,6 +641,9 @@ public class DashboardFragment extends Fragment implements
         String emergencyType = "Kecelakaan"; // todo: to have list option
         String phoneNumber = AppContext.fetchCurrentUserPhoneNumber(getContext());
 
+        /*
+        Create new Post object
+         */
         Post post = new Post(
                 userId,
                 displayName,
@@ -565,17 +655,32 @@ public class DashboardFragment extends Fragment implements
                 emergencyType,
                 phoneNumber);
 
+        /*
+        Prepare hash-map value from Post object
+         */
         Map<String, Object> postValues = post.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
 
+        /*
+        Prepare data for both "/posts/" and "/user-post/"
+         */
         childUpdates.put("/posts/" + key, postValues);
         childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
 
+        /*
+        Update Firebase-RealtimeDb location
+         */
         mDatabase.updateChildren(childUpdates);
 
+        /*
+        Clear post after posting message
+         */
         clearPost();
     }
 
+    /**
+     * Receiver class for Address Fetch Service
+     */
     private class AddressResultReceiver extends ResultReceiver {
 
         AddressResultReceiver(Handler handler) {
@@ -584,13 +689,21 @@ public class DashboardFragment extends Fragment implements
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-
+            /*
+            Read "address" value return by Address Fetch Service
+             */
             String address = resultData.getString(AddressService.Constants.RESULT_DATA_KEY);
+
+            /*
+            Repalce \n with ,
+             */
             mLastLocationAddress = address.replace("\n", ", ");
             mAddressTextView.setText(mLastLocationAddress);
-
             Log.d(TAG, "Address = " + mLastLocationAddress);
 
+            /*
+            Hide progress bar if service success.
+             */
             if (resultCode == AddressService.Constants.SUCCESS_RESULT) {
                 ((BaseActivity) getActivity()).hideProgressDialog();
                 Log.d(TAG, "Address found");

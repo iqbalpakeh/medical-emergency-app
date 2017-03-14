@@ -10,5 +10,9 @@
     <string name="str_Current_location">Lokasi sekarang...</string>
     <string name="str_Short_story">Berita singkat</string>
     <string name="str_Call_for_help">Panggil Bantuan</string>
+    <string name="str_No_Geocoder_available">No Geocoder available</string>
+    <string name="str_Connection_suspended">Connection suspended</string>
+    <string name="str_Connection_failed">Connection failed: ConnectionResult.getErrorCode() = </string>
+    <string name="str_Posting">Posting... </string>
 
 </resources>
