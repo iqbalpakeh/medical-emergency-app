@@ -21,12 +21,19 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     private static final String TAG = "post-view-holder";
 
     private TextView mNameField;
+
     private TextView mMessageField;
+
     private TextView mAddressField;
+
     private TextView mTimestampField;
+
     private TextView mEmergencyTypeField;
+
     private TextView mEmailField;
+
     private TextView mPhoneField;
+
     private ImageView mPictureField;
 
     public PostViewHolder(View itemView) {

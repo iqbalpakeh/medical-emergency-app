@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 
 public class AppContext {
 
+    /*
+    Shared preference names
+     */
     private static final String APP_CONTEXT = "app-context";
     private static final String USER_EMAIL = "user-email";
     private static final String USER_PHONE_NUMBER = "user-phone-number";
@@ -12,8 +15,8 @@ public class AppContext {
     private static final String LAST_LOCATION_LATITUDE = "last-location-latitude";
     private static final String LAST_LOCATION_LONGITUDE = "last-location-longitude";
 
-    /**
-     * Default coordinate is Medan
+    /*
+    Default coordinate is Medan
      */
     private static final String DEFAULT_LATITUDE = "3.58333";
     private static final String DEFAULT_LONGITUDE= "98.66667";

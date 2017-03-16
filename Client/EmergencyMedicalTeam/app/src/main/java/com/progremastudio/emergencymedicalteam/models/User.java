@@ -10,7 +10,9 @@ import java.util.Map;
 public class User {
 
     public String email;
+
     public String phoneNumber;
+
     public String displayName;
 
     public User() {

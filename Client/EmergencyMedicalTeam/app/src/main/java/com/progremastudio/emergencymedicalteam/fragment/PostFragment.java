@@ -26,8 +26,8 @@ public class PostFragment extends Fragment {
     private DatabaseReference mDatabase;
 
     private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
-    private RecyclerView mRecycler;
-    private LinearLayoutManager mManager;
+
+    private RecyclerView mRecyclerView;
 
     @Nullable
     @Override
@@ -36,10 +36,16 @@ public class PostFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_post, container, false);
 
+        /*
+        Initialize Firebase-RealtimeDb reference
+         */
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        mRecycler = (RecyclerView) rootView.findViewById(R.id.messages_list);
-        mRecycler.setHasFixedSize(true);
+        /*
+        Initialize RecyclerView
+         */
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.messages_list);
+        mRecyclerView.setHasFixedSize(true);
 
         return rootView;
     }
@@ -48,19 +54,26 @@ public class PostFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Set up Layout Manager, reverse layout
-        mManager = new LinearLayoutManager(getActivity());
-        mManager.setReverseLayout(true);
-        mManager.setStackFromEnd(true);
-        mRecycler.setLayoutManager(mManager);
+        /*
+        Set up Layout Manager and reverse layout
+         */
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+        mRecyclerView.setLayoutManager(layoutManager);
 
-        // Set up FirebaseRecyclerAdapter with the Query
+        /*
+        Set up FirebaseRecyclerAdapter with the Query
+         */
         Query postsQuery = getQuery(mDatabase);
         mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_post,
                 PostViewHolder.class, postsQuery) {
             @Override
             protected void populateViewHolder(final PostViewHolder viewHolder, final Post post, final int position) {
 
+                /*
+                Log post details information
+                 */
                 Log.d(TAG, "populateViewHolder: post.uid = " + post.uid);
                 Log.d(TAG, "populateViewHolder: post.displayName = " + post.displayName);
                 Log.d(TAG, "populateViewHolder: post.email = " + post.email);
@@ -71,6 +84,9 @@ public class PostFragment extends Fragment {
                 Log.d(TAG, "populateViewHolder: post.emergencyType = " + post.emergencyType);
                 Log.d(TAG, "populateViewHolder: post.phoneNumber = " + post.phoneNumber);
 
+                /*
+                Assign post information to widget defined in item_post.xml
+                 */
                 viewHolder.bindToPost(getContext(), post, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -80,13 +96,15 @@ public class PostFragment extends Fragment {
                 });
             }
         };
-        mRecycler.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);
 
     }
 
     public Query getQuery(DatabaseReference databaseReference) {
-        // Last 100 posts, these are automatically the 100 most recent
-        // due to sorting by push() keys
+        /*
+        Last 100 posts, these are automatically the 100 most recent
+        due to sorting by push() keys
+        */
         return databaseReference.child("posts").limitToFirst(100);
     }
 

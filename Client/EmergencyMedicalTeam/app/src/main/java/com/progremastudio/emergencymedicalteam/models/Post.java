@@ -10,13 +10,21 @@ import java.util.Map;
 public class Post {
 
     public String uid;
+
     public String displayName;
+
     public String email;
+
     public String timestamp;
+
     public String locationCoordinate;
+
     public String message;
+
     public String pictureUrl;
+
     public String emergencyType;
+
     public String phoneNumber;
 
     public Post(){

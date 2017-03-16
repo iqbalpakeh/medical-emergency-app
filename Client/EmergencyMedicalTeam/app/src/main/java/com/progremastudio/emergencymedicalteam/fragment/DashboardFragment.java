@@ -210,7 +210,7 @@ public class DashboardFragment extends Fragment implements
     }
 
     /**
-     * Show image taken by user. This picture will be posted if User press sending post button
+     * Show image taken by user. This picture will be posted if User press sending post button.
      */
     private void showImageView() {
 
@@ -291,12 +291,20 @@ public class DashboardFragment extends Fragment implements
         makePhoneCall();
     }
 
+    /**
+     * Make a phone call by using ACTION_CALL intent
+     */
     private void makePhoneCall() {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + getString(R.string.Ambulance_Phone_Number)));
         getContext().startActivity(intent);
     }
 
+    /**
+     * Check access for ACTION_CALL intent
+     *
+     * @return permission status. TRUE if granted. Otherwise, return FALSE
+     */
     private boolean checkCallAccess() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -307,6 +315,10 @@ public class DashboardFragment extends Fragment implements
         }
     }
 
+    /**
+     * Fetch Latitude and Longitude value of user location. Default location is Medan City,
+     * and then show user last location.
+     */
     private void fetchLocationAddress() {
 
         if (mGoogleApiClient.isConnected() && mLastLocationCoordinate != null) {
@@ -335,6 +347,9 @@ public class DashboardFragment extends Fragment implements
         ((BaseActivity) getActivity()).showProgressDialog();
     }
 
+    /**
+     * Build Google API client used for providing user location
+     */
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
@@ -343,6 +358,9 @@ public class DashboardFragment extends Fragment implements
                 .build();
     }
 
+    /**
+     * Enable the functionality of User Location by Google Map
+     */
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -352,6 +370,10 @@ public class DashboardFragment extends Fragment implements
         }
     }
 
+    /**
+     * Start Address Provider Service (AddressService.java) to get name of the address of user location
+     * by using Latitude Longitude information.
+     */
     protected void startAddressProviderService() {
         Intent intent = new Intent(getActivity(), AddressService.class);
         intent.putExtra(AddressService.Constants.RECEIVER, mResultReceiver);
@@ -379,8 +401,14 @@ public class DashboardFragment extends Fragment implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        /*
+        Fetch current user location
+         */
         LatLng currentLocation = fetchCurrentLocation();
 
+        /*
+        Prepare google map object
+         */
         mGoogleMap = googleMap;
         mGoogleMap.addMarker(new MarkerOptions().position(currentLocation).title("TBM APPS User location"));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
@@ -394,6 +422,9 @@ public class DashboardFragment extends Fragment implements
             }
         });
 
+        /*
+        Enable user location feature
+         */
         enableMyLocation();
     }
 
