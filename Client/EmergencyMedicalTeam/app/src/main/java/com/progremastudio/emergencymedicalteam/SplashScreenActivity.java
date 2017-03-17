@@ -13,7 +13,7 @@ public class SplashScreenActivity extends BaseActivity {
 
     private final String TAG = "splash-screen-activity";
 
-    private final int SPLASH_TIME = 4000;
+    private final int SPLASH_TIME = 5000;
 
     private FirebaseAuth mAuth;
 
