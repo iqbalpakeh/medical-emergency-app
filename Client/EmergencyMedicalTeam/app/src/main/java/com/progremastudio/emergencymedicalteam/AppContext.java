@@ -19,7 +19,7 @@ public class AppContext {
     Default coordinate is Medan
      */
     private static final String DEFAULT_LATITUDE = "3.58333";
-    private static final String DEFAULT_LONGITUDE= "98.66667";
+    private static final String DEFAULT_LONGITUDE = "98.66667";
 
     public static void logOutCurrentUser(Context context) {
         storeCurrentUser(context, "", "", "");

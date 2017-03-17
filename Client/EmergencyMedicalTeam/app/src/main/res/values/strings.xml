@@ -20,5 +20,6 @@
     <string name="str_No_addresses_found">No addresses found…</string>
     <string name="str_Address_found">Address found…</string>
     <string name="str_Loading">Loading…</string>
+    <string name="str_Version">Version </string>
 
 </resources>

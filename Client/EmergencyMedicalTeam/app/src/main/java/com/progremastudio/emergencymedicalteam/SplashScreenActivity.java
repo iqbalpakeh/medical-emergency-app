@@ -7,11 +7,15 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SplashScreenActivity extends BaseActivity {
 
     private final String TAG = "splash-screen-activity";
 
     private final int SPLASH_TIME = 4000;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,13 +27,18 @@ public class SplashScreenActivity extends BaseActivity {
         setContentView(R.layout.activity_splash_screen);
 
         /*
+        Initiate Firebase Authorization object
+         */
+        mAuth = FirebaseAuth.getInstance();
+
+        /*
         Set application version
          */
         try {
             String packageName = getPackageName();
             String version = getPackageManager().getPackageInfo(packageName, 0).versionName;
             TextView applicationVersion = (TextView) findViewById(R.id.app_version);
-            applicationVersion.setText("Version " + version);
+            applicationVersion.setText(getString(R.string.str_Version) + version);
         } catch (PackageManager.NameNotFoundException error) {
             Log.e("ERROR", error.getStackTrace().toString());
         }
@@ -39,6 +48,9 @@ public class SplashScreenActivity extends BaseActivity {
          */
         final Thread thread = new Thread() {
             public void run() {
+                /*
+                Start waiting counter
+                 */
                 int wait = 0;
                 try {
                     while (SPLASH_TIME > wait) {
@@ -46,7 +58,10 @@ public class SplashScreenActivity extends BaseActivity {
                         wait += 100;
                     }
                 } catch (InterruptedException e) {
-                    Log.d(TAG, e.getMessage());
+                    /*
+                    Log error message
+                     */
+                    Log.e(TAG, e.getMessage());
                 } finally {
                     /*
                     Go to Sign-In page
@@ -61,6 +76,18 @@ public class SplashScreenActivity extends BaseActivity {
         Execute waiting thread
          */
         thread.start();
-
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (mAuth.getCurrentUser() != null) {
+            /*
+            If user already sig-in, go to main Page
+             */
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+    }
+
 }
