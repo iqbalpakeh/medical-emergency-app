@@ -66,7 +66,6 @@ public class AddressService extends IntentService {
             addresses = geocoder.getFromLocation(
                     location.getLatitude(),
                     location.getLongitude(),
-
                     1);
         } catch (IOException ioException) {
             /*

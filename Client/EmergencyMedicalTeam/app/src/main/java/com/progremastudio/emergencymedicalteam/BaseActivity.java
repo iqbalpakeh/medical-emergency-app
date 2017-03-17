@@ -17,7 +17,7 @@ public class BaseActivity extends AppCompatActivity {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setCancelable(true);
-            mProgressDialog.setMessage("Loading...");
+            mProgressDialog.setMessage(getString(R.string.str_Loading));
         }
         mProgressDialog.show();
     }
@@ -33,9 +33,9 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public String getDisplayName() {
-        /**
-         * There's a known bug of FIREBASE getDisplayName api that return NULL only after first Sign-Up. The workaround is to
-         * SharedPreference for saving current user properties.
+        /*
+        There's a known bug of FIREBASE getDisplayName api that return NULL only after first Sign-Up.
+        The workaround is to SharedPreference for saving current user properties.
          */
         return FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
     }

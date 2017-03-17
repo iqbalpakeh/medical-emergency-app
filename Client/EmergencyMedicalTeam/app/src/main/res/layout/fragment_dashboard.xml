@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@drawable/rectangular"
+            android:background="@drawable/shape_rectangular"
             android:elevation="4dp" />
 
         <TextView
@@ -102,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="4dp"
+                android:layout_margin="8dp"
                 android:background="@color/colorAccent"
                 android:elevation="4dp"
                 android:text="@string/str_Call_for_help"

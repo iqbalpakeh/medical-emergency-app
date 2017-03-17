@@ -1,6 +1,7 @@
 <resources>
 
     <string name="app_name">TBM APPS</string>
+    <string name="app_company">© IWEBNET-ID</string>
     <string name="menu_logut">Keluar</string>
     <string name="heading_dashboard">Dashboard</string>
     <string name="heading_post">Post</string>
@@ -18,5 +19,6 @@
     <string name="str_Invalid_latitude_or_longitude_values">Invalid latitude or longitude values…</string>
     <string name="str_No_addresses_found">No addresses found…</string>
     <string name="str_Address_found">Address found…</string>
+    <string name="str_Loading">Loading…</string>
 
 </resources>
