@@ -45,7 +45,7 @@ public class SignUpActivity extends BaseActivity{
         mEmailField = (EditText) findViewById(R.id.email_field);
         mPasswordField = (EditText) findViewById(R.id.password_field);
         mDisplayNameField = (EditText) findViewById(R.id.display_name_field);
-        mPhoneNumberField = (EditText) findViewById(R.id.phone_field);
+        mPhoneNumberField = (EditText) findViewById(R.id.phone_number_field);
 
         Button signUpButton = (Button) findViewById(R.id.sign_up_button);
         signUpButton.setOnClickListener(new View.OnClickListener() {
