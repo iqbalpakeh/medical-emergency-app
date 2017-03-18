@@ -2,12 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/teal_500"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -15,99 +11,118 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1">
 
-            <ImageView
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:src="@mipmap/ic_launcher"/>
+                android:layout_weight="1.29">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:background="@drawable/indonesia_background" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="25dp"
+                    android:src="@mipmap/ic_launcher_tbm" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="150dp"
+                        android:elevation="10dp"
+                        android:gravity="center"
+                        android:text="TBM APPS"
+                        android:textColor="@color/text_primary_dark"
+                        android:textSize="24sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="190dp">
+
+                    <Button
+                        android:id="@+id/google_sign_in_button"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/google_login_background"
+                        android:padding="8dp"
+                        android:text="GOOGLE"
+                        android:textColor="@android:color/white" />
+
+                    <Space
+                        android:layout_width="32dp"
+                        android:layout_height="match_parent" />
+
+                    <Button
+                        android:id="@+id/facebook_sign_in_button"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/bg_login_fb_active"
+                        android:padding="8dp"
+                        android:text="FACEBOOK"
+                        android:textColor="@android:color/white" />
+
+                </LinearLayout>
+
+            </FrameLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
                 android:gravity="center"
-                android:text="TBM APPS"
-                android:textColor="@color/text_primary_white"
-                android:textSize="24sp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Team Bantuan Medis"
-                android:textColor="@color/text_secondary_white"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Panggilan Medis Reaksi Cepat Anda"
-                android:textColor="@color/text_secondary_white"
-                android:textSize="16sp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="36sp">
-
-                <Button
-                    android:id="@+id/google_sign_in_button"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:padding="8dp"
-                    android:text="Google"/>
-
-                <Button
-                    android:id="@+id/facebook_sign_in_button"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:padding="8dp"
-                    android:text="Facebook"/>
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="36sp"
-                android:gravity="center"
-                android:text="atau"
-                android:textColor="@color/text_primary_white"
-                android:textSize="16sp"/>
+                android:text="ATAU"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/email_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="16dp"
+                android:layout_weight="0.17"
+                android:background="@drawable/edit_text_background"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:hint="email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:textColor="@color/text_primary_white"
-                android:textColorHint="@color/text_secondary_white"/>
+                android:textColor="@color/text_primary_dark"
+                android:textColorHint="@color/text_secondary_dark" />
 
             <EditText
                 android:id="@+id/password_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
+                android:background="@drawable/edit_text_background"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:hint="password"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:textColor="@color/text_primary_white"
-                android:textColorHint="@color/text_secondary_white"/>
+                android:textColor="@color/text_primary_dark"
+                android:textColorHint="@color/text_secondary_dark" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -120,16 +135,20 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
+                    android:background="@drawable/sign_in_button_background"
                     android:padding="8dp"
-                    android:text="Masuk"/>
+                    android:text="Masuk"
+                    android:textColor="@android:color/holo_blue_light" />
 
                 <Button
                     android:id="@+id/sign_up_button"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
+                    android:background="@drawable/sign_in_button_background"
                     android:padding="8dp"
-                    android:text="Registrasi"/>
+                    android:text="Registrasi"
+                    android:textColor="@android:color/holo_blue_light" />
 
             </LinearLayout>
 
@@ -140,7 +159,28 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="lupa password?"
-                android:textColor="@color/text_secondary_white"/>
+                android:textColor="@color/text_secondary_dark" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="BUTUH BANTUAN" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="PENYEAMATAN MEDIS REAKSI CEPAT?" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="PANGGIL AMBULANCE GRATIS !!" />
 
         </LinearLayout>
 

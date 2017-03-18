@@ -2,8 +2,8 @@
 
     <string name="app_name">TBM APPS</string>
     <string name="app_company">© IWEBNET-ID</string>
-    <string name="menu_logut">Keluar Applikasi</string>
-    <string name="menu_about">Tentang Applikasi</string>
+    <string name="menu_logut">Keluar</string>
+    <string name="menu_about">Tentang</string>
     <string name="heading_dashboard">Dashboard</string>
     <string name="heading_post">Post</string>
     <string name="heading_chat">Chat</string>
@@ -21,6 +21,6 @@
     <string name="str_No_addresses_found">No addresses found…</string>
     <string name="str_Address_found">Address found…</string>
     <string name="str_Loading">Loading…</string>
-    <string name="str_Version">Version </string>
+    <string name="str_Version">Version</string>
 
 </resources>
