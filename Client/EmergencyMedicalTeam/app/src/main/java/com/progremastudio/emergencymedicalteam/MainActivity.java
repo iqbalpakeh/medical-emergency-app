@@ -89,6 +89,13 @@ public class MainActivity extends BaseActivity {
 
             return true;
 
+        } else if (i == R.id.action_about){
+
+            startActivity(new Intent(this, AboutActivity.class));
+            finish();
+
+            return true;
+
         } else {
             return super.onOptionsItemSelected(item);
         }

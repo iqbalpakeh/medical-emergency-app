@@ -2,7 +2,8 @@
 
     <string name="app_name">TBM APPS</string>
     <string name="app_company">© IWEBNET-ID</string>
-    <string name="menu_logut">Keluar</string>
+    <string name="menu_logut">Keluar Applikasi</string>
+    <string name="menu_about">Tentang Applikasi</string>
     <string name="heading_dashboard">Dashboard</string>
     <string name="heading_post">Post</string>
     <string name="heading_chat">Chat</string>
