@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.progremastudio.emergencymedicalteam.authentication.AboutActivity;
+import com.progremastudio.emergencymedicalteam.authentication.SignInActivity;
 import com.progremastudio.emergencymedicalteam.fragment.ChatFragment;
 import com.progremastudio.emergencymedicalteam.fragment.DashboardFragment;
 import com.progremastudio.emergencymedicalteam.fragment.PostFragment;

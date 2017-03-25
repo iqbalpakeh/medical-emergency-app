@@ -1,4 +1,4 @@
-package com.progremastudio.emergencymedicalteam;
+package com.progremastudio.emergencymedicalteam.authentication;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +8,9 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.progremastudio.emergencymedicalteam.BaseActivity;
+import com.progremastudio.emergencymedicalteam.MainActivity;
+import com.progremastudio.emergencymedicalteam.R;
 
 public class SplashScreenActivity extends BaseActivity {
 

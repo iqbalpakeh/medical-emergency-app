@@ -1,4 +1,4 @@
-package com.progremastudio.emergencymedicalteam;
+package com.progremastudio.emergencymedicalteam.authentication;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.TextView;
+
+import com.progremastudio.emergencymedicalteam.BaseActivity;
+import com.progremastudio.emergencymedicalteam.MainActivity;
+import com.progremastudio.emergencymedicalteam.R;
 
 public class AboutActivity extends BaseActivity {
 

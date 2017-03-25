@@ -1,4 +1,4 @@
-package com.progremastudio.emergencymedicalteam;
+package com.progremastudio.emergencymedicalteam.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +20,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.progremastudio.emergencymedicalteam.AppContext;
+import com.progremastudio.emergencymedicalteam.BaseActivity;
+import com.progremastudio.emergencymedicalteam.FirebasePath;
+import com.progremastudio.emergencymedicalteam.MainActivity;
+import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.User;
 
 public class SignInActivity extends BaseActivity {
