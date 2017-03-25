@@ -244,7 +244,7 @@ public class SignInActivity extends BaseActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         /*
-                        Sign-In is complete and hide progress dialog
+                        Sign-In is completed and hide progress dialog
                          */
                         Log.d(TAG, "signIn:onComplete:" + task.isSuccessful());
                         hideProgressDialog();
@@ -259,7 +259,7 @@ public class SignInActivity extends BaseActivity {
                             Sign-In failed
                              */
                             Toast.makeText(SignInActivity.this,
-                                    getString(R.string.str_Sign_In_failed),     Toast.LENGTH_SHORT).show();
+                                    getString(R.string.str_Sign_In_failed), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
