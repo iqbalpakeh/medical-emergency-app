@@ -72,21 +72,17 @@ public class SplashScreenActivity extends BaseActivity {
             }
         };
 
-        /*
-        Execute waiting thread
-         */
-        thread.start();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         if (mAuth.getCurrentUser() != null) {
             /*
-            If user already sig-in, go to main Page
+            If user already sign-in, go to main Page
              */
             startActivity(new Intent(this, MainActivity.class));
             finish();
+        } else {
+            /*
+            If not, execute waiting thread
+             */
+            thread.start();
         }
     }
 
