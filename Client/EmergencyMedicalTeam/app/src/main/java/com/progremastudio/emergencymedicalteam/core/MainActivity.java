@@ -17,9 +17,6 @@ import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.authentication.AboutActivity;
 import com.progremastudio.emergencymedicalteam.authentication.SignInActivity;
-import com.progremastudio.emergencymedicalteam.core.ChatFragment;
-import com.progremastudio.emergencymedicalteam.core.DashboardFragment;
-import com.progremastudio.emergencymedicalteam.core.PostFragment;
 
 public class MainActivity extends BaseActivity {
 

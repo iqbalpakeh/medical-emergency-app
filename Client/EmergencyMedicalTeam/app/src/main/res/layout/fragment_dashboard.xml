@@ -26,9 +26,9 @@
             android:layout_height="wrap_content"
             android:hint="@string/str_Current_location"
             android:padding="8dp"
-            android:background="@color/cyan_300"
-            android:textColor="@color/text_primary_white"
-            android:textColorHint="@color/text_secondary_white" />
+            android:background="@color/blue_300"
+            android:textColor="@color/text_secondary_dark"
+            android:textColorHint="@color/text_secondary_dark" />
 
         <LinearLayout
             android:layout_width="match_parent"

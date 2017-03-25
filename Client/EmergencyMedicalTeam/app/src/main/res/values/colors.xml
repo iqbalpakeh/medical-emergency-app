@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#00BCD4</color>
-    <color name="colorPrimaryDark">#0097A7</color>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1976D2</color>
     <color name="colorAccent">#F44336</color>
 
     <!-- Typography color -->
@@ -14,7 +14,7 @@
     <!-- Material Design Color Palette -->
     <color name="teal_500">#009688</color>
     <color name="cyan_500">#00BCD4</color>
-    <color name="cyan_300">#4DD0E1</color>
+    <color name="blue_300">#BBDEFB</color>
 
     <color name="card_shadow">#CABBBBBB</color>
 
