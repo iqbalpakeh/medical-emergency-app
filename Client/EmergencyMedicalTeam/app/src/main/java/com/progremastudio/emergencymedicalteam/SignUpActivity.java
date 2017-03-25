@@ -235,7 +235,7 @@ public class SignUpActivity extends BaseActivity{
                 email,
                 phoneNumber
         );
-        mDatabase.child("users").child(userId).setValue(user.toMap());
+        mDatabase.child(FirebasePath.USERS).child(userId).setValue(user.toMap());
 
         /*
         Go to main activity and close this activity

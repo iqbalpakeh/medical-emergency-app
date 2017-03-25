@@ -53,6 +53,7 @@ import com.progremastudio.emergencymedicalteam.AddressService;
 import com.progremastudio.emergencymedicalteam.AppContext;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.CameraActivity;
+import com.progremastudio.emergencymedicalteam.FirebasePath;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.Post;
 import com.progremastudio.emergencymedicalteam.models.User;
@@ -534,7 +535,7 @@ public class DashboardFragment extends Fragment implements
         Listen for data change under users path and submit the post
          */
         final String userId = ((BaseActivity) getActivity()).getUid();
-        mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
+        mDatabase.child(FirebasePath.USERS).child(userId).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -695,8 +696,8 @@ public class DashboardFragment extends Fragment implements
         /*
         Prepare data for both "/posts/" and "/user-post/"
          */
-        childUpdates.put("/posts/" + key, postValues);
-        childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+        childUpdates.put("/" + FirebasePath.POSTS + "/" + key, postValues);
+        childUpdates.put("/" + FirebasePath.USER_POSTS + "/" + userId + "/" + key, postValues);
 
         /*
         Update Firebase-RealtimeDb location
@@ -726,7 +727,7 @@ public class DashboardFragment extends Fragment implements
             String address = resultData.getString(AddressService.Constants.RESULT_DATA_KEY);
 
             /*
-            Repalce \n with ,
+            Replace \n with ,
              */
             mLastLocationAddress = address.replace("\n", ", ");
             mAddressTextView.setText(mLastLocationAddress);

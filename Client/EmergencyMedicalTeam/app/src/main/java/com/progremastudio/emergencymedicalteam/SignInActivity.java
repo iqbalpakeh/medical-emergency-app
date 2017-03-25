@@ -166,7 +166,7 @@ public class SignInActivity extends BaseActivity {
         /*
         Add user listener object
          */
-        mDatabase.child("users").child(getUid())
+        mDatabase.child(FirebasePath.USERS).child(getUid())
                 .addListenerForSingleValueEvent(listener);
     }
 
