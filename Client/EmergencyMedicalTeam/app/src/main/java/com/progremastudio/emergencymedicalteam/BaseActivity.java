@@ -32,14 +32,6 @@ public class BaseActivity extends AppCompatActivity {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    public String getDisplayName() {
-        return FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-    }
-
-    public String getUserEmail() {
-        return FirebaseAuth.getInstance().getCurrentUser().getEmail();
-    }
-
     public String currentTimestamp() {
         return String.valueOf(Calendar.getInstance().getTimeInMillis());
     }
