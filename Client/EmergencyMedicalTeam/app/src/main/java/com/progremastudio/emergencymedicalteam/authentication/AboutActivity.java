@@ -8,7 +8,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.progremastudio.emergencymedicalteam.BaseActivity;
-import com.progremastudio.emergencymedicalteam.MainActivity;
+import com.progremastudio.emergencymedicalteam.core.MainActivity;
 import com.progremastudio.emergencymedicalteam.R;
 
 public class AboutActivity extends BaseActivity {

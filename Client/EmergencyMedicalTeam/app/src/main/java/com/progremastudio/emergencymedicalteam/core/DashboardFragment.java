@@ -1,4 +1,4 @@
-package com.progremastudio.emergencymedicalteam.fragment;
+package com.progremastudio.emergencymedicalteam.core;
 
 import android.Manifest;
 import android.content.Intent;
@@ -666,8 +666,8 @@ public class DashboardFragment extends Fragment implements
         /*
         Prepare local data for Post object creation
          */
-        String displayName = ((BaseActivity) getActivity()).getDisplayName();
-        String email = ((BaseActivity) getActivity()).getUserEmail();
+        String displayName = AppContext.fetchCurrentUserDisplayName(getContext());
+        String email = AppContext.fetchCurrentUserEmail(getContext());
         String timestamp = ((BaseActivity) getActivity()).currentTimestamp();
         String locationCoordinate = mLastLocationAddress;
         String emergencyType = "Kecelakaan"; // todo: to have list option

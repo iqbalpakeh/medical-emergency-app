@@ -28,6 +28,7 @@ import com.github.florent37.camerafragment.widgets.CameraSwitchView;
 import com.github.florent37.camerafragment.widgets.FlashSwitchView;
 import com.github.florent37.camerafragment.widgets.MediaActionSwitchView;
 import com.github.florent37.camerafragment.widgets.RecordButton;
+import com.progremastudio.emergencymedicalteam.core.MainActivity;
 
 import java.io.File;
 import java.util.ArrayList;

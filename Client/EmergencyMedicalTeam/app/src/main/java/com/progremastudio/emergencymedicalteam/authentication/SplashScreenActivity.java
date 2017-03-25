@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
-import com.progremastudio.emergencymedicalteam.MainActivity;
+import com.progremastudio.emergencymedicalteam.core.MainActivity;
 import com.progremastudio.emergencymedicalteam.R;
 
 public class SplashScreenActivity extends BaseActivity {

@@ -1,4 +1,4 @@
-package com.progremastudio.emergencymedicalteam;
+package com.progremastudio.emergencymedicalteam.core;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +12,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.progremastudio.emergencymedicalteam.AppContext;
+import com.progremastudio.emergencymedicalteam.BaseActivity;
+import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.authentication.AboutActivity;
 import com.progremastudio.emergencymedicalteam.authentication.SignInActivity;
-import com.progremastudio.emergencymedicalteam.fragment.ChatFragment;
-import com.progremastudio.emergencymedicalteam.fragment.DashboardFragment;
-import com.progremastudio.emergencymedicalteam.fragment.PostFragment;
+import com.progremastudio.emergencymedicalteam.core.ChatFragment;
+import com.progremastudio.emergencymedicalteam.core.DashboardFragment;
+import com.progremastudio.emergencymedicalteam.core.PostFragment;
 
 public class MainActivity extends BaseActivity {
 
