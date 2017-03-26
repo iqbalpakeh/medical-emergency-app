@@ -2,7 +2,6 @@ package com.progremastudio.emergencymedicalteam.viewholder;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.View;
@@ -28,12 +27,6 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
     private TextView mTimestampField;
 
-    private TextView mEmergencyTypeField;
-
-    private TextView mEmailField;
-
-    private TextView mPhoneField;
-
     private ImageView mPictureField;
 
     public PostViewHolder(View itemView) {
@@ -44,10 +37,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         mMessageField = (TextView) itemView.findViewById(R.id.message_field);
         mAddressField = (TextView) itemView.findViewById(R.id.address_field);
         mTimestampField = (TextView) itemView.findViewById(R.id.timestamp_field);
-        mEmergencyTypeField = (TextView) itemView.findViewById(R.id.emergency_type_field);
         mPictureField = (ImageView) itemView.findViewById(R.id.picture_field);
-        mEmailField = (TextView) itemView.findViewById(R.id.email_field);
-        mPhoneField = (TextView) itemView.findViewById(R.id.phone_field);
     }
 
     @SuppressLint("SetTextI18n")
@@ -66,29 +56,12 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         /*
         Show user location address
          */
-        mAddressField.setText("@" + post.locationCoordinate);
+        mAddressField.setText(post.locationCoordinate);
 
         /*
         Show relative time span
          */
         mTimestampField.setText("- " + DateUtils.getRelativeTimeSpanString(Long.parseLong(post.timestamp)));
-
-        /*
-        Show User phone number
-         */
-        mPhoneField.setText(post.phoneNumber);
-        mPhoneField.setPaintFlags(mPhoneField.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-        /*
-        Show User email
-         */
-        mEmailField.setText(post.email);
-        mEmailField.setPaintFlags(mEmailField.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-        /*
-        Show emergency type
-         */
-        mEmergencyTypeField.setText("#" + post.emergencyType);
 
         /*
         Show picture if exist

@@ -34,6 +34,9 @@ public class PostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
+        /*
+        Initiate fragment layout
+         */
         View rootView = inflater.inflate(R.layout.fragment_post, container, false);
 
         /*

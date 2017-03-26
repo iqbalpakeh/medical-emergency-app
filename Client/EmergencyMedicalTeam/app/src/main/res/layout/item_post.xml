@@ -12,14 +12,15 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
             android:src="@drawable/ic_account_circle_black_36dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -30,7 +31,9 @@
                     android:id="@+id/display_name_field"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
                     android:text="Iqbal Pakeh"
                     android:textColor="@color/text_secondary_dark"
                     android:textSize="14sp" />
@@ -46,24 +49,6 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/picture_field"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:adjustViewBounds="true"
-                android:padding="8dp"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/message_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:gravity="left"
-                android:text="Hi, Hello World"
-                android:textColor="@color/text_secondary_dark"
-                android:textSize="16sp" />
-
             <TextView
                 android:id="@+id/address_field"
                 android:layout_width="wrap_content"
@@ -75,36 +60,22 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/phone_field"
+                android:id="@+id/message_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:gravity="left"
-                android:text="+6581321850963"
-                android:textStyle="italic"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14sp" />
+                android:text="Hi, Hello World"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/email_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:gravity="left"
-                android:text="iqbalpakeh@gmail.com"
-                android:textStyle="italic"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/emergency_type_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:gravity="left"
-                android:text="#Kecelakaan"
-                android:textColor="@color/text_secondary_dark"
-                android:textSize="14sp" />
+            <ImageView
+                android:id="@+id/picture_field"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="2dp"
+                android:adjustViewBounds="true"
+                android:visibility="gone" />
 
         </LinearLayout>
 
