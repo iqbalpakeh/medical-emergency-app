@@ -3,6 +3,7 @@ package com.progremastudio.emergencymedicalteam.core;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -38,6 +39,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -408,6 +410,20 @@ public class DashboardFragment extends Fragment implements
         LatLng currentLocation = fetchCurrentLocation();
 
         /*
+        Update map with retro style
+         */
+        try {
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            getContext(), R.raw.retro_style_json));
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+        }
+
+        /*
         Prepare google map object
          */
         mGoogleMap = googleMap;
@@ -415,6 +431,7 @@ public class DashboardFragment extends Fragment implements
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
         mGoogleMap.setMinZoomPreference(14.0f);
         mGoogleMap.setMaxZoomPreference(15.0f);
+        mGoogleMap.getUiSettings().setCompassEnabled(true);
         mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
