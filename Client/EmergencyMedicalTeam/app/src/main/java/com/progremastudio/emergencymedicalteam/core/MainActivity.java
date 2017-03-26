@@ -40,6 +40,7 @@ public class MainActivity extends BaseActivity {
          */
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(getString(R.string.heading_dashboard));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         /*
@@ -66,25 +67,36 @@ public class MainActivity extends BaseActivity {
          */
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mPagerAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    getSupportActionBar().setTitle(getString(R.string.heading_dashboard));
+                } else if(position == 1) {
+                    getSupportActionBar().setTitle(getString(R.string.heading_post));
+                } else if (position == 2) {
+                    getSupportActionBar().setTitle(getString(R.string.heading_chat));
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        /*
+        Initiate tab layout
+         */
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
-
-        /*
-        Add icon to dashboard tab
-         */
-        //mTabLayout.getTabAt(0).setCustomView(getLayoutInflater().inflate(R.layout.tab_dashboard, null));
         mTabLayout.getTabAt(0).setIcon(R.drawable.ic_directions_bus_white_48dp);
-
-        /*
-        Add icon to report tab
-         */
-        //mTabLayout.getTabAt(1).setCustomView(getLayoutInflater().inflate(R.layout.tab_report, null));
         mTabLayout.getTabAt(1).setIcon(R.drawable.ic_assignment_white_48dp);
-
-        /*
-        Add icon to chat tab
-         */
-        //mTabLayout.getTabAt(2).setCustomView(getLayoutInflater().inflate(R.layout.tab_chat, null));
         mTabLayout.getTabAt(2).setIcon(R.drawable.ic_tag_faces_white_48dp);
 
     }
