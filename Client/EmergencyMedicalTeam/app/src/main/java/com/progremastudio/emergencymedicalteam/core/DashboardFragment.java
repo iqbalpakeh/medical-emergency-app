@@ -234,6 +234,11 @@ public class DashboardFragment extends Fragment implements
 
         try {
             /*
+            Hide map view
+             */
+            mMapView.setVisibility(View.GONE);
+
+            /*
             Get picture bitmap
              */
             Bitmap myBitmap = BitmapFactory.decodeFile(filePath.getAbsolutePath());
@@ -548,6 +553,10 @@ public class DashboardFragment extends Fragment implements
      * Clear post details after sending message
      */
     private void clearPost() {
+        /*
+        Show back map view
+         */
+        mMapView.setVisibility(View.VISIBLE);
 
         /*
         Clear address text
