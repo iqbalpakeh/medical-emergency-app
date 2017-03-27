@@ -62,6 +62,8 @@ import com.progremastudio.emergencymedicalteam.models.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -231,11 +233,11 @@ public class DashboardFragment extends Fragment implements
         }
 
         try {
-
             /*
             Get picture bitmap
              */
             Bitmap myBitmap = BitmapFactory.decodeFile(filePath.getAbsolutePath());
+
             ExifInterface exif = new ExifInterface(filePath.getAbsolutePath());
             int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
 
@@ -259,10 +261,52 @@ public class DashboardFragment extends Fragment implements
             myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true);
 
             /*
+            Save bitmap after rotated
+            */
+            OutputStream fOut = new FileOutputStream(filePath);
+            myBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+
+            /*
+            Get the size of the ImageView
+            */
+            int targetW = mImageView.getWidth();
+            int targetH = mImageView.getHeight();
+
+            /*
+            Get the size of the image
+             */
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inJustDecodeBounds = true;
+            int photoW = bmOptions.outWidth;
+            int photoH = bmOptions.outHeight;
+
+		    /*
+		    Figure out which way needs to be reduced less
+		     */
+            int scaleFactor = 1;
+            if ((targetW > 0) || (targetH > 0)) {
+                scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+            }
+
+		    /*
+		    Set bitmap options to scale the image decode target
+		     */
+            bmOptions.inJustDecodeBounds = false;
+            bmOptions.inSampleSize = scaleFactor;
+            bmOptions.inPurgeable = true;
+
+		    /*
+		    Decode the JPEG file into a Bitmap
+		    */
+            Bitmap bitmap = BitmapFactory.decodeFile(filePath.getAbsolutePath(), bmOptions);
+
+            /*
             Present the picture
              */
             mImageView.setVisibility(View.VISIBLE);
-            mImageView.setImageBitmap(myBitmap);
+            mImageView.setImageBitmap(bitmap);
 
         } catch (Exception exception) {
             exception.printStackTrace();
