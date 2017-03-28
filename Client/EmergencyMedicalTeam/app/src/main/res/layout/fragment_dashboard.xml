@@ -23,7 +23,7 @@
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/map"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="300dp"
                     android:background="@drawable/shape_rectangular"
                     android:elevation="4dp" />
 
