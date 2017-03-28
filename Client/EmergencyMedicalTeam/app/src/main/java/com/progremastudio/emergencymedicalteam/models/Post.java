@@ -9,6 +9,8 @@ import java.util.Map;
 @IgnoreExtraProperties
 public class Post {
 
+    //Test 
+
     public String uid;
 
     public String displayName;
