@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity {
          */
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(getString(R.string.heading_dashboard));
+        getSupportActionBar().setTitle(getString(R.string.heading_location));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         /*
@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity {
          */
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
-                    new DashboardFragment(),
+                    new LocationFragment(),
                     new PostFragment(),
                     new ChatFragment(),
             };
@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
-                    getSupportActionBar().setTitle(getString(R.string.heading_dashboard));
+                    getSupportActionBar().setTitle(getString(R.string.heading_location));
                 } else if(position == 1) {
                     getSupportActionBar().setTitle(getString(R.string.heading_post));
                 } else if (position == 2) {

@@ -8,7 +8,7 @@ import java.util.Map;
 
 @IgnoreExtraProperties
 public class Post {
-    
+
     public String uid;
 
     public String displayName;
