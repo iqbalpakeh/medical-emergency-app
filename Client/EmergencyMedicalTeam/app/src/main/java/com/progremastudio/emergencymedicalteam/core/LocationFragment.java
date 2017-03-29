@@ -16,10 +16,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -61,6 +63,10 @@ public class LocationFragment extends Fragment implements
 
     private String mLastLocationAddress;
 
+    private FloatingSearchView mSearchView;
+
+    //private TextView mAddressTextView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,6 +98,25 @@ public class LocationFragment extends Fragment implements
         Initialize Location Address Service
          */
         mResultReceiver = new AddressResultReceiver(new Handler());
+
+        /*
+        Initiate address text view
+         */
+        //mAddressTextView = (TextView) rootView.findViewById(R.id.address_text);
+
+        /*
+        Initialize search view
+         */
+        mSearchView = (FloatingSearchView) rootView.findViewById(R.id.floating_search_view);
+        mSearchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
+            @Override
+            public void onActionMenuItemSelected(MenuItem item) {
+                if(item.getItemId() == R.id.action_location) {
+                    Log.d(TAG, "Fetch location");
+                    fetchLocationAddress();
+                }
+            }
+        });
 
         return rootView;
 
@@ -210,13 +235,13 @@ public class LocationFragment extends Fragment implements
         mGoogleMap.setMinZoomPreference(14.0f);
         mGoogleMap.setMaxZoomPreference(15.0f);
         mGoogleMap.getUiSettings().setCompassEnabled(true);
-        mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                fetchLocationAddress();
-                return false;
-            }
-        });
+//        mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+//            @Override
+//            public boolean onMyLocationButtonClick() {
+//                fetchLocationAddress();
+//                return false;
+//            }
+//        });
 
         /*
         Enable user location feature
@@ -303,6 +328,7 @@ public class LocationFragment extends Fragment implements
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_FINE_LOCATION_REQUEST);
         } else if (mGoogleMap != null) {
             mGoogleMap.setMyLocationEnabled(true);
+            mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
     }
 
@@ -331,7 +357,6 @@ public class LocationFragment extends Fragment implements
 
             /*
             Show current location address
-            //TODO: implement the view
              */
             //mAddressTextView.setText(mLastLocationAddress);
 
