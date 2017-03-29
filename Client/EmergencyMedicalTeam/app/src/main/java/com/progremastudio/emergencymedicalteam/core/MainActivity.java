@@ -33,6 +33,10 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*
+        Initiate activity layout
+         */
         setContentView(R.layout.activity_main);
 
         /*
@@ -95,9 +99,9 @@ public class MainActivity extends BaseActivity {
          */
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_directions_bus_white_48dp);
-        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_assignment_white_48dp);
-        mTabLayout.getTabAt(2).setIcon(R.drawable.ic_tag_faces_white_48dp);
+        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_map_white_48dp);
+        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_assignment_late_white_48dp);
+        mTabLayout.getTabAt(2).setIcon(R.drawable.ic_chat_white_48dp);
 
     }
 
