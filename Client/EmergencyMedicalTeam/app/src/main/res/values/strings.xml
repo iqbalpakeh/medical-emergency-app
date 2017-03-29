@@ -4,6 +4,8 @@
     <string name="app_company">© IWEBNET-ID</string>
     <string name="menu_logut">Keluar</string>
     <string name="menu_about">Tentang</string>
+    <string name="menu_settings">Pengaturan</string>
+    <string name="menu_search">Pencarian</string>
     <string name="heading_location">Lokasi</string>
     <string name="heading_post">Laporan</string>
     <string name="heading_chat">Obrolan</string>
