@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity {
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.getTabAt(0).setIcon(R.drawable.ic_map_white_48dp);
         mTabLayout.getTabAt(1).setIcon(R.drawable.ic_assignment_late_white_48dp);
-        mTabLayout.getTabAt(2).setIcon(R.drawable.ic_chat_white_48dp);
+        mTabLayout.getTabAt(2).setIcon(R.drawable.ic_forum_white_24dp);
 
     }
 

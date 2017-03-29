@@ -5,17 +5,11 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/ic_search_white_24dp"
-        android:title="@string/menu_search"
-        android:visible="true"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/action_settings"
         android:title="@string/menu_settings"
+        android:icon="@drawable/ic_settings_white_24dp"
         android:visible="true"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_about"

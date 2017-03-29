@@ -111,9 +111,10 @@ public class LocationFragment extends Fragment implements
         mSearchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
             @Override
             public void onActionMenuItemSelected(MenuItem item) {
-                if(item.getItemId() == R.id.action_location) {
+                if(item.getItemId() == R.id.search_my_location) {
                     Log.d(TAG, "Fetch location");
                     fetchLocationAddress();
+                    moveCameraToCurrentLocation();
                 }
             }
         });
@@ -230,18 +231,11 @@ public class LocationFragment extends Fragment implements
         Prepare google map object
          */
         mGoogleMap = googleMap;
-        mGoogleMap.addMarker(new MarkerOptions().position(currentLocation).title("TBM APPS User location"));
+        mGoogleMap.addMarker(new MarkerOptions().position(currentLocation).title("TBM APPS User location").snippet("Test"));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
         mGoogleMap.setMinZoomPreference(14.0f);
         mGoogleMap.setMaxZoomPreference(15.0f);
         mGoogleMap.getUiSettings().setCompassEnabled(true);
-//        mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-//            @Override
-//            public boolean onMyLocationButtonClick() {
-//                fetchLocationAddress();
-//                return false;
-//            }
-//        });
 
         /*
         Enable user location feature
@@ -265,6 +259,9 @@ public class LocationFragment extends Fragment implements
      * by using Latitude Longitude information.
      */
     protected void startAddressProviderService() {
+
+        Log.d(TAG, "start address provider service");
+
         Intent intent = new Intent(getActivity(), AddressService.class);
         intent.putExtra(AddressService.Constants.RECEIVER, mResultReceiver);
         intent.putExtra(AddressService.Constants.LOCATION_DATA_EXTRA, mLastLocationCoordinate);
@@ -320,6 +317,21 @@ public class LocationFragment extends Fragment implements
     }
 
     /**
+     * Move camera to current user location
+     */
+    private void moveCameraToCurrentLocation() {
+        /*
+        Fetch current user location
+         */
+        LatLng currentLocation = fetchCurrentLocation();
+
+        /*
+        Move camera
+         */
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+    }
+
+    /**
      * Enable the functionality of User Location by Google Map
      */
     private void enableMyLocation() {
@@ -359,7 +371,6 @@ public class LocationFragment extends Fragment implements
             Show current location address
              */
             //mAddressTextView.setText(mLastLocationAddress);
-
 
             /*
             Hide progress bar if service success.
