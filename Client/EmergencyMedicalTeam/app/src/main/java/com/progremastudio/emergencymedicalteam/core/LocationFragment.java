@@ -100,11 +100,6 @@ public class LocationFragment extends Fragment implements
         mResultReceiver = new AddressResultReceiver(new Handler());
 
         /*
-        Initiate address text view
-         */
-        //mAddressTextView = (TextView) rootView.findViewById(R.id.address_text);
-
-        /*
         Initialize search view
          */
         mSearchView = (FloatingSearchView) rootView.findViewById(R.id.floating_search_view);
@@ -365,11 +360,6 @@ public class LocationFragment extends Fragment implements
              */
             mLastLocationAddress = address.replace("\n", ", ");
             Log.d(TAG, "Address = " + mLastLocationAddress);
-
-            /*
-            Show current location address
-             */
-            //mAddressTextView.setText(mLastLocationAddress);
 
             /*
             Hide progress bar if service success.
