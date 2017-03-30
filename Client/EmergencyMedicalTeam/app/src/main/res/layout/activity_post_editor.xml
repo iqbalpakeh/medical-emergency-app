@@ -22,10 +22,11 @@
 
         <TextView
             android:id="@+id/address_text_view"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="@string/str_Current_location"
+            android:background="@color/blue_300"
             android:textColor="@color/text_primary_dark"
             android:textSize="14sp" />
 

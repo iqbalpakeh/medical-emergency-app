@@ -79,7 +79,8 @@
             android:name=".core.PostEditor"
             android:label="@string/str_Accident_report"
             android:theme="@style/child_activity_with_action_bar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".core.MainActivity" />
