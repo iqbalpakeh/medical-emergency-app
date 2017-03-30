@@ -52,7 +52,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.progremastudio.emergencymedicalteam.AddressService;
-import com.progremastudio.emergencymedicalteam.AppContext;
+import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.CameraActivity;
 import com.progremastudio.emergencymedicalteam.FirebasePath;
@@ -140,7 +140,7 @@ public class DashboardFragment extends Fragment implements
         mAddressTextView = (TextView) rootView.findViewById(R.id.address_text);
         mImageView = (ImageView) rootView.findViewById(R.id.image_view);
         mMessageEditText = (EditText) rootView.findViewById(R.id.edit_text);
-        mSubmitButton = (ImageButton) rootView.findViewById(R.id.submit_code);
+        mSubmitButton = (ImageButton) rootView.findViewById(R.id.submit_button);
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -384,8 +384,8 @@ public class DashboardFragment extends Fragment implements
             Log.d(TAG, "Latitude = " + latitude);
             Log.d(TAG, "Longitude = " + longitude);
 
-            AppContext.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
-            AppContext.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
+            AppSharedPreferences.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
+            AppSharedPreferences.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
 
             /*
             Start Address Provider service
@@ -502,8 +502,8 @@ public class DashboardFragment extends Fragment implements
      */
     private LatLng fetchCurrentLocation() {
 
-        String latitude = AppContext.fetchCurrentUserLastLatitudeLocation(getActivity());
-        String longitude = AppContext.fetchCurrentUserLastLongitudeLocation(getActivity());
+        String latitude = AppSharedPreferences.fetchCurrentUserLastLatitudeLocation(getActivity());
+        String longitude = AppSharedPreferences.fetchCurrentUserLastLongitudeLocation(getActivity());
 
         Log.d(TAG, "Latitude = " + latitude);
         Log.d(TAG, "Longitude = " + longitude);
@@ -736,12 +736,12 @@ public class DashboardFragment extends Fragment implements
         /*
         Prepare local data for Post object creation
          */
-        String displayName = AppContext.fetchCurrentUserDisplayName(getContext());
-        String email = AppContext.fetchCurrentUserEmail(getContext());
+        String displayName = AppSharedPreferences.fetchCurrentUserDisplayName(getContext());
+        String email = AppSharedPreferences.fetchCurrentUserEmail(getContext());
         String timestamp = ((BaseActivity) getActivity()).currentTimestamp();
         String locationCoordinate = mLastLocationAddress;
         String emergencyType = "Kecelakaan"; // todo: to have list option
-        String phoneNumber = AppContext.fetchCurrentUserPhoneNumber(getContext());
+        String phoneNumber = AppSharedPreferences.fetchCurrentUserPhoneNumber(getContext());
 
         /*
         Create new Post object

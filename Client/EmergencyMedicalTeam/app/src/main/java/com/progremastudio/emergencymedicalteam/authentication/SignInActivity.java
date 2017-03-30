@@ -20,7 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.progremastudio.emergencymedicalteam.AppContext;
+import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.FirebasePath;
 import com.progremastudio.emergencymedicalteam.core.MainActivity;
@@ -145,7 +145,7 @@ public class SignInActivity extends BaseActivity {
                 /*
                 Store current user details to shared-preference
                  */
-                AppContext.storeCurrentUser(
+                AppSharedPreferences.storeCurrentUser(
                         SignInActivity.this,
                         user.displayName,
                         user.email,

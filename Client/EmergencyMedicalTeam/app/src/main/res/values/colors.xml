@@ -16,6 +16,13 @@
     <color name="cyan_500">#00BCD4</color>
     <color name="blue_300">#BBDEFB</color>
 
+    <!-- Floating Action Button -->
+    <color name="fab_normal_default">#F44336</color>
+    <color name="fab_normal_pressed">#EF5350</color>
+    <color name="fab_mini_default">#F44336</color>
+    <color name="fab_mini_pressed">#EF5350</color>
+    <color name="black_semi_transparent">#B2000000</color>
+
     <color name="card_shadow">#CABBBBBB</color>
 
 </resources>

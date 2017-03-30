@@ -96,7 +96,7 @@
                         android:src="@drawable/ic_add_a_photo_black_24dp" />
 
                     <ImageButton
-                        android:id="@+id/submit_code"
+                        android:id="@+id/submit_button"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"

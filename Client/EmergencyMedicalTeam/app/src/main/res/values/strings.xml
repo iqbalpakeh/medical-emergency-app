@@ -4,10 +4,14 @@
     <string name="app_company">© IWEBNET-ID</string>
     <string name="menu_logut">Keluar</string>
     <string name="menu_about">Tentang</string>
-    <string name="heading_dashboard">Beranda</string>
+    <string name="menu_settings">Pengaturan</string>
+    <string name="menu_search">Pencarian</string>
+    <string name="heading_location">Lokasi</string>
     <string name="heading_post">Laporan</string>
     <string name="heading_chat">Obrolan</string>
     <string name="Ambulance_Phone_Number">+6582273979449</string>
+    <string name="search_my_location">search my location</string>
+    <string name="search_local_hospital">search local hospital</string>
 
     <string name="str_Current_location">Lokasi sekarang…</string>
     <string name="str_Short_story">Berita singkat</string>
@@ -24,5 +28,7 @@
     <string name="str_Version">Version</string>
     <string name="str_Sign_In_failed">Sign-In failed</string>
     <string name="str_Sign_Up_failed">Sign-Up failed</string>
+    <string name="str_Call_ambulance">Panggil ambulance</string>
+    <string name="str_Accident_report">Lapor kecelakaan</string>
 
 </resources>
