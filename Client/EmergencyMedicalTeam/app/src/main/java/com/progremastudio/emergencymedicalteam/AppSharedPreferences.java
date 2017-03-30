@@ -3,7 +3,7 @@ package com.progremastudio.emergencymedicalteam;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class AppContext {
+public class AppSharedPreferences {
 
     /*
     Shared preference names
@@ -14,6 +14,7 @@ public class AppContext {
     private static final String USER_DISPLAY_NAME = "user-display-name";
     private static final String LAST_LOCATION_LATITUDE = "last-location-latitude";
     private static final String LAST_LOCATION_LONGITUDE = "last-location-longitude";
+    private static final String LAST_LOCATION_ADDRESS = "last-location-address";
 
     /*
     Default coordinate is Medan
@@ -161,6 +162,30 @@ public class AppContext {
     public static String fetchCurrentUserLastLongitudeLocation(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(LAST_LOCATION_LONGITUDE, DEFAULT_LONGITUDE);
+    }
+
+    /**
+     * Store current user's last address to shared-preference
+     *
+     * @param context application context
+     * @param address current user's last address
+     */
+    public static void storeCurrentUserLastAddress(Context context, String address) {
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        SharedPreferences.Editor editor = appContext.edit();
+        editor.putString(LAST_LOCATION_ADDRESS, address);
+        editor.commit();
+    }
+
+    /**
+     * Fetch current user's last address from shared-preference
+     *
+     * @param context application context
+     * @return current user's last address
+     */
+    public static String fetchCurrentUserAddress(Context context) {
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        return appContext.getString(LAST_LOCATION_ADDRESS, DEFAULT_LONGITUDE);
     }
 
 }

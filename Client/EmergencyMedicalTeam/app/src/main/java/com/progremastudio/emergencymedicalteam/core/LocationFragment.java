@@ -36,7 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.progremastudio.emergencymedicalteam.AddressService;
-import com.progremastudio.emergencymedicalteam.AppContext;
+import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.R;
 
@@ -270,8 +270,8 @@ public class LocationFragment extends Fragment implements
      */
     private LatLng fetchCurrentLocation() {
 
-        String latitude = AppContext.fetchCurrentUserLastLatitudeLocation(getActivity());
-        String longitude = AppContext.fetchCurrentUserLastLongitudeLocation(getActivity());
+        String latitude = AppSharedPreferences.fetchCurrentUserLastLatitudeLocation(getActivity());
+        String longitude = AppSharedPreferences.fetchCurrentUserLastLongitudeLocation(getActivity());
 
         Log.d(TAG, "Latitude = " + latitude);
         Log.d(TAG, "Longitude = " + longitude);
@@ -300,8 +300,8 @@ public class LocationFragment extends Fragment implements
             Log.d(TAG, "Latitude = " + latitude);
             Log.d(TAG, "Longitude = " + longitude);
 
-            AppContext.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
-            AppContext.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
+            AppSharedPreferences.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
+            AppSharedPreferences.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
 
             /*
             Start Address Provider service
@@ -360,6 +360,11 @@ public class LocationFragment extends Fragment implements
              */
             mLastLocationAddress = address.replace("\n", ", ");
             Log.d(TAG, "Address = " + mLastLocationAddress);
+
+            /*
+            Store current address
+             */
+            AppSharedPreferences.storeCurrentUserLastAddress(getContext(), mLastLocationAddress);
 
             /*
             Hide progress bar if service success.

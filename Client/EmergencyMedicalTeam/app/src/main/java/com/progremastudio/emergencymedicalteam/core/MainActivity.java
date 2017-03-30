@@ -20,7 +20,7 @@ import android.view.View;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.progremastudio.emergencymedicalteam.AppContext;
+import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.authentication.AboutActivity;
@@ -154,7 +154,7 @@ public class MainActivity extends BaseActivity {
             /*
             Clear user data on shared-preference
              */
-            AppContext.logOutCurrentUser(this);
+            AppSharedPreferences.logOutCurrentUser(this);
 
             /*
             Sign-out from Firebase authentication

@@ -77,7 +77,7 @@
 
         <activity
             android:name=".core.PostEditor"
-            android:label="Post editor"
+            android:label="@string/str_Accident_report"
             android:theme="@style/child_activity_with_action_bar"
             android:screenOrientation="portrait">
             <meta-data
