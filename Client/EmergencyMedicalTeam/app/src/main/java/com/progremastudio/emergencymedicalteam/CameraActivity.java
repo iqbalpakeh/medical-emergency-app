@@ -337,15 +337,6 @@ public class CameraActivity extends AppCompatActivity {
                 directoryPath.mkdirs();
             }
 
-            /* // debug code to save data on the external storage
-             *
-            File directoryPath = new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES), "post");
-            if (!directoryPath.exists()) {
-                directoryPath.mkdirs();
-            }
-             */
-
             mUri = Uri.parse(directoryPath.getPath());
 
         } catch (Exception exception) {
@@ -357,7 +348,9 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        startActivity(new Intent(this, PostEditor.class));
+        Intent intent = new Intent(this, PostEditor.class);
+        intent.putExtra(PostEditor.EXTRA, PostEditor.EXTRA_KEEP_PICTURE);
+        startActivity(intent);
         finish();
     }
 

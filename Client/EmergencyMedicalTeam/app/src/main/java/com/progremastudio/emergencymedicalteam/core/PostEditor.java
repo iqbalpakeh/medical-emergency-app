@@ -45,6 +45,12 @@ import java.util.Map;
 
 public class PostEditor extends BaseActivity {
 
+    public static final String EXTRA = "extra";
+
+    public static final String EXTRA_DELETE_PICTURE = "delete-picture";
+
+    public static final String EXTRA_KEEP_PICTURE = "keep-picture";
+
     private static final String TAG = "post-editor";
 
     private DatabaseReference mDatabase;
@@ -124,6 +130,8 @@ public class PostEditor extends BaseActivity {
      */
     private void showImageView() {
 
+        String extra = getIntent().getExtras().getString(EXTRA);
+
         /*
         Get access to picture file
          */
@@ -135,6 +143,13 @@ public class PostEditor extends BaseActivity {
          */
         if (!filePath.exists()) {
             return;
+        }
+
+        /*
+        Check Extra action
+         */
+        if(extra.equals(EXTRA_DELETE_PICTURE)) {
+            filePath.delete();
         }
 
         try {
@@ -174,44 +189,10 @@ public class PostEditor extends BaseActivity {
             fOut.close();
 
             /*
-            Get the size of the ImageView
-            */
-            int targetW = mImageView.getWidth();
-            int targetH = mImageView.getHeight();
-
-            /*
-            Get the size of the image
-             */
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            bmOptions.inJustDecodeBounds = true;
-            int photoW = bmOptions.outWidth;
-            int photoH = bmOptions.outHeight;
-
-		    /*
-		    Figure out which way needs to be reduced less
-		     */
-            int scaleFactor = 1;
-            if ((targetW > 0) || (targetH > 0)) {
-                scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-            }
-
-		    /*
-		    Set bitmap options to scale the image decode target
-		     */
-            bmOptions.inJustDecodeBounds = false;
-            bmOptions.inSampleSize = scaleFactor;
-            bmOptions.inPurgeable = true;
-
-		    /*
-		    Decode the JPEG file into a Bitmap
-		    */
-            Bitmap bitmap = BitmapFactory.decodeFile(filePath.getAbsolutePath(), bmOptions);
-
-            /*
             Present the picture
              */
             mImageView.setVisibility(View.VISIBLE);
-            mImageView.setImageBitmap(bitmap);
+            mImageView.setImageBitmap(myBitmap);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -267,11 +248,6 @@ public class PostEditor extends BaseActivity {
                             Log.d(TAG, "User:" + user.toString());
                             uploadPost(userId, content);
                         }
-
-                        /*
-                        Hide progress bar
-                         */
-                        hideProgressDialog();
                     }
 
                     @Override
@@ -416,6 +392,11 @@ public class PostEditor extends BaseActivity {
         Clear post after posting message
          */
         clearPost();
+
+        /*
+        Hide progress bar
+         */
+        hideProgressDialog();
 
         /*
         Go back to Main activity

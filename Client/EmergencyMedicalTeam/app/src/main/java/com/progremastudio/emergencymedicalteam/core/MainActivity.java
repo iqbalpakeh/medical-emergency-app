@@ -238,7 +238,9 @@ public class MainActivity extends BaseActivity {
      * picture and short description of the event
      */
     private void openPostEditor() {
-        startActivity(new Intent(this, PostEditor.class));
+        Intent intent = new Intent(this, PostEditor.class);
+        intent.putExtra(PostEditor.EXTRA, PostEditor.EXTRA_DELETE_PICTURE);
+        startActivity(intent);
     }
 
 }
