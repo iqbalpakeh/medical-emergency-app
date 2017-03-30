@@ -28,7 +28,7 @@ import com.github.florent37.camerafragment.widgets.CameraSwitchView;
 import com.github.florent37.camerafragment.widgets.FlashSwitchView;
 import com.github.florent37.camerafragment.widgets.MediaActionSwitchView;
 import com.github.florent37.camerafragment.widgets.RecordButton;
-import com.progremastudio.emergencymedicalteam.core.MainActivity;
+import com.progremastudio.emergencymedicalteam.core.PostEditor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -357,7 +357,7 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, PostEditor.class));
         finish();
     }
 

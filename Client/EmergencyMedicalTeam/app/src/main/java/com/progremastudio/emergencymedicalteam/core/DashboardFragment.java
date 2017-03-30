@@ -140,7 +140,7 @@ public class DashboardFragment extends Fragment implements
         mAddressTextView = (TextView) rootView.findViewById(R.id.address_text);
         mImageView = (ImageView) rootView.findViewById(R.id.image_view);
         mMessageEditText = (EditText) rootView.findViewById(R.id.edit_text);
-        mSubmitButton = (ImageButton) rootView.findViewById(R.id.submit_code);
+        mSubmitButton = (ImageButton) rootView.findViewById(R.id.submit_button);
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
