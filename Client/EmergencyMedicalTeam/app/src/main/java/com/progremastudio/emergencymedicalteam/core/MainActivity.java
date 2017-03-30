@@ -1,16 +1,24 @@
 package com.progremastudio.emergencymedicalteam.core;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.progremastudio.emergencymedicalteam.AppContext;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
@@ -21,6 +29,8 @@ import com.progremastudio.emergencymedicalteam.authentication.SignInActivity;
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "main-activity";
+
+    private final int PERMISSION_CALL_PHONE = 0;
 
     private Toolbar mToolbar;
 
@@ -103,6 +113,24 @@ public class MainActivity extends BaseActivity {
         mTabLayout.getTabAt(1).setIcon(R.drawable.ic_assignment_late_white_48dp);
         mTabLayout.getTabAt(2).setIcon(R.drawable.ic_forum_white_24dp);
 
+        /*
+        Initiate floating action button
+         */
+        FloatingActionButton emergencyCallButton = (FloatingActionButton) findViewById(R.id.fab_call);
+        emergencyCallButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callAmbulance();
+            }
+        });
+        FloatingActionButton accidentPostButton = (FloatingActionButton) findViewById(R.id.fab_report);
+        accidentPostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openPostEditor();
+            }
+        });
+
     }
 
     @Override
@@ -159,7 +187,58 @@ public class MainActivity extends BaseActivity {
         else {
             return super.onOptionsItemSelected(item);
         }
+    }
 
+    /**
+     * Call Ambulance after User click Call Ambulance button
+     */
+    private void callAmbulance() {
+        /*
+        Check Call permission access
+         */
+        if(!checkCallAccess()) {
+            Log.d(TAG, "No access to phone call");
+            return;
+        }
+
+        /*
+        Make a phone call to predefined ambulance if permission is granted
+         */
+        makePhoneCall();
+    }
+
+    /**
+     * Make a phone call by using ACTION_CALL intent
+     */
+    private void makePhoneCall() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + getString(R.string.Ambulance_Phone_Number)));
+        startActivity(intent);
+    }
+
+    /**
+     * Check access for ACTION_CALL intent
+     *
+     * @return permission status. TRUE if granted. Otherwise, return FALSE
+     */
+    private boolean checkCallAccess() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, PERMISSION_CALL_PHONE);
+            }
+            return false;
+        } else  {
+            return true;
+        }
+    }
+
+    /**
+     * Open post editor activity to create post. Post contain current location,
+     * picture and short description of the event
+     */
+    private void openPostEditor() {
+        startActivity(new Intent(this, PostEditor.class));
     }
 
 }

@@ -21,4 +21,9 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="child_activity_with_action_bar" parent="MyMaterialTheme" >
+        <item name="windowNoTitle">false</item>
+        <item name="windowActionBar">true</item>
+    </style>
+
 </resources>

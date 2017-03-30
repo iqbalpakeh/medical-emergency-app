@@ -289,6 +289,10 @@ public class LocationFragment extends Fragment implements
      * and then show user last location.
      */
     private void fetchLocationAddress() {
+        /*
+        Start to show progress dialog
+         */
+        ((BaseActivity) getActivity()).showProgressDialog();
 
         if (mGoogleApiClient.isConnected() && mLastLocationCoordinate != null) {
 
@@ -309,11 +313,6 @@ public class LocationFragment extends Fragment implements
              */
             startAddressProviderService();
         }
-
-        /*
-        Start to show progress dialog
-         */
-        ((BaseActivity) getActivity()).showProgressDialog();
     }
 
     /**

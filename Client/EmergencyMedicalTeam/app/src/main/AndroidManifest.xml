@@ -63,11 +63,22 @@
         <activity
             android:name=".core.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing"/>
 
         <activity
             android:name=".authentication.AboutActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".core.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".core.PostEditor"
+            android:label="Post editor"
+            android:theme="@style/child_activity_with_action_bar"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
