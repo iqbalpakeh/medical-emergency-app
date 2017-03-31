@@ -4,16 +4,16 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -193,17 +193,13 @@ public class MainActivity extends BaseActivity {
      * Call Ambulance after User click Call Ambulance button
      */
     private void callAmbulance() {
-        /*
-        Check Call permission access
-         */
-        if(!checkCallAccess()) {
-            Log.d(TAG, "No access to phone call");
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            String[] permissions = {
+                    Manifest.permission.CALL_PHONE
+            };
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_CALL_PHONE);
             return;
         }
-
-        /*
-        Make a phone call to predefined ambulance if permission is granted
-         */
         makePhoneCall();
     }
 
@@ -216,20 +212,11 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    /**
-     * Check access for ACTION_CALL intent
-     *
-     * @return permission status. TRUE if granted. Otherwise, return FALSE
-     */
-    private boolean checkCallAccess() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, PERMISSION_CALL_PHONE);
-            }
-            return false;
-        } else  {
-            return true;
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_CALL_PHONE) {
+            makePhoneCall();
         }
     }
 
