@@ -161,7 +161,7 @@ public class LocationFragment extends Fragment implements
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             };
-            ActivityCompat.requestPermissions(getActivity(), permissions, MainActivity.PERMISSION_TO_START_ADDRESS_SERVICE);
+            requestPermissions(permissions, MainActivity.PERMISSION_TO_START_ADDRESS_SERVICE);
             return;
         }
         requestLocationAddress();
@@ -298,25 +298,27 @@ public class LocationFragment extends Fragment implements
          */
         ((BaseActivity) getActivity()).showProgressDialog();
 
-        if (mGoogleApiClient.isConnected() && mLastLocationCoordinate != null) {
+        /*
+        Fetch location coordinate from Google Map Api
+         */
+        mLastLocationCoordinate = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-            /*
-            Save current location coordinate for next request
-             */
-            String latitude = String.valueOf(mLastLocationCoordinate.getLatitude());
-            String longitude = String.valueOf(mLastLocationCoordinate.getLongitude());
+        /*
+        Save current location coordinate for next request
+         */
+        String latitude = String.valueOf(mLastLocationCoordinate.getLatitude());
+        String longitude = String.valueOf(mLastLocationCoordinate.getLongitude());
 
-            Log.d(TAG, "Latitude = " + latitude);
-            Log.d(TAG, "Longitude = " + longitude);
+        Log.d(TAG, "Latitude = " + latitude);
+        Log.d(TAG, "Longitude = " + longitude);
 
-            AppSharedPreferences.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
-            AppSharedPreferences.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
+        AppSharedPreferences.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
+        AppSharedPreferences.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
 
-            /*
-            Start Address Provider service
-             */
-            startAddressProviderService();
-        }
+         /*
+         Start Address Provider service
+          */
+        startAddressProviderService();
     }
 
     /**
@@ -347,7 +349,7 @@ public class LocationFragment extends Fragment implements
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             };
-            ActivityCompat.requestPermissions(getActivity(), permissions, MainActivity.PERMISSION_TO_ENABLE_GMAP_LOCATION);
+            requestPermissions(permissions, MainActivity.PERMISSION_TO_ENABLE_GMAP_LOCATION);
             return;
         }
         enableGoogleMapLocation();
