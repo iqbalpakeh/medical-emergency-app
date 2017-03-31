@@ -41,6 +41,10 @@ public class LocationFragment extends Fragment implements
 
     private static final String TAG = "location-fragment";
 
+    private static final int PERMISSION_TO_START_ADDRESS_SERVICE = 1;
+
+    private static final int PERMISSION_TO_ENABLE_GMAP_LOCATION = 2;
+
     private GoogleMap mGoogleMap;
 
     private MapView mMapView;
@@ -144,7 +148,7 @@ public class LocationFragment extends Fragment implements
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             };
-            requestPermissions(permissions, MainActivity.PERMISSION_TO_START_ADDRESS_SERVICE);
+            requestPermissions(permissions, PERMISSION_TO_START_ADDRESS_SERVICE);
             return;
         }
         requestLocationAddress();
@@ -174,9 +178,9 @@ public class LocationFragment extends Fragment implements
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MainActivity.PERMISSION_TO_START_ADDRESS_SERVICE) {
+        if (requestCode == PERMISSION_TO_START_ADDRESS_SERVICE) {
             requestLocationAddress();
-        } else if (requestCode == MainActivity.PERMISSION_TO_ENABLE_GMAP_LOCATION) {
+        } else if (requestCode == PERMISSION_TO_ENABLE_GMAP_LOCATION) {
             enableGoogleMapLocation();
         }
     }
@@ -228,6 +232,12 @@ public class LocationFragment extends Fragment implements
         Enable user location feature
          */
         enableMyLocation();
+
+        /*
+        Move camera
+         */
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+
     }
 
     /**
@@ -332,7 +342,7 @@ public class LocationFragment extends Fragment implements
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             };
-            requestPermissions(permissions, MainActivity.PERMISSION_TO_ENABLE_GMAP_LOCATION);
+            requestPermissions(permissions, PERMISSION_TO_ENABLE_GMAP_LOCATION);
             return;
         }
         enableGoogleMapLocation();

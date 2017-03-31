@@ -28,13 +28,9 @@ import com.progremastudio.emergencymedicalteam.authentication.SignInActivity;
 
 public class MainActivity extends BaseActivity {
 
-    public static final int PERMISSION_TO_CALL_PHONE = 0;
-
-    public static final int PERMISSION_TO_START_ADDRESS_SERVICE = 1;
-
-    public static final int PERMISSION_TO_ENABLE_GMAP_LOCATION = 2;
-
     private static final String TAG = "main-activity";
+
+    private static final int PERMISSION_TO_CALL_PHONE = 0;
 
     private Toolbar mToolbar;
 
