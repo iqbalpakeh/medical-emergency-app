@@ -159,9 +159,6 @@ public class LocationFragment extends Fragment implements
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        /*
-        check location permission and request for first time user
-         */
         if ((ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                 && (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             String[] permissions = {
@@ -198,7 +195,6 @@ public class LocationFragment extends Fragment implements
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         if (requestCode == PERMISSION_TO_START_ADDRESS_SERVICE) {
             requestLocationAddress();
         } else if (requestCode == PERMISSION_TO_ENABLE_GMAP_LOCATION) {
