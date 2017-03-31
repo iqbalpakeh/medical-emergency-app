@@ -31,9 +31,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 import com.progremastudio.emergencymedicalteam.AddressService;
 import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
@@ -43,10 +40,6 @@ public class LocationFragment extends Fragment implements
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "location-fragment";
-
-    private DatabaseReference mDatabase;
-
-    private FirebaseStorage mStorage;
 
     private GoogleMap mGoogleMap;
 
@@ -66,16 +59,6 @@ public class LocationFragment extends Fragment implements
         Initiate fragment layout
          */
         View rootView = inflater.inflate(R.layout.fragment_location, container, false);
-
-        /*
-        Initialize Firebase Real-time DB reference
-         */
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        /*
-        Initialize Firebase Storage reference
-         */
-        mStorage = FirebaseStorage.getInstance();
 
         /*
         Initialize Google-Map API
