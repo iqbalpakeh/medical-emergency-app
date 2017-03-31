@@ -44,10 +44,6 @@ public class LocationFragment extends Fragment implements
 
     private static final String TAG = "location-fragment";
 
-    private final int PERMISSION_TO_START_ADDRESS_SERVICE = 0;
-
-    private final int PERMISSION_TO_ENABLE_GMAP_LOCATION = 1;
-
     private DatabaseReference mDatabase;
 
     private FirebaseStorage mStorage;
@@ -165,7 +161,7 @@ public class LocationFragment extends Fragment implements
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             };
-            ActivityCompat.requestPermissions(getActivity(), permissions, PERMISSION_TO_START_ADDRESS_SERVICE);
+            ActivityCompat.requestPermissions(getActivity(), permissions, MainActivity.PERMISSION_TO_START_ADDRESS_SERVICE);
             return;
         }
         requestLocationAddress();
@@ -195,9 +191,9 @@ public class LocationFragment extends Fragment implements
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_TO_START_ADDRESS_SERVICE) {
+        if (requestCode == MainActivity.PERMISSION_TO_START_ADDRESS_SERVICE) {
             requestLocationAddress();
-        } else if (requestCode == PERMISSION_TO_ENABLE_GMAP_LOCATION) {
+        } else if (requestCode == MainActivity.PERMISSION_TO_ENABLE_GMAP_LOCATION) {
             enableGoogleMapLocation();
         }
     }
@@ -351,7 +347,7 @@ public class LocationFragment extends Fragment implements
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             };
-            ActivityCompat.requestPermissions(getActivity(), permissions, PERMISSION_TO_ENABLE_GMAP_LOCATION);
+            ActivityCompat.requestPermissions(getActivity(), permissions, MainActivity.PERMISSION_TO_ENABLE_GMAP_LOCATION);
             return;
         }
         enableGoogleMapLocation();

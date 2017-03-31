@@ -28,9 +28,13 @@ import com.progremastudio.emergencymedicalteam.authentication.SignInActivity;
 
 public class MainActivity extends BaseActivity {
 
-    private static final String TAG = "main-activity";
+    public static final int PERMISSION_TO_CALL_PHONE = 0;
 
-    private final int PERMISSION_CALL_PHONE = 0;
+    public static final int PERMISSION_TO_START_ADDRESS_SERVICE = 1;
+
+    public static final int PERMISSION_TO_ENABLE_GMAP_LOCATION = 2;
+
+    private static final String TAG = "main-activity";
 
     private Toolbar mToolbar;
 
@@ -197,7 +201,7 @@ public class MainActivity extends BaseActivity {
             String[] permissions = {
                     Manifest.permission.CALL_PHONE
             };
-            ActivityCompat.requestPermissions(this, permissions, PERMISSION_CALL_PHONE);
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_TO_CALL_PHONE);
             return;
         }
         makePhoneCall();
@@ -215,7 +219,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_CALL_PHONE) {
+        if (requestCode == PERMISSION_TO_CALL_PHONE) {
             makePhoneCall();
         }
     }

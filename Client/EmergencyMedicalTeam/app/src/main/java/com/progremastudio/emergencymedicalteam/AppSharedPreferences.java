@@ -21,6 +21,7 @@ public class AppSharedPreferences {
      */
     private static final String DEFAULT_LATITUDE = "3.58333";
     private static final String DEFAULT_LONGITUDE = "98.66667";
+    private static final String DEFAULT_ADDRESS = "Kota Medan";
 
     public static void logOutCurrentUser(Context context) {
         storeCurrentUser(context, "", "", "");
@@ -185,7 +186,7 @@ public class AppSharedPreferences {
      */
     public static String fetchCurrentUserAddress(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
-        return appContext.getString(LAST_LOCATION_ADDRESS, DEFAULT_LONGITUDE);
+        return appContext.getString(LAST_LOCATION_ADDRESS, DEFAULT_ADDRESS);
     }
 
 }
