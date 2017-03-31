@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -45,7 +44,9 @@ public class LocationFragment extends Fragment implements
 
     private static final String TAG = "location-fragment";
 
-    private final int PERMISSION_FINE_LOCATION_REQUEST = 0;
+    private final int PERMISSION_TO_START_ADDRESS_SERVICE = 0;
+
+    private final int PERMISSION_TO_ENABLE_GMAP_LOCATION = 1;
 
     private DatabaseReference mDatabase;
 
@@ -60,12 +61,6 @@ public class LocationFragment extends Fragment implements
     private AddressResultReceiver mResultReceiver;
 
     private Location mLastLocationCoordinate;
-
-    private String mLastLocationAddress;
-
-    private FloatingSearchView mSearchView;
-
-    //private TextView mAddressTextView;
 
     @Nullable
     @Override
@@ -102,11 +97,11 @@ public class LocationFragment extends Fragment implements
         /*
         Initialize search view
          */
-        mSearchView = (FloatingSearchView) rootView.findViewById(R.id.floating_search_view);
-        mSearchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
+        FloatingSearchView searchView = (FloatingSearchView) rootView.findViewById(R.id.floating_search_view);
+        searchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
             @Override
             public void onActionMenuItemSelected(MenuItem item) {
-                if(item.getItemId() == R.id.search_my_location) {
+                if (item.getItemId() == R.id.search_my_location) {
                     Log.d(TAG, "Fetch location");
                     fetchLocationAddress();
                     moveCameraToCurrentLocation();
@@ -164,14 +159,25 @@ public class LocationFragment extends Fragment implements
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-       /*
-        Check location permission
+        /*
+        check location permission and request for first time user
          */
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if ((ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                && (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+            String[] permissions = {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            };
+            ActivityCompat.requestPermissions(getActivity(), permissions, PERMISSION_TO_START_ADDRESS_SERVICE);
             return;
         }
+        requestLocationAddress();
+    }
 
+    /**
+     * Request location service from Address Provider Services
+     */
+    private void requestLocationAddress() {
         /*
         Fetch location coordinate from Google Map Api
          */
@@ -186,6 +192,17 @@ public class LocationFragment extends Fragment implements
                 return;
             }
             startAddressProviderService();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_TO_START_ADDRESS_SERVICE) {
+            requestLocationAddress();
+        } else if (requestCode == PERMISSION_TO_ENABLE_GMAP_LOCATION) {
+            enableGoogleMapLocation();
         }
     }
 
@@ -329,15 +346,30 @@ public class LocationFragment extends Fragment implements
      * Enable the functionality of User Location by Google Map
      */
     private void enableMyLocation() {
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_FINE_LOCATION_REQUEST);
-        } else if (mGoogleMap != null) {
+        /*
+        Check location permission and request for first time user
+         */
+        if ((ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                && (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+            String[] permissions = {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            };
+            ActivityCompat.requestPermissions(getActivity(), permissions, PERMISSION_TO_ENABLE_GMAP_LOCATION);
+            return;
+        }
+        enableGoogleMapLocation();
+    }
+
+    /**
+     * Enable google map location
+     */
+    private void enableGoogleMapLocation() {
+        if (mGoogleMap != null) {
             mGoogleMap.setMyLocationEnabled(true);
             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
     }
-
 
     /**
      * Receiver class for Address Fetch Service
@@ -358,13 +390,13 @@ public class LocationFragment extends Fragment implements
             /*
             Replace \n with ,
              */
-            mLastLocationAddress = address.replace("\n", ", ");
-            Log.d(TAG, "Address = " + mLastLocationAddress);
+            String lastLocationAddress = address.replace("\n", ", ");
+            Log.d(TAG, "Address = " + lastLocationAddress);
 
             /*
             Store current address
              */
-            AppSharedPreferences.storeCurrentUserLastAddress(getContext(), mLastLocationAddress);
+            AppSharedPreferences.storeCurrentUserLastAddress(getContext(), lastLocationAddress);
 
             /*
             Hide progress bar if service success.
