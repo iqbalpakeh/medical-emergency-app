@@ -155,27 +155,6 @@ public class LocationFragment extends Fragment implements
         requestLocationAddress();
     }
 
-    /**
-     * Request location service from Address Provider Services
-     */
-    private void requestLocationAddress() {
-        /*
-        Fetch location coordinate from Google Map Api
-         */
-        mLastLocationCoordinate = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        /*
-        Start address provider service if location coordinate returned by Google Map Api
-         */
-        if (mLastLocationCoordinate != null) {
-            if (!Geocoder.isPresent()) {
-                Toast.makeText(getActivity(), getString(R.string.str_No_Geocoder_available), Toast.LENGTH_LONG).show();
-                return;
-            }
-            startAddressProviderService();
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -247,7 +226,27 @@ public class LocationFragment extends Fragment implements
                 .position(currentLocation)
                 .title(AppSharedPreferences.fetchCurrentUserDisplayName(getContext())));
         UserLocation.showInfoWindow();
+    }
 
+    /**
+     * Request location service from Address Provider Services
+     */
+    private void requestLocationAddress() {
+        /*
+        Fetch location coordinate from Google Map Api
+         */
+        mLastLocationCoordinate = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        /*
+        Start address provider service if location coordinate returned by Google Map Api
+         */
+        if (mLastLocationCoordinate != null) {
+            if (!Geocoder.isPresent()) {
+                Toast.makeText(getActivity(), getString(R.string.str_No_Geocoder_available), Toast.LENGTH_LONG).show();
+                return;
+            }
+            startAddressProviderService();
+        }
     }
 
     /**
