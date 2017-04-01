@@ -14,6 +14,15 @@
         app:floatingSearch_leftActionMode="showHamburger"
         app:floatingSearch_showSearchKey="true" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_results_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:paddingTop="60dp"
+        android:clipToPadding="false"/>
+
     <com.arlib.floatingsearchview.FloatingSearchView
         android:id="@+id/floating_search_view"
         android:layout_width="match_parent"
