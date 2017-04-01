@@ -21,9 +21,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
+import com.directions.route.Route;
+import com.directions.route.RouteException;
+import com.directions.route.Routing;
+import com.directions.route.RoutingListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -32,12 +37,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.progremastudio.emergencymedicalteam.AddressService;
 import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.R;
 
-public class LocationFragment extends Fragment implements
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.progremastudio.emergencymedicalteam.R.id.map;
+
+public class LocationFragment extends Fragment implements RoutingListener,
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "location-fragment";
@@ -56,6 +68,14 @@ public class LocationFragment extends Fragment implements
 
     private Location mLastLocationCoordinate;
 
+    private LatLng mUserLocation;
+
+    private LatLng mTBMLocation;
+
+    private List<Polyline> polylines;
+
+    private static final int[] COLORS = new int[]{R.color.primary_dark,R.color.primary,R.color.primary_light,R.color.accent,R.color.primary_dark_material_light};
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,9 +89,10 @@ public class LocationFragment extends Fragment implements
         Initialize Google-Map API
          */
         buildGoogleApiClient();
-        mMapView = (MapView) rootView.findViewById(R.id.map);
+        mMapView = (MapView) rootView.findViewById(map);
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(this);
+        polylines = new ArrayList<>();
 
         /*
         Initialize Location Address Service
@@ -228,6 +249,53 @@ public class LocationFragment extends Fragment implements
         UserLocation.showInfoWindow();
     }
 
+    @Override
+    public void onRoutingFailure(RouteException e) {
+
+    }
+
+    @Override
+    public void onRoutingStart() {
+
+    }
+
+    @Override
+    public void onRoutingSuccess(ArrayList<Route> route, int shortestRouteIndex) {
+
+        CameraUpdate center = CameraUpdateFactory.newLatLng(mUserLocation);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
+
+        mGoogleMap.moveCamera(center);
+        
+        if(polylines.size()>0) {
+            for (Polyline poly : polylines) {
+                poly.remove();
+            }
+        }
+
+        polylines = new ArrayList<>();
+        //add route(s) to the map.
+        for (int i = 0; i <route.size(); i++) {
+
+            //In case of more than 5 alternative routes
+            int colorIndex = i % COLORS.length;
+
+            PolylineOptions polyOptions = new PolylineOptions();
+            polyOptions.color(getResources().getColor(COLORS[colorIndex]));
+            polyOptions.width(10 + i * 3);
+            polyOptions.addAll(route.get(i).getPoints());
+            Polyline polyline = mGoogleMap.addPolyline(polyOptions);
+            polylines.add(polyline);
+
+            Toast.makeText(getContext(),"Route "+ (i+1) +": distance - "+ route.get(i).getDistanceValue()+": duration - "+ route.get(i).getDurationValue(),Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRoutingCancelled() {
+
+    }
+
     /**
      * Request location service from Address Provider Services
      */
@@ -320,6 +388,19 @@ public class LocationFragment extends Fragment implements
                 .title("TBM FK UISU Medan")
                 .snippet("Lokasi ambulans"));
         TBMLocation.showInfoWindow();
+
+        /*
+        Show route to user
+         */
+        mUserLocation = fetchCurrentLocation(); //start
+        mTBMLocation = currentLocation; //end
+
+        Routing routing = new Routing.Builder()
+                .travelMode(Routing.TravelMode.WALKING)
+                .withListener(this)
+                .waypoints(mUserLocation, mTBMLocation)
+                .build();
+        routing.execute();
     }
 
     /**
