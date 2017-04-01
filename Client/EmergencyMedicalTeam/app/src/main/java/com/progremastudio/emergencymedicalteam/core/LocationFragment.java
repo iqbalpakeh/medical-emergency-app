@@ -28,7 +28,6 @@ import com.directions.route.RoutingListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -58,6 +57,8 @@ public class LocationFragment extends Fragment implements RoutingListener,
 
     private static final int PERMISSION_TO_ENABLE_GMAP_LOCATION = 2;
 
+    private static final int MAP_ANIMATION_DURATION = 1000;
+
     private GoogleMap mGoogleMap;
 
     private MapView mMapView;
@@ -68,13 +69,19 @@ public class LocationFragment extends Fragment implements RoutingListener,
 
     private Location mLastLocationCoordinate;
 
-    private LatLng mUserLocation;
+    private Marker mUserMarker;
 
-    private LatLng mTBMLocation;
+    private Marker mTBMMarker;
 
-    private List<Polyline> polylines;
+    private List<Polyline> mPolylines;
 
-    private static final int[] COLORS = new int[]{R.color.primary_dark,R.color.primary,R.color.primary_light,R.color.accent,R.color.primary_dark_material_light};
+    private static final int[] COLORS = new int[]{
+            R.color.primary_dark,
+            R.color.primary,
+            R.color.primary_light,
+            R.color.accent,
+            R.color.primary_dark_material_light
+    };
 
     @Nullable
     @Override
@@ -92,7 +99,11 @@ public class LocationFragment extends Fragment implements RoutingListener,
         mMapView = (MapView) rootView.findViewById(map);
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(this);
-        polylines = new ArrayList<>();
+
+        /*
+        Initiate polyline used for drawing track
+         */
+        mPolylines = new ArrayList<>();
 
         /*
         Initialize Location Address Service
@@ -107,9 +118,15 @@ public class LocationFragment extends Fragment implements RoutingListener,
             @Override
             public void onActionMenuItemSelected(MenuItem item) {
                 if (item.getItemId() == R.id.search_my_location) {
+                    /*
+                    Show user location
+                     */
                     fetchLocationAddress();
                     moveCameraToCurrentLocation();
                 } else if (item.getItemId() == R.id.search_local_hospital) {
+                    /*
+                    Show TBM location
+                     */
                     showTBMLocation();
                 }
             }
@@ -166,6 +183,9 @@ public class LocationFragment extends Fragment implements RoutingListener,
     public void onConnected(@Nullable Bundle bundle) {
         if ((ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                 && (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+            /*
+            Request permission for the first time
+             */
             String[] permissions = {
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
@@ -199,7 +219,6 @@ public class LocationFragment extends Fragment implements RoutingListener,
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         /*
         Fetch current user location
          */
@@ -209,8 +228,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         Update map with retro style
          */
         try {
-            boolean success = googleMap.setMapStyle(
-                    MapStyleOptions.loadRawResourceStyle(
+            boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                             getContext(), R.raw.retro_style_json));
             if (!success) {
                 Log.e(TAG, "Style parsing failed.");
@@ -223,7 +241,6 @@ public class LocationFragment extends Fragment implements RoutingListener,
         Prepare google map object
          */
         mGoogleMap = googleMap;
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
         mGoogleMap.setMinZoomPreference(13.0f);
         mGoogleMap.setMaxZoomPreference(20.0f);
         mGoogleMap.getUiSettings().setCompassEnabled(true);
@@ -239,19 +256,31 @@ public class LocationFragment extends Fragment implements RoutingListener,
         Move camera
          */
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(16), MAP_ANIMATION_DURATION, null);
 
         /*
         Add marker
          */
-        Marker UserLocation = mGoogleMap.addMarker(new MarkerOptions()
-                .position(currentLocation)
-                .title(AppSharedPreferences.fetchCurrentUserDisplayName(getContext())));
-        UserLocation.showInfoWindow();
+        if (mUserMarker != null) {
+            mUserMarker.remove();
+        }
+        mUserMarker = mGoogleMap.addMarker(new MarkerOptions()
+                        .position(currentLocation)
+                        .title(AppSharedPreferences.fetchCurrentUserDisplayName(getContext())));
+        mUserMarker.showInfoWindow();
     }
 
     @Override
     public void onRoutingFailure(RouteException e) {
-
+        /*
+        The Routing request failed
+         */
+        ((BaseActivity)getActivity()).hideProgressDialog();
+        if(e != null) {
+            Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(getContext(), "Something went wrong, Try again", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -261,20 +290,25 @@ public class LocationFragment extends Fragment implements RoutingListener,
 
     @Override
     public void onRoutingSuccess(ArrayList<Route> route, int shortestRouteIndex) {
+        /*
+        Move camera
+         */
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(fetchCurrentLocation()));
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(16), MAP_ANIMATION_DURATION, null);
 
-        CameraUpdate center = CameraUpdateFactory.newLatLng(mUserLocation);
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
-
-        mGoogleMap.moveCamera(center);
-        
-        if(polylines.size()>0) {
-            for (Polyline poly : polylines) {
+        /*
+        Clear polyline if exist
+         */
+        if(mPolylines.size()>0) {
+            for (Polyline poly : mPolylines) {
                 poly.remove();
             }
         }
 
-        polylines = new ArrayList<>();
-        //add route(s) to the map.
+        /*
+        Add routes to the map
+         */
+        mPolylines = new ArrayList<>();
         for (int i = 0; i <route.size(); i++) {
 
             //In case of more than 5 alternative routes
@@ -285,7 +319,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
             polyOptions.width(10 + i * 3);
             polyOptions.addAll(route.get(i).getPoints());
             Polyline polyline = mGoogleMap.addPolyline(polyOptions);
-            polylines.add(polyline);
+            mPolylines.add(polyline);
 
             Toast.makeText(getContext(),"Route "+ (i+1) +": distance - "+ route.get(i).getDistanceValue()+": duration - "+ route.get(i).getDurationValue(),Toast.LENGTH_SHORT).show();
         }
@@ -367,6 +401,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         FKUISU coordinate location based on GOOGLE MAP
          */
 
+        //Debug code
         //String latitude = "3.580790";
         //String longitude = "98.685101";
 
@@ -379,26 +414,25 @@ public class LocationFragment extends Fragment implements RoutingListener,
         Move camera
          */
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(16), MAP_ANIMATION_DURATION, null);
 
         /*
         Add marker
          */
-        Marker TBMLocation = mGoogleMap.addMarker(new MarkerOptions()
-                .position(currentLocation)
-                .title("TBM FK UISU Medan")
-                .snippet("Lokasi ambulans"));
-        TBMLocation.showInfoWindow();
+        if (mTBMMarker == null) {
+            mTBMMarker = mGoogleMap.addMarker(new MarkerOptions()
+                    .position(currentLocation)
+                    .title("TBM FK UISU Medan"));
+            mTBMMarker.showInfoWindow();
+        }
 
         /*
-        Show route to user
+        Execute routing
          */
-        mUserLocation = fetchCurrentLocation(); //start
-        mTBMLocation = currentLocation; //end
-
         Routing routing = new Routing.Builder()
-                .travelMode(Routing.TravelMode.WALKING)
+                .travelMode(Routing.TravelMode.DRIVING)
                 .withListener(this)
-                .waypoints(mUserLocation, mTBMLocation)
+                .waypoints(fetchCurrentLocation(), currentLocation)
                 .build();
         routing.execute();
     }
@@ -408,11 +442,6 @@ public class LocationFragment extends Fragment implements RoutingListener,
      * and then show user last location.
      */
     private void fetchLocationAddress() {
-        /*
-        Start to show progress dialog
-         */
-        ((BaseActivity) getActivity()).showProgressDialog();
-
         /*
         Fetch location coordinate from Google Map Api
          */
@@ -449,14 +478,18 @@ public class LocationFragment extends Fragment implements RoutingListener,
         Move camera
          */
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(16), MAP_ANIMATION_DURATION, null);
 
         /*
         Add marker
          */
-        Marker UserLocation = mGoogleMap.addMarker(new MarkerOptions()
+        if (mUserMarker != null) {
+            mUserMarker.remove();
+        }
+        mUserMarker = mGoogleMap.addMarker(new MarkerOptions()
                 .position(currentLocation)
                 .title(AppSharedPreferences.fetchCurrentUserDisplayName(getContext())));
-        UserLocation.showInfoWindow();
+        mUserMarker.showInfoWindow();
     }
 
     /**
@@ -468,6 +501,9 @@ public class LocationFragment extends Fragment implements RoutingListener,
          */
         if ((ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                 && (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+            /*
+            Request permission for the first time
+             */
             String[] permissions = {
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
@@ -519,7 +555,6 @@ public class LocationFragment extends Fragment implements RoutingListener,
             Hide progress bar if service success.
              */
             if (resultCode == AddressService.Constants.SUCCESS_RESULT) {
-                ((BaseActivity) getActivity()).hideProgressDialog();
                 Log.d(TAG, "Address found");
             }
         }
