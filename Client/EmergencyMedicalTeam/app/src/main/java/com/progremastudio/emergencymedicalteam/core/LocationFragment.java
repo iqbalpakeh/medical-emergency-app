@@ -85,15 +85,15 @@ public class LocationFragment extends Fragment implements
             @Override
             public void onActionMenuItemSelected(MenuItem item) {
                 if (item.getItemId() == R.id.search_my_location) {
-                    Log.d(TAG, "Fetch location");
                     fetchLocationAddress();
                     moveCameraToCurrentLocation();
+                } else if (item.getItemId() == R.id.search_local_hospital) {
+                    showTBMLocation();
                 }
             }
         });
 
         return rootView;
-
     }
 
     @Override
@@ -224,9 +224,11 @@ public class LocationFragment extends Fragment implements
         mGoogleMap = googleMap;
         mGoogleMap.addMarker(new MarkerOptions().position(currentLocation).title("TBM APPS User location").snippet("Test"));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-        mGoogleMap.setMinZoomPreference(14.0f);
-        mGoogleMap.setMaxZoomPreference(15.0f);
+        mGoogleMap.setMinZoomPreference(13.0f);
+        mGoogleMap.setMaxZoomPreference(20.0f);
         mGoogleMap.getUiSettings().setCompassEnabled(true);
+        mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
+        mGoogleMap.getUiSettings().setZoomGesturesEnabled(true);
 
         /*
         Enable user location feature
@@ -279,6 +281,30 @@ public class LocationFragment extends Fragment implements
         Log.d(TAG, "Longitude = " + longitude);
 
         return new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+    }
+
+    /**
+     * Show TBM location. Location is FK UISU Medan
+     */
+    private void showTBMLocation() {
+
+        /*
+        FKUISU coordinate location based on GOOGLE MAP
+         */
+        String latitude = "3.580790";
+        String longitude = "98.685101";
+
+        LatLng currentLocation = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+
+        /*
+        Move camera
+         */
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+
+        /*
+        Add marker
+         */
+        mGoogleMap.addMarker(new MarkerOptions().position(currentLocation).title("TBM FK UISU Medan").snippet("Lokasi ambulance"));
     }
 
     /**
