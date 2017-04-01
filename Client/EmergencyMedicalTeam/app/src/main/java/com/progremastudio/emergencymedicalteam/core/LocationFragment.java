@@ -30,6 +30,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.progremastudio.emergencymedicalteam.AddressService;
 import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
@@ -222,7 +223,6 @@ public class LocationFragment extends Fragment implements
         Prepare google map object
          */
         mGoogleMap = googleMap;
-        mGoogleMap.addMarker(new MarkerOptions().position(currentLocation).title("TBM APPS User location").snippet("Test"));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
         mGoogleMap.setMinZoomPreference(13.0f);
         mGoogleMap.setMaxZoomPreference(20.0f);
@@ -239,6 +239,14 @@ public class LocationFragment extends Fragment implements
         Move camera
          */
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+
+        /*
+        Add marker
+         */
+        Marker UserLocation = mGoogleMap.addMarker(new MarkerOptions()
+                .position(currentLocation)
+                .title(AppSharedPreferences.fetchCurrentUserDisplayName(getContext())));
+        UserLocation.showInfoWindow();
 
     }
 
@@ -291,8 +299,12 @@ public class LocationFragment extends Fragment implements
         /*
         FKUISU coordinate location based on GOOGLE MAP
          */
-        String latitude = "3.580790";
-        String longitude = "98.685101";
+
+        //String latitude = "3.580790";
+        //String longitude = "98.685101";
+
+        String latitude = "1.130368";
+        String longitude = "104.055226";
 
         LatLng currentLocation = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
 
@@ -304,7 +316,11 @@ public class LocationFragment extends Fragment implements
         /*
         Add marker
          */
-        mGoogleMap.addMarker(new MarkerOptions().position(currentLocation).title("TBM FK UISU Medan").snippet("Lokasi ambulance"));
+        Marker TBMLocation = mGoogleMap.addMarker(new MarkerOptions()
+                .position(currentLocation)
+                .title("TBM FK UISU Medan")
+                .snippet("Lokasi ambulans"));
+        TBMLocation.showInfoWindow();
     }
 
     /**
@@ -353,6 +369,14 @@ public class LocationFragment extends Fragment implements
         Move camera
          */
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+
+        /*
+        Add marker
+         */
+        Marker UserLocation = mGoogleMap.addMarker(new MarkerOptions()
+                .position(currentLocation)
+                .title(AppSharedPreferences.fetchCurrentUserDisplayName(getContext())));
+        UserLocation.showInfoWindow();
     }
 
     /**
