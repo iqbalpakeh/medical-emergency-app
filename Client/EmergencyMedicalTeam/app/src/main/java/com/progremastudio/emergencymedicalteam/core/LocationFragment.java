@@ -59,6 +59,14 @@ public class LocationFragment extends Fragment implements RoutingListener,
 
     private static final int MAP_ANIMATION_DURATION = 1000;
 
+    private static final int[] COLORS = new int[]{
+            R.color.primary_dark,
+            R.color.primary,
+            R.color.primary_light,
+            R.color.accent,
+            R.color.primary_dark_material_light
+    };
+
     private GoogleMap mGoogleMap;
 
     private MapView mMapView;
@@ -74,14 +82,6 @@ public class LocationFragment extends Fragment implements RoutingListener,
     private Marker mTBMMarker;
 
     private List<Polyline> mPolylines;
-
-    private static final int[] COLORS = new int[]{
-            R.color.primary_dark,
-            R.color.primary,
-            R.color.primary_light,
-            R.color.accent,
-            R.color.primary_dark_material_light
-    };
 
     @Nullable
     @Override
@@ -299,11 +299,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         /*
         Clear polyline if exist
          */
-        if (mPolylines.size() > 0) {
-            for (Polyline poly : mPolylines) {
-                poly.remove();
-            }
-        }
+        clearPolylines();
 
         /*
         Add routes to the map
@@ -311,7 +307,6 @@ public class LocationFragment extends Fragment implements RoutingListener,
         String distance = "";
         String duration = "";
 
-        mPolylines = new ArrayList<>();
         for (int i = 0; i < route.size(); i++) {
 
             //In case of more than 5 alternative routes
@@ -328,6 +323,9 @@ public class LocationFragment extends Fragment implements RoutingListener,
                     + ": distance = " + route.get(i).getDistanceText()
                     + ": duration = " + route.get(i).getDurationText());
 
+            /*
+            Todo: handle generic cases
+             */
             distance = route.get(i).getDistanceText();
             duration = route.get(i).getDurationText();
 
@@ -355,9 +353,6 @@ public class LocationFragment extends Fragment implements RoutingListener,
      * Clean polylines from map
      */
     private void clearPolylines() {
-        /*
-        Clear polyline if exist
-         */
         if (mPolylines.size() > 0) {
             for (Polyline poly : mPolylines) {
                 poly.remove();
@@ -446,8 +441,8 @@ public class LocationFragment extends Fragment implements RoutingListener,
          */
 
         //Debug code
-        //String latitude = "3.580790";
-        //String longitude = "98.685101";
+//        String latitude = "3.580790";
+//        String longitude = "98.685101";
 
         String latitude = "1.130368";
         String longitude = "104.055226";
