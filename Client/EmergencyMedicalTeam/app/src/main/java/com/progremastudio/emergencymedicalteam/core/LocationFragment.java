@@ -121,8 +121,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
                     /*
                     Show user location
                      */
-                    fetchLocationAddress();
-                    moveCameraToCurrentLocation();
+                    showUserLocation();
                 } else if (item.getItemId() == R.id.search_local_hospital) {
                     /*
                     Show TBM location
@@ -229,7 +228,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
          */
         try {
             boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                            getContext(), R.raw.retro_style_json));
+                    getContext(), R.raw.retro_style_json));
             if (!success) {
                 Log.e(TAG, "Style parsing failed.");
             }
@@ -265,8 +264,8 @@ public class LocationFragment extends Fragment implements RoutingListener,
             mUserMarker.remove();
         }
         mUserMarker = mGoogleMap.addMarker(new MarkerOptions()
-                        .position(currentLocation)
-                        .title(AppSharedPreferences.fetchCurrentUserDisplayName(getContext())));
+                .position(currentLocation)
+                .title(AppSharedPreferences.fetchCurrentUserDisplayName(getContext())));
         mUserMarker.showInfoWindow();
     }
 
@@ -275,10 +274,10 @@ public class LocationFragment extends Fragment implements RoutingListener,
         /*
         The Routing request failed
          */
-        ((BaseActivity)getActivity()).hideProgressDialog();
-        if(e != null) {
+        ((BaseActivity) getActivity()).hideProgressDialog();
+        if (e != null) {
             Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }else {
+        } else {
             Toast.makeText(getContext(), "Something went wrong, Try again", Toast.LENGTH_SHORT).show();
         }
     }
@@ -290,6 +289,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
 
     @Override
     public void onRoutingSuccess(ArrayList<Route> route, int shortestRouteIndex) {
+
         /*
         Move camera
          */
@@ -299,7 +299,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         /*
         Clear polyline if exist
          */
-        if(mPolylines.size()>0) {
+        if (mPolylines.size() > 0) {
             for (Polyline poly : mPolylines) {
                 poly.remove();
             }
@@ -308,8 +308,11 @@ public class LocationFragment extends Fragment implements RoutingListener,
         /*
         Add routes to the map
          */
+        String distance = "";
+        String duration = "";
+
         mPolylines = new ArrayList<>();
-        for (int i = 0; i <route.size(); i++) {
+        for (int i = 0; i < route.size(); i++) {
 
             //In case of more than 5 alternative routes
             int colorIndex = i % COLORS.length;
@@ -321,13 +324,45 @@ public class LocationFragment extends Fragment implements RoutingListener,
             Polyline polyline = mGoogleMap.addPolyline(polyOptions);
             mPolylines.add(polyline);
 
-            Toast.makeText(getContext(),"Route "+ (i+1) +": distance - "+ route.get(i).getDistanceValue()+": duration - "+ route.get(i).getDurationValue(),Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Route " + (i + 1)
+                    + ": distance = " + route.get(i).getDistanceText()
+                    + ": duration = " + route.get(i).getDurationText());
+
+            distance = route.get(i).getDistanceText();
+            duration = route.get(i).getDurationText();
+
         }
+
+        /*
+        Add marker
+         */
+        if (mUserMarker != null) {
+            mUserMarker.remove();
+        }
+        mUserMarker = mGoogleMap.addMarker(new MarkerOptions()
+                .position(fetchCurrentLocation())
+                .title(AppSharedPreferences.fetchCurrentUserDisplayName(getContext()))
+                .snippet("jarak " + distance + ", waktu " + duration));
+        mUserMarker.showInfoWindow();
     }
 
     @Override
     public void onRoutingCancelled() {
 
+    }
+
+    /**
+     * Clean polylines from map
+     */
+    private void clearPolylines() {
+        /*
+        Clear polyline if exist
+         */
+        if (mPolylines.size() > 0) {
+            for (Polyline poly : mPolylines) {
+                poly.remove();
+            }
+        }
     }
 
     /**
@@ -390,6 +425,15 @@ public class LocationFragment extends Fragment implements RoutingListener,
         Log.d(TAG, "Longitude = " + longitude);
 
         return new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+    }
+
+    /**
+     * Shows current user location
+     */
+    private void showUserLocation() {
+        clearPolylines();
+        fetchLocationAddress();
+        moveCameraToCurrentLocation();
     }
 
     /**
