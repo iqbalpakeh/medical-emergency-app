@@ -83,6 +83,8 @@ public class LocationFragment extends Fragment implements RoutingListener,
 
     private List<Polyline> mPolylines;
 
+    FloatingSearchView mSearchView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -113,8 +115,8 @@ public class LocationFragment extends Fragment implements RoutingListener,
         /*
         Initialize search view
          */
-        FloatingSearchView searchView = (FloatingSearchView) rootView.findViewById(R.id.floating_search_view);
-        searchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
+        mSearchView = (FloatingSearchView) rootView.findViewById(R.id.floating_search_view);
+        mSearchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
             @Override
             public void onActionMenuItemSelected(MenuItem item) {
                 if (item.getItemId() == R.id.search_my_location) {
