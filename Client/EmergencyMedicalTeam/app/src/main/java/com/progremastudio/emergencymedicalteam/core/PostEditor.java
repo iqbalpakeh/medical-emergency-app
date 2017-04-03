@@ -369,7 +369,8 @@ public class PostEditor extends BaseActivity {
                 message,
                 downloadUrl,
                 emergencyType,
-                phoneNumber);
+                phoneNumber
+        );
 
         /*
         Prepare hash-map value from Post object

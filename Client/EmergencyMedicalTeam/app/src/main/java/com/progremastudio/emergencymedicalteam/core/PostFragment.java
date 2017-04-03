@@ -15,6 +15,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.progremastudio.emergencymedicalteam.FirebasePath;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.Post;
 import com.progremastudio.emergencymedicalteam.viewholder.PostViewHolder;
@@ -100,15 +101,14 @@ public class PostFragment extends Fragment {
             }
         };
         mRecyclerView.setAdapter(mAdapter);
-
     }
 
-    public Query getQuery(DatabaseReference databaseReference) {
+    private Query getQuery(DatabaseReference databaseReference) {
         /*
         Last 100 posts, these are automatically the 100 most recent
         due to sorting by push() keys
         */
-        return databaseReference.child("posts").limitToFirst(100);
+        return databaseReference.child(FirebasePath.POSTS).limitToFirst(100);
     }
 
 }

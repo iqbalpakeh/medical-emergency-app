@@ -17,4 +17,14 @@ public final class FirebasePath {
      */
     public static final String POSTS = "posts";
 
+    /*
+    Database location for chat
+     */
+    public static final String CHAT = "chat";
+
+    /*
+    Database location for chat
+     */
+    public static final String USER_CHAT = "user-chat";
+
 }
