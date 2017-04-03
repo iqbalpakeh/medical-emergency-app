@@ -445,12 +445,17 @@ public class LocationFragment extends Fragment implements RoutingListener,
         FKUISU coordinate location based on GOOGLE MAP
          */
 
-        //Debug code
-//        String latitude = "3.580790";
-//        String longitude = "98.685101";
+        // TBM FK-UISU
+        //String latitude = "3.580790";
+        //String longitude = "98.685101";
 
-        String latitude = "1.130368";
-        String longitude = "104.055226";
+        // BATAM CENTER
+        //String latitude = "1.130368";
+        //String longitude = "104.055226";
+
+        // MARINA BAY SANDS
+        String latitude = "1.283456";
+        String longitude = "103.860451";
 
         LatLng currentLocation = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
 
