@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.directions.route.Route;
@@ -79,6 +81,8 @@ public class LocationFragment extends Fragment implements RoutingListener,
 
     private Marker mTBMMarker;
 
+    private TextView mAddressView;
+
     private List<Polyline> mPolylines;
 
     @Nullable
@@ -107,6 +111,29 @@ public class LocationFragment extends Fragment implements RoutingListener,
         Initialize Location Address Service
          */
         mResultReceiver = new AddressResultReceiver(new Handler());
+
+        /*
+        Initiate user location view
+         */
+        mAddressView = (TextView) rootView.findViewById(R.id.user_location_view);
+
+        /*
+        Initiate button
+         */
+        ImageButton myLocationButton = (ImageButton) rootView.findViewById(R.id.my_location_button);
+        myLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showUserLocation();
+            }
+        });
+        ImageButton tbmLocationButton = (ImageButton) rootView.findViewById(R.id.tbm_location_button);
+        tbmLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTBMLocation();
+            }
+        });
 
         return rootView;
     }
@@ -204,7 +231,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         /*
         Update map with retro style
          */
-        int mapStyle = 1; // 1 is retro style, 0 is default
+        int mapStyle = 0; // 1 is retro style, 0 is default
         if (mapStyle == 1) {
             try {
                 boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
@@ -268,7 +295,6 @@ public class LocationFragment extends Fragment implements RoutingListener,
 
     @Override
     public void onRoutingSuccess(ArrayList<Route> route, int shortestRouteIndex) {
-
         /*
         Move camera
          */
@@ -563,6 +589,11 @@ public class LocationFragment extends Fragment implements RoutingListener,
              */
             String lastLocationAddress = address.replace("\n", ", ");
             Log.d(TAG, "Address = " + lastLocationAddress);
+
+            /*
+            Show user address location
+             */
+            mAddressView.setText(lastLocationAddress);
 
             /*
             Store current address
