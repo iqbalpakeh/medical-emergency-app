@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.auth.FirebaseAuth;
 import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
@@ -39,6 +40,8 @@ public class MainActivity extends BaseActivity {
     private FragmentPagerAdapter mPagerAdapter;
 
     private ViewPager mViewPager;
+
+    private FloatingActionsMenu mFabMenu;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,10 +93,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
+                    mFabMenu.setVisibility(View.VISIBLE);
                     getSupportActionBar().setTitle(getString(R.string.heading_location));
                 } else if(position == 1) {
+                    mFabMenu.setVisibility(View.VISIBLE);
                     getSupportActionBar().setTitle(getString(R.string.heading_post));
                 } else if (position == 2) {
+                    mFabMenu.setVisibility(View.GONE);
                     getSupportActionBar().setTitle(getString(R.string.heading_chat));
                 }
             }
@@ -116,6 +122,7 @@ public class MainActivity extends BaseActivity {
         /*
         Initiate floating action button
          */
+        mFabMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
         FloatingActionButton emergencyCallButton = (FloatingActionButton) findViewById(R.id.fab_call);
         emergencyCallButton.setOnClickListener(new View.OnClickListener() {
             @Override
