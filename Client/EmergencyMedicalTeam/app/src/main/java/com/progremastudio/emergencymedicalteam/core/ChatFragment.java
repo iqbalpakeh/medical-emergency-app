@@ -55,7 +55,7 @@ public class ChatFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
 
         /*
-        Initialize Firebase-RealtimeDb reference
+        Initiate Firebase object
          */
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -96,8 +96,7 @@ public class ChatFragment extends Fragment {
         Set up FirebaseRecyclerAdapter with the Query
          */
         Query query = getQuery(mDatabase);
-        mAdapter = new FirebaseRecyclerAdapter<Chat, ChatViewHolder>(Chat.class, R.layout.item_chat,
-                ChatViewHolder.class, query) {
+        mAdapter = new FirebaseRecyclerAdapter<Chat, ChatViewHolder>(Chat.class, R.layout.item_chat, ChatViewHolder.class, query) {
             @Override
             protected void populateViewHolder(final ChatViewHolder viewHolder, final Chat chat, final int position) {
 
@@ -110,7 +109,7 @@ public class ChatFragment extends Fragment {
                 Log.d(TAG, "populateViewHolder: chat.message = " + chat.message);
 
                 /*
-                Assign post information to widget defined in item_post.xml
+                Assign post information to widget defined in item_chat.xml
                  */
                 viewHolder.bindToChat(getContext(), chat, new View.OnClickListener() {
                     @Override
@@ -132,6 +131,9 @@ public class ChatFragment extends Fragment {
         return databaseReference.child(FirebasePath.CHAT).limitToFirst(100);
     }
 
+    /**
+     * Submit chat message to FB part 1
+     */
     private void submitMessage() {
 
         /*
@@ -147,9 +149,8 @@ public class ChatFragment extends Fragment {
         Shows posting message to user and progress bar
          */
         Toast.makeText(getContext(), getString(R.string.str_Posting), Toast.LENGTH_SHORT).show();
-        ((BaseActivity)getActivity()).showProgressDialog();
 
-                /*
+        /*
         Listen for data change under users path and submit the post
          */
         final String userId = ((BaseActivity)getActivity()).getUid();
@@ -182,12 +183,14 @@ public class ChatFragment extends Fragment {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                        ((BaseActivity)getActivity()).hideProgressDialog();
                     }
 
                 });
     }
 
+    /**
+     * Submit chat message to FB part 2
+     */
     private void uploadChat(final String userId, final String message) {
 
         /*
@@ -224,7 +227,7 @@ public class ChatFragment extends Fragment {
         childUpdates.put("/" + FirebasePath.USER_CHAT + "/" + userId + "/" + key, chatValues);
 
         /*
-        Update Firebase-RealtimeDb location
+        Update FB object
          */
         mDatabase.updateChildren(childUpdates);
 
@@ -232,10 +235,5 @@ public class ChatFragment extends Fragment {
         Clear message box
          */
         mMessageField.setText("");
-
-        /*
-        Hide progress bar
-         */
-        ((BaseActivity)getActivity()).hideProgressDialog();
     }
 }
