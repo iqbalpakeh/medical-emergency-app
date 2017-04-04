@@ -48,7 +48,7 @@
             android:layout_marginStart="4dp"
             android:text="Loren ipsum dolor sing amet"
             android:textColor="@color/text_primary_dark"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 

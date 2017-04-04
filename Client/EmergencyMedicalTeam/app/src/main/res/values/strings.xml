@@ -1,5 +1,6 @@
 <resources>
 
+    <!-- General -->
     <string name="app_name">TBM APPS</string>
     <string name="app_company">© IWEBNET-ID</string>
     <string name="menu_logut">Keluar</string>
@@ -13,6 +14,7 @@
     <string name="search_my_location">search my location</string>
     <string name="search_local_hospital">search local hospital</string>
 
+    <!-- Ui related-->
     <string name="str_Current_location">Lokasi sekarang…</string>
     <string name="str_Short_story">Berita singkat</string>
     <string name="str_Call_for_help">Panggil Bantuan</string>
@@ -30,5 +32,17 @@
     <string name="str_Sign_Up_failed">Sign-Up failed</string>
     <string name="str_Call_ambulance">Panggil ambulance</string>
     <string name="str_Accident_report">Lapor kecelakaan</string>
+
+    <!-- Preference values -->
+    <string name="str_tbm_coordinate_location">Koordinat Lokasi TBM Pusat</string>
+    <string name="str_latitude_coordinate">Koordinat latitude</string>
+    <string name="str_default_latitude">3.580790</string>
+    <string name="str_longitude_coordinate">Koordinat longitude</string>
+    <string name="str_default_longitude">98.685101</string>
+    <string name="str_Modern">Modern</string>
+    <string name="str_Retro">Klasik</string>
+    <string name="key_latitude">key_latitude</string>
+    <string name="key_longitude">key_longitude</string>
+    <string name="key_map_type">key_map_type</string>
 
 </resources>

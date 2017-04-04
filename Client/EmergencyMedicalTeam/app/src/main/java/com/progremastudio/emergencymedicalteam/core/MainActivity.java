@@ -21,6 +21,7 @@ import android.view.View;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.auth.FirebaseAuth;
+import com.progremastudio.emergencymedicalteam.AppSettings;
 import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.R;
@@ -64,15 +65,17 @@ public class MainActivity extends BaseActivity {
         Create the adapter that will return a fragment for each section
          */
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-            private final Fragment[] mFragments = new Fragment[] {
+            private final Fragment[] mFragments = new Fragment[]{
                     new LocationFragment(),
                     new PostFragment(),
                     new ChatFragment(),
             };
+
             @Override
             public Fragment getItem(int position) {
                 return mFragments[position];
             }
+
             @Override
             public int getCount() {
                 return mFragments.length;
@@ -95,7 +98,7 @@ public class MainActivity extends BaseActivity {
                 if (position == 0) {
                     mFabMenu.setVisibility(View.VISIBLE);
                     getSupportActionBar().setTitle(getString(R.string.heading_location));
-                } else if(position == 1) {
+                } else if (position == 1) {
                     mFabMenu.setVisibility(View.VISIBLE);
                     getSupportActionBar().setTitle(getString(R.string.heading_post));
                 } else if (position == 2) {
@@ -179,14 +182,25 @@ public class MainActivity extends BaseActivity {
         /*
         About menu
         */
-        else if (i == R.id.action_about){
+        else if (i == R.id.action_about) {
 
             /*
             Go to AboutActivity
              */
             startActivity(new Intent(this, AboutActivity.class));
-            finish();
             return true;
+        }
+
+        /*
+        Settings menu
+         */
+        else if (i == R.id.action_settings) {
+            /*
+            Go to AboutActivity
+             */
+            startActivity(new Intent(this, AppSettings.class));
+            return true;
+
         }
         /*
         Other
@@ -200,7 +214,7 @@ public class MainActivity extends BaseActivity {
      * Call Ambulance after User click Call Ambulance button
      */
     private void callAmbulance() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             String[] permissions = {
                     Manifest.permission.CALL_PHONE
             };

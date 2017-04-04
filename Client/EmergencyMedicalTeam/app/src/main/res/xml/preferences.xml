@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/str_tbm_coordinate_location">
+
+        <EditTextPreference
+            android:title="@string/str_latitude_coordinate"
+            android:key="@string/key_latitude"
+            android:summary="@string/str_default_latitude"
+            android:defaultValue="@string/str_default_latitude"/>
+
+        <EditTextPreference
+            android:title="@string/str_longitude_coordinate"
+            android:key="@string/key_longitude"
+            android:summary="@string/str_default_longitude"
+            android:defaultValue="@string/str_default_longitude"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Pengaturan umum" >
+
+        <ListPreference
+            android:title="Jenis peta"
+            android:key="@string/key_map_type"
+            android:summary="@string/str_Modern"
+            android:entries="@array/map_type_entries"
+            android:entryValues="@array/map_type_values" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
