@@ -88,8 +88,7 @@ public class ChatFragment extends Fragment {
         Set up Layout Manager and reverse layout
          */
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
+        layoutManager.setStackFromEnd(false);
         mRecyclerView.setLayoutManager(layoutManager);
 
         /*
