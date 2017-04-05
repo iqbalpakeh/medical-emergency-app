@@ -40,7 +40,7 @@ public class ChatViewHolder extends RecyclerView.ViewHolder{
         /*
         Show timestamp
          */
-        mTimestamp.setText("- " + DateUtils.getRelativeTimeSpanString(Long.parseLong(chat.timestamp)));
+        mTimestamp.setText(DateUtils.getRelativeTimeSpanString(Long.parseLong(chat.timestamp)));
 
         /*
         Show user message
