@@ -2,6 +2,7 @@ package com.progremastudio.emergencymedicalteam.core;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Geocoder;
@@ -9,6 +10,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -39,6 +41,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.progremastudio.emergencymedicalteam.AddressService;
+import com.progremastudio.emergencymedicalteam.AppSettings;
 import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.R;
@@ -231,8 +234,9 @@ public class LocationFragment extends Fragment implements RoutingListener,
         /*
         Update map with retro style
          */
-        int mapStyle = 0; // 1 is retro style, 0 is default
-        if (mapStyle == 1) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String mapType = sharedPref.getString(AppSettings.KEY_MAP_TYPE, "");
+        if (mapType.equals(getString(R.string.str_Retro))) {
             try {
                 boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                         getContext(), R.raw.retro_style_json));
@@ -441,6 +445,11 @@ public class LocationFragment extends Fragment implements RoutingListener,
      */
     private void showTBMLocation() {
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        String latitude = sharedPref.getString(AppSettings.KEY_LATITUDE, "");
+        String longitude = sharedPref.getString(AppSettings.KEY_LONGITUDE, "");
+
         /*
         FKUISU coordinate location based on GOOGLE MAP
          */
@@ -454,8 +463,8 @@ public class LocationFragment extends Fragment implements RoutingListener,
         //String longitude = "104.055226";
 
         // MARINA BAY SANDS
-        String latitude = "1.283456";
-        String longitude = "103.860451";
+        //String latitude = "1.283456";
+        //String longitude = "103.860451";
 
         LatLng currentLocation = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
 

@@ -35,6 +35,7 @@
 
     <!-- Preference values -->
     <string name="str_tbm_coordinate_location">Koordinat Lokasi TBM Pusat</string>
+    <string name="str_tbm_general_settings">Pengaturan Umum</string>
     <string name="str_latitude_coordinate">Koordinat latitude</string>
     <string name="str_default_latitude">3.580790</string>
     <string name="str_longitude_coordinate">Koordinat longitude</string>

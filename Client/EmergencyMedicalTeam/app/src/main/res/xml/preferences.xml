@@ -19,7 +19,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Pengaturan umum" >
+        android:title="@string/str_tbm_general_settings" >
 
         <ListPreference
             android:title="Jenis peta"

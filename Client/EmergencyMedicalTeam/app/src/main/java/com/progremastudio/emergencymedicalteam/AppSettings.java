@@ -12,6 +12,10 @@ public class AppSettings extends PreferenceActivity implements SharedPreferences
 
     private static final String TAG = "app-settings";
 
+    public static final String KEY_LATITUDE = "key_latitude";
+    public static final String KEY_LONGITUDE = "key_longitude";
+    public static final String KEY_MAP_TYPE = "key_map_type";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +34,9 @@ public class AppSettings extends PreferenceActivity implements SharedPreferences
         super.onResume();
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
-        resetSummary(getString(R.string.key_latitude));
-        resetSummary(getString(R.string.key_longitude));
-        resetSummary(getString(R.string.key_map_type));
+        resetSummary(KEY_LATITUDE);
+        resetSummary(KEY_LONGITUDE);
+        resetSummary(KEY_MAP_TYPE);
     }
 
     @Override
