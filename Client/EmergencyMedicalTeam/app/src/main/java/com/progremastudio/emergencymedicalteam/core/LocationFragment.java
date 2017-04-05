@@ -41,10 +41,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.progremastudio.emergencymedicalteam.AddressService;
-import com.progremastudio.emergencymedicalteam.AppSettings;
 import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.R;
+import com.progremastudio.emergencymedicalteam.settings.AppSettingsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -235,7 +235,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         Update map with retro style
          */
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String mapType = sharedPref.getString(AppSettings.KEY_MAP_TYPE, "");
+        String mapType = sharedPref.getString(AppSettingsFragment.KEY_MAP_TYPE, "");
         if (mapType.equals(getString(R.string.str_Retro))) {
             try {
                 boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
@@ -447,8 +447,8 @@ public class LocationFragment extends Fragment implements RoutingListener,
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        String latitude = sharedPref.getString(AppSettings.KEY_LATITUDE, "");
-        String longitude = sharedPref.getString(AppSettings.KEY_LONGITUDE, "");
+        String latitude = sharedPref.getString(AppSettingsFragment.KEY_LATITUDE, "");
+        String longitude = sharedPref.getString(AppSettingsFragment.KEY_LONGITUDE, "");
 
         LatLng currentLocation = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
 

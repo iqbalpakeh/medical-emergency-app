@@ -21,12 +21,12 @@ import android.view.View;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.auth.FirebaseAuth;
-import com.progremastudio.emergencymedicalteam.AppSettings;
 import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.authentication.AboutActivity;
 import com.progremastudio.emergencymedicalteam.authentication.SignInActivity;
+import com.progremastudio.emergencymedicalteam.settings.AppSettingsActivity;
 
 public class MainActivity extends BaseActivity {
 
@@ -198,7 +198,7 @@ public class MainActivity extends BaseActivity {
             /*
             Go to AboutActivity
              */
-            startActivity(new Intent(this, AppSettings.class));
+            startActivity(new Intent(this, AppSettingsActivity.class));
             return true;
 
         }
@@ -229,7 +229,7 @@ public class MainActivity extends BaseActivity {
      */
     private void makePhoneCall() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:" + getString(R.string.Ambulance_Phone_Number)));
+        intent.setData(Uri.parse("tel:" + getString(R.string.str_tbm_emergency_contact_default)));
         startActivity(intent);
     }
 

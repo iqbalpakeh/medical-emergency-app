@@ -10,7 +10,8 @@
     <string name="heading_location">Lokasi</string>
     <string name="heading_post">Laporan</string>
     <string name="heading_chat">Obrolan</string>
-    <string name="Ambulance_Phone_Number">+6582273979449</string>
+    <string name="heading_settings">Pengaturan</string>
+
     <string name="search_my_location">search my location</string>
     <string name="search_local_hospital">search local hospital</string>
 
@@ -35,15 +36,19 @@
 
     <!-- Preference values -->
     <string name="str_tbm_coordinate_location">Koordinat Lokasi TBM Pusat</string>
-    <string name="str_tbm_general_settings">Pengaturan Umum</string>
+    <string name="str_tbm_general_settings">Umum</string>
     <string name="str_latitude_coordinate">Koordinat latitude</string>
     <string name="str_default_latitude">3.580790</string>
     <string name="str_longitude_coordinate">Koordinat longitude</string>
     <string name="str_default_longitude">98.685101</string>
+    <string name="str_map_type">Jenis peta</string>
     <string name="str_Modern">Modern</string>
     <string name="str_Retro">Klasik</string>
+    <string name="str_tbm_emergency_contact">Nomor Kontak Darurat TBM</string>
+    <string name="str_tbm_emergency_contact_default">+6582273979449</string>
     <string name="key_latitude">key_latitude</string>
     <string name="key_longitude">key_longitude</string>
+    <string name="key_tbm_emergency_contact">key_tbm_emergency_contact</string>
     <string name="key_map_type">key_map_type</string>
 
 </resources>
