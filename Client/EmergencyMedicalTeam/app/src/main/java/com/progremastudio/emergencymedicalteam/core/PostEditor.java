@@ -110,7 +110,7 @@ public class PostEditor extends BaseActivity {
         /*
         Show user address
          */
-        mAddressView.setText(AppSharedPreferences.fetchCurrentUserAddress(this));
+        mAddressView.setText(AppSharedPreferences.getCurrentUserAddress(this));
 
         /*
         Show picture taken by user
@@ -350,12 +350,12 @@ public class PostEditor extends BaseActivity {
         /*
         Prepare local data for Post object creation
          */
-        String displayName = AppSharedPreferences.fetchCurrentUserDisplayName(this);
-        String email = AppSharedPreferences.fetchCurrentUserEmail(this);
+        String displayName = AppSharedPreferences.getCurrentUserDisplayName(this);
+        String email = AppSharedPreferences.getCurrentUserEmail(this);
         String timestamp = currentTimestamp();
-        String locationCoordinate = AppSharedPreferences.fetchCurrentUserAddress(this);
+        String locationCoordinate = AppSharedPreferences.getCurrentUserAddress(this);
         String emergencyType = "Kecelakaan"; // todo: to have list option
-        String phoneNumber = AppSharedPreferences.fetchCurrentUserPhoneNumber(this);
+        String phoneNumber = AppSharedPreferences.getCurrentUserPhoneNumber(this);
 
         /*
         Create new Post object

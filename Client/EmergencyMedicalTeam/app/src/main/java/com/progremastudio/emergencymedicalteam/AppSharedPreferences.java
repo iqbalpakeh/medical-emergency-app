@@ -68,7 +68,7 @@ public class AppSharedPreferences {
      * @param context application context
      * @return current user's uid
      */
-    public static String fetchCurrentUserId(Context context) {
+    public static String getCurrentUserId(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(USER_ID, "");
     }
@@ -87,12 +87,12 @@ public class AppSharedPreferences {
     }
 
     /**
-     * Fetch current user's display name from shared-preference
+     * Get current user's display name from shared-preference
      *
      * @param context application context
      * @return current user's display name
      */
-    public static String fetchCurrentUserDisplayName(Context context) {
+    public static String getCurrentUserDisplayName(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(USER_DISPLAY_NAME, "");
     }
@@ -111,12 +111,12 @@ public class AppSharedPreferences {
     }
 
     /**
-     * Fetch current user's email from shared-preference
+     * Get current user's email from shared-preference
      *
      * @param context application context
      * @return current user's email
      */
-    public static String fetchCurrentUserEmail(Context context) {
+    public static String getCurrentUserEmail(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(USER_EMAIL, "");
     }
@@ -135,12 +135,12 @@ public class AppSharedPreferences {
     }
 
     /**
-     * Fetch current user's phone number from shared-preference
+     * Get current user's phone number from shared-preference
      *
      * @param context application context
      * @return current user's phone number
      */
-    public static String fetchCurrentUserPhoneNumber(Context context) {
+    public static String getCurrentUserPhoneNumber(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(USER_PHONE_NUMBER, "");
     }
@@ -159,12 +159,12 @@ public class AppSharedPreferences {
     }
 
     /**
-     * Fetch current user's last latitude location from shared-preference
+     * Get current user's last latitude location from shared-preference
      *
      * @param context application context
      * @return current user's last latitude location
      */
-    public static String fetchCurrentUserLastLatitudeLocation(Context context) {
+    public static String getCurrentUserLastLatitudeLocation(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(LAST_LOCATION_LATITUDE, DEFAULT_LATITUDE);
     }
@@ -183,12 +183,12 @@ public class AppSharedPreferences {
     }
 
     /**
-     * Fetch current user's last longitude location from shared-preference
+     * Get current user's last longitude location from shared-preference
      *
      * @param context application context
      * @return current user's last longitude location
      */
-    public static String fetchCurrentUserLastLongitudeLocation(Context context) {
+    public static String getCurrentUserLastLongitudeLocation(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(LAST_LOCATION_LONGITUDE, DEFAULT_LONGITUDE);
     }
@@ -207,12 +207,12 @@ public class AppSharedPreferences {
     }
 
     /**
-     * Fetch current user's last address from shared-preference
+     * Get current user's last address from shared-preference
      *
      * @param context application context
      * @return current user's last address
      */
-    public static String fetchCurrentUserAddress(Context context) {
+    public static String getCurrentUserAddress(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(LAST_LOCATION_ADDRESS, DEFAULT_ADDRESS);
     }

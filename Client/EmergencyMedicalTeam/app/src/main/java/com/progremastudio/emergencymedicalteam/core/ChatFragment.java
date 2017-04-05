@@ -200,7 +200,7 @@ public class ChatFragment extends Fragment {
         /*
         Prepare local data for chat object creation
          */
-        String displayName = AppSharedPreferences.fetchCurrentUserDisplayName(getContext());
+        String displayName = AppSharedPreferences.getCurrentUserDisplayName(getContext());
         String timestamp = ((BaseActivity)getActivity()).currentTimestamp();
 
         /*

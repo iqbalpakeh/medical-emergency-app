@@ -275,7 +275,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         }
         mUserMarker = mGoogleMap.addMarker(new MarkerOptions()
                 .position(currentLocation)
-                .title(AppSharedPreferences.fetchCurrentUserDisplayName(getContext())));
+                .title(AppSharedPreferences.getCurrentUserDisplayName(getContext())));
         mUserMarker.showInfoWindow();
     }
 
@@ -348,7 +348,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         }
         mUserMarker = mGoogleMap.addMarker(new MarkerOptions()
                 .position(fetchCurrentLocation())
-                .title(AppSharedPreferences.fetchCurrentUserDisplayName(getContext()))
+                .title(AppSharedPreferences.getCurrentUserDisplayName(getContext()))
                 .snippet("jarak " + distance + ", waktu " + duration));
         mUserMarker.showInfoWindow();
     }
@@ -422,8 +422,8 @@ public class LocationFragment extends Fragment implements RoutingListener,
      */
     private LatLng fetchCurrentLocation() {
 
-        String latitude = AppSharedPreferences.fetchCurrentUserLastLatitudeLocation(getActivity());
-        String longitude = AppSharedPreferences.fetchCurrentUserLastLongitudeLocation(getActivity());
+        String latitude = AppSharedPreferences.getCurrentUserLastLatitudeLocation(getActivity());
+        String longitude = AppSharedPreferences.getCurrentUserLastLongitudeLocation(getActivity());
 
         Log.d(TAG, "Latitude = " + latitude);
         Log.d(TAG, "Longitude = " + longitude);
@@ -530,7 +530,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         }
         mUserMarker = mGoogleMap.addMarker(new MarkerOptions()
                 .position(currentLocation)
-                .title(AppSharedPreferences.fetchCurrentUserDisplayName(getContext())));
+                .title(AppSharedPreferences.getCurrentUserDisplayName(getContext())));
         mUserMarker.showInfoWindow();
     }
 

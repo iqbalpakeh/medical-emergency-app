@@ -61,9 +61,9 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
          */
         Log.d(TAG, "chat.uid = " + chat.uid);
         Log.d(TAG, "chat.displayName = " + chat.displayName);
-        Log.d(TAG, "current uid = " + AppSharedPreferences.fetchCurrentUserId(context));
+        Log.d(TAG, "current uid = " + AppSharedPreferences.getCurrentUserId(context));
 
-        if (chat.uid.equals(AppSharedPreferences.fetchCurrentUserId(context))) {
+        if (chat.uid.equals(AppSharedPreferences.getCurrentUserId(context))) {
             /*
             Use user layout
              */
