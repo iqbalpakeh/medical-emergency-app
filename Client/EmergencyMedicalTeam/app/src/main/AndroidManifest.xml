@@ -34,7 +34,7 @@
 
         <activity
             android:name=".authentication.SignInActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name"/>
 
         <activity
             android:name=".authentication.SignUpActivity"
@@ -78,7 +78,7 @@
             android:name=".AppSettings"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/child_activity_with_action_bar">
+            android:theme="@style/action_bar_activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".core.MainActivity" />
@@ -88,7 +88,7 @@
             android:name=".core.PostEditor"
             android:label="@string/str_Accident_report"
             android:screenOrientation="portrait"
-            android:theme="@style/child_activity_with_action_bar"
+            android:theme="@style/action_bar_activity"
             android:windowSoftInputMode="stateVisible">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
