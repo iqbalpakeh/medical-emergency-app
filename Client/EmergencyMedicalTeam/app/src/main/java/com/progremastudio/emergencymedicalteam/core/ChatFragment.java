@@ -68,7 +68,7 @@ public class ChatFragment extends Fragment {
         /*
         Initiate widget
          */
-        mMessageField = (EditText) rootView.findViewById(R.id.message_field);
+        mMessageField = (EditText) rootView.findViewById(R.id.other_message_field);
         ImageButton sendButton = (ImageButton) rootView.findViewById(R.id.send_button);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override

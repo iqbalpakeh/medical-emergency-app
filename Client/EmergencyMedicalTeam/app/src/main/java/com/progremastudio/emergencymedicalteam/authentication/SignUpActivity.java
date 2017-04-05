@@ -65,7 +65,7 @@ public class SignUpActivity extends BaseActivity {
          */
         mEmailField = (EditText) findViewById(R.id.email_field);
         mPasswordField = (EditText) findViewById(R.id.password_field);
-        mDisplayNameField = (EditText) findViewById(R.id.display_name_field);
+        mDisplayNameField = (EditText) findViewById(R.id.other_display_name_field);
         mPhoneNumberField = (EditText) findViewById(R.id.phone_number_field);
 
         /*
@@ -227,6 +227,7 @@ public class SignUpActivity extends BaseActivity {
          */
         AppSharedPreferences.storeCurrentUser(
                 this,
+                getUid(),
                 displayName,
                 email,
                 phoneNumber

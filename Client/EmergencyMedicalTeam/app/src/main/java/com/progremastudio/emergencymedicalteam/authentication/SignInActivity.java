@@ -147,6 +147,7 @@ public class SignInActivity extends BaseActivity {
                  */
                 AppSharedPreferences.storeCurrentUser(
                         SignInActivity.this,
+                        getUid(),
                         user.displayName,
                         user.email,
                         user.phoneNumber

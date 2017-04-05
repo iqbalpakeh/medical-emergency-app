@@ -33,10 +33,10 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
         super(itemView);
 
-        mNameField = (TextView) itemView.findViewById(R.id.display_name_field);
-        mMessageField = (TextView) itemView.findViewById(R.id.message_field);
+        mNameField = (TextView) itemView.findViewById(R.id.other_display_name_field);
+        mMessageField = (TextView) itemView.findViewById(R.id.other_message_field);
         mAddressField = (TextView) itemView.findViewById(R.id.address_field);
-        mTimestampField = (TextView) itemView.findViewById(R.id.timestamp_field);
+        mTimestampField = (TextView) itemView.findViewById(R.id.other_timestamp_field);
         mPictureField = (ImageView) itemView.findViewById(R.id.picture_field);
     }
 

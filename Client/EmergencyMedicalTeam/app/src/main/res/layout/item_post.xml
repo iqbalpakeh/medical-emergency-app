@@ -31,7 +31,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/display_name_field"
+                    android:id="@+id/other_display_name_field"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
@@ -43,7 +43,7 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/timestamp_field"
+                    android:id="@+id/other_timestamp_field"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
@@ -54,7 +54,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/message_field"
+                android:id="@+id/other_message_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"

@@ -9,6 +9,7 @@ public class AppSharedPreferences {
     Shared preference names
      */
     private static final String APP_CONTEXT = "app-context";
+    private static final String USER_ID = "user_id";
     private static final String USER_EMAIL = "user-email";
     private static final String USER_PHONE_NUMBER = "user-phone-number";
     private static final String USER_DISPLAY_NAME = "user-display-name";
@@ -24,25 +25,52 @@ public class AppSharedPreferences {
     private static final String DEFAULT_ADDRESS = "Kota Medan";
 
     public static void logOutCurrentUser(Context context) {
-        storeCurrentUser(context, "", "", "");
+        storeCurrentUser(context, "", "", "", "");
     }
 
     /**
      * Store current user's display name, email and phone number
      *
      * @param context application context
+     * @param uid current user's id
      * @param displayName current user's display name
      * @param email current user's email
      * @param phoneNumber current user's phone number
      */
     public static void storeCurrentUser(Context context,
+                                        String uid,
                                         String displayName,
                                         String email,
                                         String phoneNumber) {
 
+        storeCurrentUserId(context, uid);
         storeCurrentUserDisplayName(context, displayName);
         storeCurrentUserEmail(context, email);
         storeCurrentUserPhoneNumber(context, phoneNumber);
+    }
+
+    /**
+     * Store current user's uid to shared-preference
+     *
+     * @param context application context
+     * @param uid current user's uid
+     */
+    public static void storeCurrentUserId(Context context, String uid) {
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        SharedPreferences.Editor editor = appContext.edit();
+        editor.putString(USER_ID, uid);
+        editor.commit();
+    }
+
+    /**
+     * Fetch current user's uid from shared-preference
+     *
+     * @param context application context
+     * @return current user's uid
+     */
+    public static String fetchCurrentUserId(Context context) {
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        return appContext.getString(USER_ID, "");
     }
 
     /**
