@@ -7,9 +7,9 @@
     <string name="menu_about">Tentang</string>
     <string name="menu_settings">Pengaturan</string>
     <string name="menu_search">Pencarian</string>
-    <string name="heading_location">Lokasi</string>
-    <string name="heading_post">Laporan</string>
-    <string name="heading_chat">Obrolan</string>
+    <string name="heading_location">Lokasi Pengguna</string>
+    <string name="heading_post">Laporan Kecelakaan</string>
+    <string name="heading_chat">Kontak Dokter</string>
     <string name="heading_settings">Pengaturan</string>
 
     <string name="search_my_location">search my location</string>
@@ -35,7 +35,7 @@
     <string name="str_Accident_report">Lapor kecelakaan</string>
 
     <!-- Preference values -->
-    <string name="str_tbm_coordinate_location">Koordinat Lokasi TBM Pusat</string>
+    <string name="str_tbm_coordinate_location">Lokasi TBM Pusat</string>
     <string name="str_tbm_general_settings">Umum</string>
     <string name="str_latitude_coordinate">Koordinat latitude</string>
     <string name="str_default_latitude">3.580790</string>

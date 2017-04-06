@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#607D8B</color>
+    <color name="colorPrimaryDark">#455A64</color>
+    <color name="colorAccent">#F44336</color>
 
     <!-- Typography color -->
     <color name="text_primary_dark">#DE000000</color>
@@ -15,12 +15,13 @@
     <color name="teal_500">#009688</color>
     <color name="cyan_500">#00BCD4</color>
     <color name="blue_300">#BBDEFB</color>
+    <color name="yellow_700">#FBC02D</color>
 
     <!-- Floating Action Button -->
-    <color name="fab_normal_default">#FF4081</color>
-    <color name="fab_normal_pressed">#FF80AB</color>
-    <color name="fab_mini_default">#FF4081</color>
-    <color name="fab_mini_pressed">#FF80AB</color>
+    <color name="fab_normal_default">#F44336</color>
+    <color name="fab_normal_pressed">#EF5350</color>
+    <color name="fab_mini_default">#F44336</color>
+    <color name="fab_mini_pressed">#EF5350</color>
     <color name="black_semi_transparent">#B2000000</color>
 
     <color name="card_shadow">#CABBBBBB</color>

@@ -18,6 +18,7 @@ public class AppSettingsFragment extends PreferenceFragment
     public static final String KEY_LATITUDE = "key_latitude";
     public static final String KEY_LONGITUDE = "key_longitude";
     public static final String KEY_MAP_TYPE = "key_map_type";
+    public static final String KEY_TBM_EMERGENCY_CONTACT = "key_tbm_emergency_contact";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class AppSettingsFragment extends PreferenceFragment
         resetSummary(KEY_LATITUDE);
         resetSummary(KEY_LONGITUDE);
         resetSummary(KEY_MAP_TYPE);
+        resetSummary(KEY_TBM_EMERGENCY_CONTACT);
     }
 
     @Override

@@ -2,9 +2,11 @@ package com.progremastudio.emergencymedicalteam.core;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -27,6 +29,7 @@ import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.authentication.AboutActivity;
 import com.progremastudio.emergencymedicalteam.authentication.SignInActivity;
 import com.progremastudio.emergencymedicalteam.settings.AppSettingsActivity;
+import com.progremastudio.emergencymedicalteam.settings.AppSettingsFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -228,8 +231,17 @@ public class MainActivity extends BaseActivity {
      * Make a phone call by using ACTION_CALL intent
      */
     private void makePhoneCall() {
+        /*
+        Get phone number from user settings
+         */
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String phoneNumber = sharedPref.getString(AppSettingsFragment.KEY_TBM_EMERGENCY_CONTACT, "");
+
+        /*
+        Call the ambulance
+         */
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:" + getString(R.string.str_tbm_emergency_contact_default)));
+        intent.setData(Uri.parse("tel:" + phoneNumber));
         startActivity(intent);
     }
 
