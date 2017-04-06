@@ -1,38 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="@string/str_tbm_general_settings" >
+    <EditTextPreference
+        android:defaultValue="@string/str_tbm_emergency_contact_default"
+        android:key="@string/key_tbm_emergency_contact"
+        android:summary="@string/str_tbm_emergency_contact_default"
+        android:title="@string/str_tbm_emergency_contact" />EditTextPreference
+
+    <ListPreference
+        android:entries="@array/map_type_entries"
+        android:entryValues="@array/map_type_values"
+        android:key="@string/key_map_type"
+        android:summary="@string/str_Modern"
+        android:title="@string/str_map_type" />
+
+    <PreferenceCategory android:title="@string/str_tbm_coordinate_location">
 
         <EditTextPreference
-            android:title="@string/str_tbm_emergency_contact"
-            android:key="@string/key_tbm_emergency_contact"
-            android:summary="@string/str_tbm_emergency_contact_default"
-            android:defaultValue="@string/str_tbm_emergency_contact_default"/>EditTextPreference
-
-        <ListPreference
-            android:title="@string/str_map_type"
-            android:key="@string/key_map_type"
-            android:summary="@string/str_Modern"
-            android:entries="@array/map_type_entries"
-            android:entryValues="@array/map_type_values" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/str_tbm_coordinate_location">
-
-        <EditTextPreference
-            android:title="@string/str_latitude_coordinate"
+            android:defaultValue="@string/str_default_latitude"
             android:key="@string/key_latitude"
             android:summary="@string/str_default_latitude"
-            android:defaultValue="@string/str_default_latitude"/>
+            android:title="@string/str_latitude_coordinate" />
 
         <EditTextPreference
-            android:title="@string/str_longitude_coordinate"
+            android:defaultValue="@string/str_default_longitude"
             android:key="@string/key_longitude"
             android:summary="@string/str_default_longitude"
-            android:defaultValue="@string/str_default_longitude"/>
+            android:title="@string/str_longitude_coordinate" />
 
     </PreferenceCategory>
 
