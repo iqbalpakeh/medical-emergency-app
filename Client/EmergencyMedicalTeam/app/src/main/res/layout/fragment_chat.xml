@@ -27,7 +27,6 @@
             android:scrollbars="vertical"
             tools:listitem="@layout/item_chat" />
 
-
     </FrameLayout>
 
     <View

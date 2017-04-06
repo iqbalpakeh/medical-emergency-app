@@ -69,7 +69,7 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
              */
             mUserLayout.setVisibility(View.VISIBLE);
             mUserDisplayName.setText(chat.displayName);
-            mUserTimestamp.setText(DateUtils.getRelativeTimeSpanString(Long.parseLong(chat.timestamp)));
+            mUserTimestamp.setText(DateUtils.getRelativeTimeSpanString(Long.parseLong(chat.timestamp)) + " - ");
             mUserMessage.setText(chat.message);
 
         } else {
@@ -78,7 +78,7 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
              */
             mOtherLayout.setVisibility(View.VISIBLE);
             mOtherDisplayName.setText(chat.displayName);
-            mOtherTimestamp.setText(DateUtils.getRelativeTimeSpanString(Long.parseLong(chat.timestamp)));
+            mOtherTimestamp.setText(" - " + DateUtils.getRelativeTimeSpanString(Long.parseLong(chat.timestamp)));
             mOtherMessage.setText(chat.message);
         }
     }
