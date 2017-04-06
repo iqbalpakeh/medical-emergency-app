@@ -28,30 +28,23 @@
                 <TextView
                     android:id="@+id/user_timestamp_field"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="5m - "
+                    android:gravity="center"
                     android:textColor="@color/text_secondary_dark"
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/user_display_name_field"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text="Mochammed Iqbal Pakeh"
                     android:textColor="@color/text_primary_dark"
                     android:textStyle="bold"
                     android:textSize="14sp" />
 
             </LinearLayout>
-
-            <!--<TextView-->
-                <!--android:id="@+id/user_display_name_field"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Mochammed Iqbal Pakeh"-->
-                <!--android:textColor="@color/text_primary_dark"-->
-                <!--android:textStyle="bold"-->
-                <!--android:textSize="14sp" />-->
 
             <TextView
                 android:id="@+id/user_message_field"
@@ -60,14 +53,6 @@
                 android:text="Now, if we fast forward 40 years, the Roth IRA account will hold roughly $1.6M whereas the traditional IRA will hold closer to $2.2M. This makes sense, as the Traditional IRA account had a larger basis on which to grow annually. However, if we assume that the $2.2M is taxed as the same 25% rate that the Roth money was taxed going in, then we end up with the same $1.6M that is present in the Roth account."
                 android:textColor="@color/text_primary_dark"
                 android:textSize="14sp" />
-
-            <!--<TextView-->
-                <!--android:id="@+id/user_timestamp_field"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="5m"-->
-                <!--android:textColor="@color/text_secondary_dark"-->
-                <!--android:textSize="12sp" />-->
 
         </LinearLayout>
 
@@ -94,7 +79,8 @@
                 <TextView
                     android:id="@+id/other_display_name_field"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text="Iqbal Pakeh"
                     android:textColor="@color/text_primary_dark"
                     android:textStyle="bold"
@@ -103,21 +89,13 @@
                 <TextView
                     android:id="@+id/other_timestamp_field"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text=" - 5m"
                     android:textColor="@color/text_secondary_dark"
                     android:textSize="12sp" />
 
             </LinearLayout>
-
-            <!--<TextView-->
-                <!--android:id="@+id/other_display_name_field"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Iqbal Pakeh"-->
-                <!--android:textColor="@color/text_primary_dark"-->
-                <!--android:textStyle="bold"-->
-                <!--android:textSize="14sp" />-->
 
             <TextView
                 android:id="@+id/other_message_field"
@@ -126,14 +104,6 @@
                 android:text="Now, if we fast forward 40 years, the Roth IRA account will hold roughly $1.6M whereas the traditional IRA will hold closer to $2.2M. This makes sense, as the Traditional IRA account had a larger basis on which to grow annually. However, if we assume that the $2.2M is taxed as the same 25% rate that the Roth money was taxed going in, then we end up with the same $1.6M that is present in the Roth account."
                 android:textColor="@color/text_primary_dark"
                 android:textSize="14sp" />
-
-            <!--<TextView-->
-                <!--android:id="@+id/other_timestamp_field"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="5m"-->
-                <!--android:textColor="@color/text_secondary_dark"-->
-                <!--android:textSize="12sp" />-->
 
         </LinearLayout>
 
