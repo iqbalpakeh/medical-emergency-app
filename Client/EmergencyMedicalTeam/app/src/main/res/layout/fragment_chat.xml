@@ -14,14 +14,15 @@
         android:layout_weight="1"
         android:clipToPadding="false"
         android:scrollbars="vertical"
+        android:background="@drawable/chat_wallpaper"
         tools:listitem="@layout/item_chat" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:background="@color/colorAccent" />
+        android:layout_marginEnd="8dp"
+        android:background="#F06292" />
 
     <LinearLayout
         android:layout_width="match_parent"
