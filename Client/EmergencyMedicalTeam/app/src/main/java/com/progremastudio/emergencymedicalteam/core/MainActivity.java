@@ -121,8 +121,8 @@ public class MainActivity extends BaseActivity {
          */
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_map_white_24dp);
-        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_assignment_late_white_24dp);
+        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_ambulance_white_24dp);
+        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_accident_white_24dp);
         mTabLayout.getTabAt(2).setIcon(R.drawable.ic_doctor_white_24dp);
 
         /*
