@@ -2,7 +2,7 @@
 
     <!-- General -->
     <string name="app_name">TBM APPS</string>
-    <string name="app_company">© IWEBNET-ID</string>
+    <string name="app_company">imobilenet-id</string>
     <string name="menu_logut">Keluar</string>
     <string name="menu_about">Tentang</string>
     <string name="menu_settings">Pengaturan</string>
@@ -11,7 +11,6 @@
     <string name="heading_post">Laporan Kecelakaan</string>
     <string name="heading_chat">Kontak Dokter</string>
     <string name="heading_settings">Pengaturan</string>
-
     <string name="search_my_location">search my location</string>
     <string name="search_local_hospital">search local hospital</string>
 
@@ -28,7 +27,7 @@
     <string name="str_No_addresses_found">No addresses found…</string>
     <string name="str_Address_found">Address found…</string>
     <string name="str_Loading">Loading…</string>
-    <string name="str_Version">Version</string>
+    <string name="str_version">version</string>
     <string name="str_Sign_In_failed">Sign-In failed</string>
     <string name="str_Sign_Up_failed">Sign-Up failed</string>
     <string name="str_Call_ambulance">Panggil ambulance</string>

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+    android:layout_gravity="center"
     android:orientation="vertical">
 
     <ScrollView
@@ -21,13 +22,14 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
+                    android:scaleType="centerCrop"
                     android:background="@drawable/indonesia_background" />
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
                     android:layout_marginTop="25dp"
-                    android:src="@mipmap/ic_launcher_tbm" />
+                    android:src="@mipmap/ic_launcher_tbm_2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -158,27 +160,6 @@
                 android:layout_gravity="center"
                 android:text="lupa password?"
                 android:textColor="@color/text_secondary_dark" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="BUTUH BANTUAN" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="PENYEAMATAN MEDIS REAKSI CEPAT?" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="PANGGIL AMBULANCE GRATIS !!" />
 
         </LinearLayout>
 
