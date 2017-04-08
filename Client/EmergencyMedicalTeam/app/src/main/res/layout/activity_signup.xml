@@ -1,145 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     android:orientation="vertical">
 
-    <ScrollView
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/chat_wallpaper" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_account_circle_black_36dp"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp" />
+
+        <ImageButton
+            android:id="@+id/camera_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_add_a_photo_black_24dp" />
+
+        <EditText
+            android:id="@+id/other_display_name_field"
+            android:layout_width="283dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/edit_text_background"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:hint="nama"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@color/text_primary_dark"
+            android:textColorHint="@color/text_secondary_dark" />
+
+        <EditText
+            android:id="@+id/email_field"
+            android:layout_width="283dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edit_text_background"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:hint="email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:textColor="@color/text_primary_dark"
+            android:textColorHint="@color/text_secondary_dark" />
+
+        <EditText
+            android:id="@+id/password_field"
+            android:layout_width="283dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edit_text_background"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:hint="password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textColor="@color/text_primary_dark"
+            android:textColorHint="@color/text_secondary_dark" />
+
+        <EditText
+            android:id="@+id/phone_number_field"
+            android:layout_width="283dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edit_text_background"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:hint="nomor telepon"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:textColor="@color/text_primary_dark"
+            android:textColorHint="@color/text_secondary_dark" />
+
+        <Button
+            android:id="@+id/sign_up_button"
+            android:layout_width="283dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:background="@color/colorAccent"
+            android:text="Registrasi"
+            android:textColor="@color/text_primary_white"
+            android:textStyle="bold"
+            android:visibility="visible" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+    </LinearLayout>
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="240dp"
-                    android:background="@drawable/indonesia_background" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginTop="25dp"
-                    android:src="@mipmap/ic_launcher_tbm_2" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="230dp"
-                    android:elevation="10dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="150dp"
-                        android:elevation="10dp"
-                        android:gravity="center"
-                        android:text="TBM APPS"
-                        android:textColor="@color/text_primary_dark"
-                        android:textSize="24sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Team Bantuan Medis"
-                        android:textColor="@color/text_secondary_dark"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Panggilan Medis Reaksi Cepat Anda"
-                        android:textColor="@color/text_secondary_dark"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-            </FrameLayout>
-
-            <EditText
-                android:id="@+id/other_display_name_field"
-                android:layout_width="283dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="34dp"
-                android:background="@drawable/edit_text_background"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:hint="nama"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textColor="@color/text_primary_dark"
-                android:textColorHint="@color/text_secondary_dark" />
-
-            <EditText
-                android:id="@+id/email_field"
-                android:layout_width="283dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/edit_text_background"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:hint="email"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:textColor="@color/text_primary_dark"
-                android:textColorHint="@color/text_secondary_dark" />
-
-            <EditText
-                android:id="@+id/password_field"
-                android:layout_width="283dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/edit_text_background"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:hint="password"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:textColor="@color/text_primary_dark"
-                android:textColorHint="@color/text_secondary_dark" />
-
-            <EditText
-                android:id="@+id/phone_number_field"
-                android:layout_width="283dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/edit_text_background"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:hint="nomor telepon"
-                android:inputType="numberDecimal"
-                android:maxLines="1"
-                android:textColor="@color/text_primary_dark"
-                android:textColorHint="@color/text_secondary_dark" />
-
-            <Button
-                android:id="@+id/sign_up_button"
-                android:layout_width="283dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="25dp"
-                android:background="@color/colorAccent"
-                android:text="Registrasi"
-                android:textColor="@color/text_primary_white"
-                android:textStyle="bold"
-                android:visibility="visible" />
-
-        </LinearLayout>
-
-    </ScrollView>
-
-</LinearLayout>
+</FrameLayout>

@@ -95,6 +95,16 @@
                 android:value=".core.MainActivity" />
         </activity>
 
+        <activity
+            android:name=".core.ProfileEditor"
+            android:label="@string/str_Profile_update"
+            android:screenOrientation="portrait"
+            android:theme="@style/action_bar_activity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".core.MainActivity" />
+        </activity>
+
         <service
             android:name=".AddressService"
             android:exported="false" />

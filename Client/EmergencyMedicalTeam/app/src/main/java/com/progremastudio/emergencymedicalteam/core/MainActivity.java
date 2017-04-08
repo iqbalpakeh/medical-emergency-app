@@ -186,10 +186,6 @@ public class MainActivity extends BaseActivity {
         About menu
         */
         else if (i == R.id.action_about) {
-
-            /*
-            Go to AboutActivity
-             */
             startActivity(new Intent(this, AboutActivity.class));
             return true;
         }
@@ -198,13 +194,18 @@ public class MainActivity extends BaseActivity {
         Settings menu
          */
         else if (i == R.id.action_settings) {
-            /*
-            Go to AboutActivity
-             */
             startActivity(new Intent(this, AppSettingsActivity.class));
             return true;
-
         }
+
+        /*
+        Profile update
+         */
+        else if (i == R.id.action_profile) {
+            startActivity(new Intent(this, ProfileEditor.class));
+            return true;
+        }
+
         /*
         Other
          */

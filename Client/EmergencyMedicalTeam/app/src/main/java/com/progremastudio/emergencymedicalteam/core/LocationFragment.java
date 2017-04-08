@@ -389,22 +389,22 @@ public class LocationFragment extends Fragment implements RoutingListener,
          */
         mLastLocationCoordinate = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        /*
-        Save current location coordinate for next request
-         */
-        String latitude = String.valueOf(mLastLocationCoordinate.getLatitude());
-        String longitude = String.valueOf(mLastLocationCoordinate.getLongitude());
-
-        Log.d(TAG, "Latitude = " + latitude);
-        Log.d(TAG, "Longitude = " + longitude);
-
-        AppSharedPreferences.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
-        AppSharedPreferences.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
-
-        /*
-        Start address provider service if location coordinate returned by Google Map Api
-         */
         if (mLastLocationCoordinate != null) {
+            /*
+            Save current location coordinate for next request
+             */
+            String latitude = String.valueOf(mLastLocationCoordinate.getLatitude());
+            String longitude = String.valueOf(mLastLocationCoordinate.getLongitude());
+
+            Log.d(TAG, "Latitude = " + latitude);
+            Log.d(TAG, "Longitude = " + longitude);
+
+            AppSharedPreferences.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
+            AppSharedPreferences.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
+
+            /*
+            Start address provider service if location coordinate returned by Google Map Api
+             */
             if (!Geocoder.isPresent()) {
                 Toast.makeText(getActivity(), getString(R.string.str_No_Geocoder_available), Toast.LENGTH_LONG).show();
                 return;
