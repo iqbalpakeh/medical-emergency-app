@@ -229,7 +229,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         /*
         Fetch current user location
          */
-        LatLng currentLocation = fetchCurrentLocation();
+        LatLng currentLocation = getCurrentLocation();
 
         /*
         Update map with retro style
@@ -302,7 +302,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         /*
         Move camera
          */
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(fetchCurrentLocation()));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(getCurrentLocation()));
         mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(16), MAP_ANIMATION_DURATION, null);
 
         /*
@@ -347,7 +347,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
             mUserMarker.remove();
         }
         mUserMarker = mGoogleMap.addMarker(new MarkerOptions()
-                .position(fetchCurrentLocation())
+                .position(getCurrentLocation())
                 .title(AppSharedPreferences.getCurrentUserDisplayName(getContext()))
                 .snippet("jarak " + distance + ", waktu " + duration));
         mUserMarker.showInfoWindow();
@@ -377,6 +377,18 @@ public class LocationFragment extends Fragment implements RoutingListener,
         Fetch location coordinate from Google Map Api
          */
         mLastLocationCoordinate = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        /*
+        Save current location coordinate for next request
+         */
+        String latitude = String.valueOf(mLastLocationCoordinate.getLatitude());
+        String longitude = String.valueOf(mLastLocationCoordinate.getLongitude());
+
+        Log.d(TAG, "Latitude = " + latitude);
+        Log.d(TAG, "Longitude = " + longitude);
+
+        AppSharedPreferences.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
+        AppSharedPreferences.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
 
         /*
         Start address provider service if location coordinate returned by Google Map Api
@@ -420,7 +432,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
      *
      * @return location coordinate
      */
-    private LatLng fetchCurrentLocation() {
+    private LatLng getCurrentLocation() {
 
         String latitude = AppSharedPreferences.getCurrentUserLastLatitudeLocation(getActivity());
         String longitude = AppSharedPreferences.getCurrentUserLastLongitudeLocation(getActivity());
@@ -436,7 +448,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
      */
     private void showUserLocation() {
         clearPolylines();
-        fetchLocationAddress();
+        requestLocationAddress();
         moveCameraToCurrentLocation();
     }
 
@@ -445,11 +457,12 @@ public class LocationFragment extends Fragment implements RoutingListener,
      */
     private void showTBMLocation() {
 
+        /*
+        Get location from user setting
+         */
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-
         String latitude = sharedPref.getString(AppSettingsFragment.KEY_LATITUDE, "");
         String longitude = sharedPref.getString(AppSettingsFragment.KEY_LONGITUDE, "");
-
         LatLng currentLocation = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
 
         /*
@@ -474,37 +487,9 @@ public class LocationFragment extends Fragment implements RoutingListener,
         Routing routing = new Routing.Builder()
                 .travelMode(Routing.TravelMode.DRIVING)
                 .withListener(this)
-                .waypoints(fetchCurrentLocation(), currentLocation)
+                .waypoints(getCurrentLocation(), currentLocation)
                 .build();
         routing.execute();
-    }
-
-    /**
-     * Fetch Latitude and Longitude value of user location. Default location is Medan City,
-     * and then show user last location.
-     */
-    private void fetchLocationAddress() {
-        /*
-        Fetch location coordinate from Google Map Api
-         */
-        mLastLocationCoordinate = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        /*
-        Save current location coordinate for next request
-         */
-        String latitude = String.valueOf(mLastLocationCoordinate.getLatitude());
-        String longitude = String.valueOf(mLastLocationCoordinate.getLongitude());
-
-        Log.d(TAG, "Latitude = " + latitude);
-        Log.d(TAG, "Longitude = " + longitude);
-
-        AppSharedPreferences.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
-        AppSharedPreferences.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
-
-        /*
-        Start Address Provider service
-         */
-        startAddressProviderService();
     }
 
     /**
@@ -514,7 +499,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         /*
         Fetch current user location
          */
-        LatLng currentLocation = fetchCurrentLocation();
+        LatLng currentLocation = getCurrentLocation();
 
         /*
         Move camera
