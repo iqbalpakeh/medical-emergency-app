@@ -34,6 +34,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -270,14 +271,24 @@ public class LocationFragment extends Fragment implements RoutingListener,
         /*
         Add marker
          */
+        addUserMarker(currentLocation);
+    }
+
+    /**
+     * Add user marker to map
+     *
+     * @param location position on map
+     */
+    private void addUserMarker(LatLng location) {
         if (mUserMarker != null) {
             mUserMarker.remove();
         }
         mUserMarker = mGoogleMap.addMarker(new MarkerOptions()
-                .position(currentLocation)
+                .position(location)
                 .title(AppSharedPreferences.getCurrentUserDisplayName(getContext())));
         mUserMarker.showInfoWindow();
     }
+
 
     @Override
     public void onRoutingFailure(RouteException e) {
@@ -323,7 +334,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
 
             PolylineOptions polyOptions = new PolylineOptions();
             polyOptions.color(getResources().getColor(COLORS[colorIndex]));
-            polyOptions.width(10 + i * 3);
+            polyOptions.width(20);
             polyOptions.addAll(route.get(i).getPoints());
             Polyline polyline = mGoogleMap.addPolyline(polyOptions);
             mPolylines.add(polyline);
@@ -477,7 +488,8 @@ public class LocationFragment extends Fragment implements RoutingListener,
         if (mTBMMarker == null) {
             mTBMMarker = mGoogleMap.addMarker(new MarkerOptions()
                     .position(currentLocation)
-                    .title("TBM FK UISU Medan"));
+                    .title(getString(R.string.TBM_Marker))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
             mTBMMarker.showInfoWindow();
         }
 
@@ -510,13 +522,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         /*
         Add marker
          */
-        if (mUserMarker != null) {
-            mUserMarker.remove();
-        }
-        mUserMarker = mGoogleMap.addMarker(new MarkerOptions()
-                .position(currentLocation)
-                .title(AppSharedPreferences.getCurrentUserDisplayName(getContext())));
-        mUserMarker.showInfoWindow();
+        addUserMarker(currentLocation);
     }
 
     /**

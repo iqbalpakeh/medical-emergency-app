@@ -13,6 +13,7 @@
     <string name="heading_settings">Pengaturan</string>
     <string name="search_my_location">search my location</string>
     <string name="search_local_hospital">search local hospital</string>
+    <string name="TBM_Marker">TBM FK UISU Medan</string>
 
     <!-- Ui related-->
     <string name="str_Current_location">Lokasi sekarang…</string>
