@@ -12,7 +12,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
+import com.progremastudio.emergencymedicalteam.FirebasePath;
 import com.progremastudio.emergencymedicalteam.R;
+import com.progremastudio.emergencymedicalteam.models.User;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -73,24 +78,47 @@ public class ProfileEditor extends BaseActivity {
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                updateUserCredential();
             }
         });
 
         /*
         Show current profile information
          */
-        showCurrentInformation();
+        mDisplayName.setHint(AppSharedPreferences.getCurrentUserDisplayName(this));
+        mEmail.setHint(AppSharedPreferences.getCurrentUserEmail(this));
+        mPhoneNumber.setHint(AppSharedPreferences.getCurrentUserPhoneNumber(this));
 
     }
 
     /**
-     * Show current profile information to user
+     * Update user new credential information and protected by password
      */
-    private void showCurrentInformation() {
-        mDisplayName.setHint(AppSharedPreferences.getCurrentUserDisplayName(this));
-        mEmail.setHint(AppSharedPreferences.getCurrentUserEmail(this));
-        mPhoneNumber.setHint(AppSharedPreferences.getCurrentUserPhoneNumber(this));
+    private void updateUserCredential() {
+
+        /*
+        Prepare local data for Post object creation
+         */
+        String displayName = mDisplayName.getText().toString();
+        String email = mEmail.getText().toString();
+        String phoneNumber = mPhoneNumber.getText().toString();
+
+        /*
+        Create new User object
+         */
+        User user = new User(displayName, email, phoneNumber);
+
+        /*
+        Prepare hash-map value from user object
+         */
+        Map<String, Object> userValues = user.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        /*
+        Update data in FB
+         */
+        childUpdates.put("/" + FirebasePath.USERS, userValues);
+
     }
 
 }
