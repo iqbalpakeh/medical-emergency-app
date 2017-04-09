@@ -150,7 +150,8 @@ public class SignInActivity extends BaseActivity {
                         getUid(),
                         user.displayName,
                         user.email,
-                        user.phoneNumber
+                        user.phoneNumber,
+                        user.pictureUrl
                 );
 
                 /*

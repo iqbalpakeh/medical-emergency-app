@@ -235,7 +235,8 @@ public class SignUpActivity extends BaseActivity {
                 getUid(),
                 displayName,
                 email,
-                phoneNumber
+                phoneNumber,
+                pictureUrl
         );
 
         /*
