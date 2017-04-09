@@ -13,6 +13,7 @@ public class AppSharedPreferences {
     private static final String USER_EMAIL = "user-email";
     private static final String USER_PHONE_NUMBER = "user-phone-number";
     private static final String USER_DISPLAY_NAME = "user-display-name";
+    private static final String USER_PICURE_URL = "user-picture-url";
     private static final String LAST_LOCATION_LATITUDE = "last-location-latitude";
     private static final String LAST_LOCATION_LONGITUDE = "last-location-longitude";
     private static final String LAST_LOCATION_ADDRESS = "last-location-address";
@@ -25,7 +26,7 @@ public class AppSharedPreferences {
     private static final String DEFAULT_ADDRESS = "Kota Medan";
 
     public static void logOutCurrentUser(Context context) {
-        storeCurrentUser(context, "", "", "", "");
+        storeCurrentUser(context, "", "", "", "", "");
     }
 
     /**
@@ -36,17 +37,20 @@ public class AppSharedPreferences {
      * @param displayName current user's display name
      * @param email current user's email
      * @param phoneNumber current user's phone number
+     * @param pictureUrl current user's picture url
      */
     public static void storeCurrentUser(Context context,
                                         String uid,
                                         String displayName,
                                         String email,
-                                        String phoneNumber) {
+                                        String phoneNumber,
+                                        String pictureUrl) {
 
         storeCurrentUserId(context, uid);
         storeCurrentUserDisplayName(context, displayName);
         storeCurrentUserEmail(context, email);
         storeCurrentUserPhoneNumber(context, phoneNumber);
+        storeCurrentUserPictureUrl(context, pictureUrl);
     }
 
     /**
@@ -143,6 +147,30 @@ public class AppSharedPreferences {
     public static String getCurrentUserPhoneNumber(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(USER_PHONE_NUMBER, "");
+    }
+
+    /**
+     * Store current user's picture url to shared-preference
+     *
+     * @param context application context
+     * @param pictureUrl current user's phone number
+     */
+    public static void storeCurrentUserPictureUrl(Context context, String pictureUrl) {
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        SharedPreferences.Editor editor = appContext.edit();
+        editor.putString(USER_PICURE_URL, pictureUrl);
+        editor.commit();
+    }
+
+    /**
+     * Get current user's picture url from shared-preference
+     *
+     * @param context application context
+     * @return current user's picture url
+     */
+    public static String getCurrentUserPictureUrl(Context context) {
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        return appContext.getString(USER_PICURE_URL, "");
     }
 
     /**

@@ -102,11 +102,12 @@ public class ProfileEditor extends BaseActivity {
         String displayName = mDisplayName.getText().toString();
         String email = mEmail.getText().toString();
         String phoneNumber = mPhoneNumber.getText().toString();
+        String pictureUrl = ""; //todo: implement picture url
 
         /*
         Create new User object
          */
-        User user = new User(displayName, email, phoneNumber);
+        User user = new User(getUid(), displayName, email, phoneNumber, pictureUrl);
 
         /*
         Prepare hash-map value from user object

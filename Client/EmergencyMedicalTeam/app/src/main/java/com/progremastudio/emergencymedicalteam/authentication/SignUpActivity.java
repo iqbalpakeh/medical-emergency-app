@@ -223,6 +223,11 @@ public class SignUpActivity extends BaseActivity {
         String phoneNumber = mPhoneNumberField.getText().toString();
 
         /*
+        Picture Url
+         */
+        String pictureUrl = ""; //todo:implement picture url
+
+        /*
         Store current user details to shared-preference
          */
         AppSharedPreferences.storeCurrentUser(
@@ -237,9 +242,11 @@ public class SignUpActivity extends BaseActivity {
         Create user object in database
          */
         User user = new User(
+                getUid(),
                 displayName,
                 email,
-                phoneNumber
+                phoneNumber,
+                pictureUrl
         );
         mDatabase.child(FirebasePath.USERS).child(userId).setValue(user.toMap());
 
