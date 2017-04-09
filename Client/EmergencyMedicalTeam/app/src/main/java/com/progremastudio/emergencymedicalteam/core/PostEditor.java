@@ -379,10 +379,9 @@ public class PostEditor extends BaseActivity {
         Map<String, Object> childUpdates = new HashMap<>();
 
         /*
-        Prepare data for both "/posts/" and "/user-post/"
+        Prepare data for "/posts/"
          */
         childUpdates.put("/" + FirebasePath.POSTS + "/" + key, postValues);
-        childUpdates.put("/" + FirebasePath.USER_POSTS + "/" + userId + "/" + key, postValues);
 
         /*
         Update Firebase-RealtimeDb location

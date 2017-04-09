@@ -220,10 +220,9 @@ public class ChatFragment extends Fragment {
         Map<String, Object> childUpdates = new HashMap<>();
 
         /*
-        Prepare data for both "/chat/" and "/user-chat/"
+        Prepare data for "/chat/"
          */
         childUpdates.put("/" + FirebasePath.CHAT + "/" + key, chatValues);
-        childUpdates.put("/" + FirebasePath.USER_CHAT + "/" + userId + "/" + key, chatValues);
 
         /*
         Update FB object
