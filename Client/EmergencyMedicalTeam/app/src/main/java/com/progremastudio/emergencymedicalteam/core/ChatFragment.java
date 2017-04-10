@@ -226,6 +226,7 @@ public class ChatFragment extends Fragment {
         Prepare local data for chat object creation
          */
         String displayName = AppSharedPreferences.getCurrentUserDisplayName(getContext());
+        String profileUrl = AppSharedPreferences.getCurrentUserPictureUrl(getContext());
         String timestamp = ((BaseActivity)getActivity()).currentTimestamp();
 
         /*
@@ -235,7 +236,8 @@ public class ChatFragment extends Fragment {
                 userId,
                 displayName,
                 timestamp,
-                message
+                message,
+                profileUrl
         );
 
         /*

@@ -7,26 +7,14 @@
     android:orientation="vertical"
     tools:context=".core.MainActivity">
 
-    <FrameLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/messages_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/chat_wallpaper" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/messages_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"
-            tools:listitem="@layout/item_chat" />
-
-    </FrameLayout>
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/item_chat" />
 
     <View
         android:layout_width="match_parent"
@@ -39,7 +27,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="top"
-        android:orientation="horizontal"
         android:padding="8dp">
 
         <FrameLayout

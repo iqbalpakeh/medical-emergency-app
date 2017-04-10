@@ -9,9 +9,15 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.Chat;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatViewHolder extends RecyclerView.ViewHolder {
 
@@ -33,7 +39,7 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
 
     private TextView mOtherMessage;
 
-
+    private CircleImageView mImageView;
 
     public ChatViewHolder(View itemView) {
 
@@ -47,6 +53,7 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
         mOtherDisplayName = (TextView) itemView.findViewById(R.id.other_display_name_field);
         mOtherMessage = (TextView) itemView.findViewById(R.id.other_message_field);
         mOtherTimestamp = (TextView) itemView.findViewById(R.id.other_timestamp_field);
+        mImageView = (CircleImageView) itemView.findViewById(R.id.profile_picture);
     }
 
     @SuppressLint("SetTextI18n")
@@ -82,6 +89,19 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
             mOtherDisplayName.setText(chat.displayName);
             mOtherTimestamp.setText(" - " + DateUtils.getRelativeTimeSpanString(Long.parseLong(chat.timestamp)));
             mOtherMessage.setText(chat.message);
+
+            /*
+            Show profile picture if exist
+            */
+            String profileUrl = chat.profileUrl;
+            if (!profileUrl.equals("No Picture")) {
+                StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(profileUrl);
+                Glide.with(context)
+                        .using(new FirebaseImageLoader())
+                        .load(storageReference)
+                        .into(mImageView);
+            }
+
         }
     }
 }

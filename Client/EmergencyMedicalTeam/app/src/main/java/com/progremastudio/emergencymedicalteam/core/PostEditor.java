@@ -113,7 +113,7 @@ public class PostEditor extends BaseActivity {
          */
         mAddressView.setText(AppSharedPreferences.getCurrentUserAddress(this));
 
-                /*
+        /*
         Show profile picture if exist
          */
         String profileUrl = AppSharedPreferences.getCurrentUserPictureUrl(this);

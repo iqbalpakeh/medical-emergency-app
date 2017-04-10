@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -11,6 +12,11 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:orientation="horizontal">
+
+        <Space
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -29,8 +35,8 @@
                     android:id="@+id/user_timestamp_field"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="5m - "
                     android:gravity="center"
+                    android:text="5m - "
                     android:textColor="@color/text_secondary_dark"
                     android:textSize="12sp" />
 
@@ -41,8 +47,8 @@
                     android:gravity="center"
                     android:text="Mochammed Iqbal Pakeh"
                     android:textColor="@color/text_primary_dark"
-                    android:textStyle="bold"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -64,6 +70,25 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                app:srcCompat="@drawable/ic_account_circle_black_36dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_picture"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="0dp" />
+
+        </FrameLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,8 +108,8 @@
                     android:gravity="center"
                     android:text="Iqbal Pakeh"
                     android:textColor="@color/text_primary_dark"
-                    android:textStyle="bold"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/other_timestamp_field"
