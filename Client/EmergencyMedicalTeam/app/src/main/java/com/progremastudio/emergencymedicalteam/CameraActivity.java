@@ -28,7 +28,6 @@ import com.github.florent37.camerafragment.widgets.CameraSwitchView;
 import com.github.florent37.camerafragment.widgets.FlashSwitchView;
 import com.github.florent37.camerafragment.widgets.MediaActionSwitchView;
 import com.github.florent37.camerafragment.widgets.RecordButton;
-import com.progremastudio.emergencymedicalteam.core.PostEditor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,21 +40,29 @@ import butterknife.OnClick;
 public class CameraActivity extends AppCompatActivity {
 
     public static final String FRAGMENT_TAG = "camera";
+
     private static final int REQUEST_CAMERA_PERMISSIONS = 931;
+
     private static final int REQUEST_PREVIEW_CODE = 1001;
+
     @Bind(R.id.settings_view)
     CameraSettingsView settingsView;
+
     @Bind(R.id.flash_switch_view)
     FlashSwitchView flashSwitchView;
+
     @Bind(R.id.front_back_camera_switcher)
     CameraSwitchView cameraSwitchView;
+
     @Bind(R.id.record_button)
     RecordButton recordButton;
+
     @Bind(R.id.photo_video_camera_switcher)
     MediaActionSwitchView mediaActionSwitchView;
 
     @Bind(R.id.record_duration_text)
     TextView recordDurationText;
+
     @Bind(R.id.record_size_mb_text)
     TextView recordSizeText;
 
@@ -124,7 +131,6 @@ public class CameraActivity extends AppCompatActivity {
 
                         @Override
                         public void onPhotoTaken(byte[] bytes, String filePath) {
-                            Toast.makeText(getBaseContext(), "onPhotoTaken " + filePath, Toast.LENGTH_SHORT).show();
                             startActivityForResult(PreviewActivity.newIntentPhoto(CameraActivity.this, filePath), 0);
                         }
                     },
@@ -153,14 +159,8 @@ public class CameraActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length != 0) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             addCamera();
@@ -169,14 +169,8 @@ public class CameraActivity extends AppCompatActivity {
 
     @RequiresPermission(Manifest.permission.CAMERA)
     public void addCamera() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         final CameraFragment cameraFragment =
@@ -348,9 +342,6 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Intent intent = new Intent(this, PostEditor.class);
-        intent.putExtra(PostEditor.EXTRA, PostEditor.EXTRA_KEEP_PICTURE);
-        startActivity(intent);
         finish();
     }
 

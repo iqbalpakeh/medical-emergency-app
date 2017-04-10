@@ -472,8 +472,8 @@ public class LocationFragment extends Fragment implements RoutingListener,
         Get location from user setting
          */
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String latitude = sharedPref.getString(AppSettingsFragment.KEY_LATITUDE, "");
-        String longitude = sharedPref.getString(AppSettingsFragment.KEY_LONGITUDE, "");
+        String latitude = sharedPref.getString(AppSettingsFragment.KEY_LATITUDE, AppSharedPreferences.DEFAULT_LATITUDE);
+        String longitude = sharedPref.getString(AppSettingsFragment.KEY_LONGITUDE, AppSharedPreferences.DEFAULT_LONGITUDE);
         LatLng currentLocation = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
 
         /*

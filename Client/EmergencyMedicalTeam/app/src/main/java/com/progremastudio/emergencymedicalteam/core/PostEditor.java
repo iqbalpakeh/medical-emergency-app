@@ -45,12 +45,6 @@ import java.util.Map;
 
 public class PostEditor extends BaseActivity {
 
-    public static final String EXTRA = "extra";
-
-    public static final String EXTRA_DELETE_PICTURE = "delete-picture";
-
-    public static final String EXTRA_KEEP_PICTURE = "keep-picture";
-
     private static final String TAG = "post-editor";
 
     private DatabaseReference mDatabase;
@@ -112,27 +106,18 @@ public class PostEditor extends BaseActivity {
          */
         mAddressView.setText(AppSharedPreferences.getCurrentUserAddress(this));
 
-        /*
-        Show picture taken by user
-         */
-        showImageView();
     }
 
     /**
      * Open Camera Activity after User click Open Camera button
      */
     private void openCamera() {
-        startActivity(new Intent(this, CameraActivity.class));
+        startActivityForResult(new Intent(this, CameraActivity.class), 0);
     }
 
-    /**
-     * Show image taken by user. This picture will be posted if User press sending post button.
-     */
-    private void showImageView() {
-
-        String extra = getIntent().getExtras().getString(EXTRA);
-
-        /*
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+       /*
         Get access to picture file
          */
         File directoryPath = new File(this.getFilesDir(), "post");
@@ -143,13 +128,6 @@ public class PostEditor extends BaseActivity {
          */
         if (!filePath.exists()) {
             return;
-        }
-
-        /*
-        Check Extra action
-         */
-        if(extra.equals(EXTRA_DELETE_PICTURE)) {
-            filePath.delete();
         }
 
         try {

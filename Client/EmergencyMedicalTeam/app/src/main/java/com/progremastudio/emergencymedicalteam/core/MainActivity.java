@@ -260,7 +260,6 @@ public class MainActivity extends BaseActivity {
      */
     private void openPostEditor() {
         Intent intent = new Intent(this, PostEditor.class);
-        intent.putExtra(PostEditor.EXTRA, PostEditor.EXTRA_DELETE_PICTURE);
         startActivity(intent);
     }
 
