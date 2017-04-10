@@ -38,14 +38,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:gravity="top"
         android:orientation="horizontal"
         android:padding="8dp">
 
-        <android.support.v7.widget.AppCompatImageView
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/ic_account_circle_black_36dp" />
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                app:srcCompat="@drawable/ic_account_circle_black_36dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_picture_field"
+                android:layout_width="36dp"
+                android:layout_height="36dp" />
+
+        </FrameLayout>
 
         <EditText
             android:id="@+id/other_message_field"
@@ -54,8 +65,10 @@
             android:layout_marginEnd="4dp"
             android:layout_marginStart="4dp"
             android:layout_weight="1"
+            android:hint="Pesan singkat"
             android:inputType="textCapSentences"
-            android:hint="Pesan singkat" />
+            android:textColor="@color/text_primary_dark"
+            android:textColorHint="@color/text_secondary_dark"/>
 
         <ImageButton
             android:id="@+id/send_button"

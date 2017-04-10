@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -43,6 +45,8 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class PostEditor extends BaseActivity {
 
     private static final String TAG = "post-editor";
@@ -54,6 +58,8 @@ public class PostEditor extends BaseActivity {
     private TextView mAddressView;
 
     private ImageView mImageView;
+
+    private CircleImageView mProfileView;
 
     private EditText mMessageEditText;
 
@@ -82,6 +88,7 @@ public class PostEditor extends BaseActivity {
         mImageView = (ImageView) findViewById(R.id.image_view);
         mAddressView = (TextView) findViewById(R.id.address_text_view);
         mMessageEditText = (EditText) findViewById(R.id.edit_text);
+        mProfileView = (CircleImageView) findViewById(R.id.profile_image);
 
         /*
         Initiate button
@@ -105,6 +112,18 @@ public class PostEditor extends BaseActivity {
         Show user address
          */
         mAddressView.setText(AppSharedPreferences.getCurrentUserAddress(this));
+
+                /*
+        Show profile picture if exist
+         */
+        String profileUrl = AppSharedPreferences.getCurrentUserPictureUrl(this);
+        if (!profileUrl.equals("No picture")) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(profileUrl);
+            Glide.with(this)
+                    .using(new FirebaseImageLoader())
+                    .load(storageReference)
+                    .into(mProfileView);
+        }
 
     }
 
@@ -334,6 +353,7 @@ public class PostEditor extends BaseActivity {
         String locationCoordinate = AppSharedPreferences.getCurrentUserAddress(this);
         String emergencyType = "Kecelakaan"; // todo: to have list option
         String phoneNumber = AppSharedPreferences.getCurrentUserPhoneNumber(this);
+        String profileUrl = AppSharedPreferences.getCurrentUserPictureUrl(this);
 
         /*
         Create new Post object
@@ -347,7 +367,8 @@ public class PostEditor extends BaseActivity {
                 message,
                 downloadUrl,
                 emergencyType,
-                phoneNumber
+                phoneNumber,
+                profileUrl
         );
 
         /*

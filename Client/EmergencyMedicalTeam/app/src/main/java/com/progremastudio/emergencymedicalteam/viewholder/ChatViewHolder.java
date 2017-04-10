@@ -33,6 +33,8 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
 
     private TextView mOtherMessage;
 
+
+
     public ChatViewHolder(View itemView) {
 
         super(itemView);

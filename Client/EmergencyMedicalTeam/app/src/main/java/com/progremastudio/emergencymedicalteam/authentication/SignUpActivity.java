@@ -93,7 +93,7 @@ public class SignUpActivity extends BaseActivity {
         /*
         Initiate user input field
          */
-        mImageView = (CircleImageView) findViewById(R.id.profile_image);
+        mImageView = (CircleImageView) findViewById(R.id.profile_picture_field);
         mEmailField = (EditText) findViewById(R.id.email_field);
         mPasswordField = (EditText) findViewById(R.id.password_field);
         mDisplayNameField = (EditText) findViewById(R.id.other_display_name_field);

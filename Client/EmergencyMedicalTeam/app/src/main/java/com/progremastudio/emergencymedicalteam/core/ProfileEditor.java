@@ -79,7 +79,7 @@ public class ProfileEditor extends BaseActivity {
         /*
         Initiate widget
          */
-        mImageView = (CircleImageView) findViewById(R.id.profile_image);
+        mImageView = (CircleImageView) findViewById(R.id.profile_picture_field);
         mDisplayName = (EditText) findViewById(R.id.display_name_field);
         mPhoneNumber = (EditText) findViewById(R.id.phone_number_field);
 

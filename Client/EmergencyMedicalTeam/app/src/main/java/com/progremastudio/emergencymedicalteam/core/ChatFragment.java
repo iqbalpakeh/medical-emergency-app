@@ -14,13 +14,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.FirebasePath;
@@ -31,6 +35,8 @@ import com.progremastudio.emergencymedicalteam.viewholder.ChatViewHolder;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatFragment extends Fragment {
 
@@ -43,6 +49,8 @@ public class ChatFragment extends Fragment {
     private RecyclerView mRecyclerView;
 
     private EditText mMessageField;
+
+    private CircleImageView mImageView;
 
     @Nullable
     @Override
@@ -69,6 +77,11 @@ public class ChatFragment extends Fragment {
         Initiate widget
          */
         mMessageField = (EditText) rootView.findViewById(R.id.other_message_field);
+        mImageView = (CircleImageView) rootView.findViewById(R.id.profile_picture_field);
+
+        /*
+        Initiate button
+         */
         ImageButton sendButton = (ImageButton) rootView.findViewById(R.id.send_button);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +89,18 @@ public class ChatFragment extends Fragment {
                 submitMessage();
             }
         });
+
+        /*
+        Show profile picture if exist
+         */
+        String pictureUrl = AppSharedPreferences.getCurrentUserPictureUrl(getContext());
+        if (!pictureUrl.equals("No picture")) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(pictureUrl);
+            Glide.with(this)
+                    .using(new FirebaseImageLoader())
+                    .load(storageReference)
+                    .into(mImageView);
+        }
 
         return rootView;
     }
@@ -220,7 +245,7 @@ public class ChatFragment extends Fragment {
         Map<String, Object> childUpdates = new HashMap<>();
 
         /*
-        Prepare data for "/chat/"
+        Prepare data for "/chat/key*"
          */
         childUpdates.put("/" + FirebasePath.CHAT + "/" + key, chatValues);
 
