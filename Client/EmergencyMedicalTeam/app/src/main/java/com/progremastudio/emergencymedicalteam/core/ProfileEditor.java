@@ -116,7 +116,7 @@ public class ProfileEditor extends BaseActivity {
     private void updateUserCredential() {
 
         /*
-        Shows posting message to user and progress bar
+        Shows message to user and progress bar
          */
         Toast.makeText(this, getString(R.string.str_Update_profile), Toast.LENGTH_SHORT).show();
         showProgressDialog();
