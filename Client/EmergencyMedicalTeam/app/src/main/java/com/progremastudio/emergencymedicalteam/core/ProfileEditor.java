@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -53,8 +55,6 @@ public class ProfileEditor extends BaseActivity {
 
     private EditText mDisplayName;
 
-    private EditText mEmail;
-
     private EditText mPhoneNumber;
 
     @Override
@@ -81,7 +81,6 @@ public class ProfileEditor extends BaseActivity {
          */
         mImageView = (CircleImageView) findViewById(R.id.profile_image);
         mDisplayName = (EditText) findViewById(R.id.display_name_field);
-        mEmail = (EditText) findViewById(R.id.email_field);
         mPhoneNumber = (EditText) findViewById(R.id.phone_number_field);
 
         /*
@@ -106,8 +105,19 @@ public class ProfileEditor extends BaseActivity {
         Show current profile information
          */
         mDisplayName.setHint(AppSharedPreferences.getCurrentUserDisplayName(this));
-        mEmail.setHint(AppSharedPreferences.getCurrentUserEmail(this));
         mPhoneNumber.setHint(AppSharedPreferences.getCurrentUserPhoneNumber(this));
+
+        /*
+        Show profile picture if exist
+         */
+        String pictureUrl = AppSharedPreferences.getCurrentUserPictureUrl(this);
+        if (!pictureUrl.equals("No picture")) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(pictureUrl);
+            Glide.with(this)
+                    .using(new FirebaseImageLoader())
+                    .load(storageReference)
+                    .into(mImageView);
+        }
     }
 
     /**
@@ -189,17 +199,33 @@ public class ProfileEditor extends BaseActivity {
      * @param pictureUrl reference of picture download url from Firebase storage
      */
     private void updateUserCredential(String pictureUrl) {
+
         /*
-        Prepare local data for Post object creation
+        Get updated display name
          */
-        String displayName = mDisplayName.getText().toString();
-        String email = mEmail.getText().toString();
-        String phoneNumber = mPhoneNumber.getText().toString();
+        String displayName = mDisplayName.getHint().toString();
+        if (!mDisplayName.getText().toString().equals("")) {
+            displayName = mDisplayName.getText().toString();
+        }
+
+        /*
+        Get updated phone number
+         */
+        String phoneNumber = mPhoneNumber.getHint().toString();
+        if (!mPhoneNumber.getText().toString().equals("")) {
+            phoneNumber = mPhoneNumber.getText().toString();
+        }
 
         /*
         Create new User object
          */
-        User user = new User(getUid(), displayName, email, phoneNumber, pictureUrl);
+        User user = new User(
+                getUid(),
+                displayName,
+                AppSharedPreferences.getCurrentUserEmail(this),
+                phoneNumber,
+                pictureUrl
+        );
 
         /*
         Prepare hash-map value from user object
@@ -260,13 +286,6 @@ public class ProfileEditor extends BaseActivity {
          */
         File directoryPath = new File(this.getFilesDir(), "post");
         File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
-
-        /*
-        Shows nothing if picture is not exist
-         */
-        if (!filePath.exists()) {
-            return;
-        }
 
         try {
             /*

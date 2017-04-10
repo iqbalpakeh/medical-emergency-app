@@ -145,22 +145,17 @@ public class SignUpActivity extends BaseActivity {
         File directoryPath = new File(this.getFilesDir(), "post");
         File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
 
-        /*
-        Shows nothing if picture is not exist
-         */
-        if (!filePath.exists()) {
-            return;
-        }
-
         try {
             /*
             Get picture bitmap
              */
             Bitmap myBitmap = BitmapFactory.decodeFile(filePath.getAbsolutePath());
 
+            /*
+            Check orientation
+             */
             ExifInterface exif = new ExifInterface(filePath.getAbsolutePath());
             int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-
             Log.d(TAG, "Picture orientation: " + orientation);
 
             /*
@@ -331,7 +326,7 @@ public class SignUpActivity extends BaseActivity {
         File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
 
         /*
-        Check image file existency
+        Check image file existence
          */
         if(filePath.exists()) {
 
@@ -355,11 +350,12 @@ public class SignUpActivity extends BaseActivity {
                      */
                     Log.d(TAG, "Upload fail");
                 }
+
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     /*
-                    taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    Handle successful uploads
                      */
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     Log.d(TAG, "donwload Url " + downloadUrl.toString());
@@ -378,7 +374,6 @@ public class SignUpActivity extends BaseActivity {
             createNewUserData(firebaseUser, "No picture");
         }
     }
-
 
     /**
      * Create new user data in Firebase
