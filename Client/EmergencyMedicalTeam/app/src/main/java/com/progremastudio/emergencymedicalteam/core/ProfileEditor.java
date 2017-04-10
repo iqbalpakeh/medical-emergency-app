@@ -1,28 +1,28 @@
 package com.progremastudio.emergencymedicalteam.core;
 
-import android.Manifest;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.CameraActivity;
@@ -30,6 +30,7 @@ import com.progremastudio.emergencymedicalteam.FirebasePath;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.User;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -42,9 +43,7 @@ public class ProfileEditor extends BaseActivity {
 
     private static String TAG = "profile-editor";
 
-    private final int INTENT_GALLERY = 0;
-
-    private final int INTENT_CAMERA = 1;
+    private final int INTENT_CAMERA = 0;
 
     private DatabaseReference mDatabase;
 
@@ -57,8 +56,6 @@ public class ProfileEditor extends BaseActivity {
     private EditText mEmail;
 
     private EditText mPhoneNumber;
-
-    private Uri mPictureUri;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,15 +101,6 @@ public class ProfileEditor extends BaseActivity {
                 updateUserCredential();
             }
         });
-        /* todo: there's bug in exif orientation if pic taken from gallery. This feature is hidden for now
-        ImageButton galleryButton = (ImageButton) findViewById(R.id.gallery_button);
-        galleryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openGalleryApps();
-            }
-        });
-        */
 
         /*
         Show current profile information
@@ -120,17 +108,6 @@ public class ProfileEditor extends BaseActivity {
         mDisplayName.setHint(AppSharedPreferences.getCurrentUserDisplayName(this));
         mEmail.setHint(AppSharedPreferences.getCurrentUserEmail(this));
         mPhoneNumber.setHint(AppSharedPreferences.getCurrentUserPhoneNumber(this));
-
-        /*
-        Check read external storage permission
-         */
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            String[] permissions = {
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-            };
-            ActivityCompat.requestPermissions(this, permissions, 0);
-        }
-
     }
 
     /**
@@ -139,12 +116,85 @@ public class ProfileEditor extends BaseActivity {
     private void updateUserCredential() {
 
         /*
+        Shows posting message to user and progress bar
+         */
+        Toast.makeText(this, getString(R.string.str_Update_profile), Toast.LENGTH_SHORT).show();
+        showProgressDialog();
+
+        /*
+        Create storage reference used by Firebase
+         */
+        StorageReference pictureReference = mStorage.getReference().child(FirebasePath.USERS).child(getUid()).child("profile_picture.jpg");
+
+        /*
+        Create access to posting image and check if it's exist
+         */
+        File directoryPath = new File(getFilesDir(), "post");
+        File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
+
+        /*
+        Check image file existency
+         */
+        if(filePath.exists()) {
+
+            /*
+            Create bitmap for image posting
+             */
+            Bitmap bitmap = BitmapFactory.decodeFile(filePath.getAbsolutePath());
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] data = stream.toByteArray();
+
+            /*
+            Upload image to Firebase-Storage server
+             */
+            UploadTask uploadTask = pictureReference.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    /*
+                    Handle unsuccessful uploads
+                     */
+                    Log.d(TAG, "Upload fail");
+                }
+
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    /*
+                    taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                     */
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    Log.d(TAG, "donwload Url " + downloadUrl.toString());
+
+                    /*
+                    Write remaining details of post with image exist
+                     */
+                    updateUserCredential(downloadUrl.toString());
+
+                }
+            });
+
+        } else {
+            /*
+            Update user credential without picture
+             */
+            updateUserCredential("No Picture");
+        }
+    }
+
+    /**
+     * Update user new credential information and protected by password
+     *
+     * @param pictureUrl reference of picture download url from Firebase storage
+     */
+    private void updateUserCredential(String pictureUrl) {
+        /*
         Prepare local data for Post object creation
          */
         String displayName = mDisplayName.getText().toString();
         String email = mEmail.getText().toString();
         String phoneNumber = mPhoneNumber.getText().toString();
-        String pictureUrl = ""; //todo: implement picture url
 
         /*
         Create new User object
@@ -158,11 +208,32 @@ public class ProfileEditor extends BaseActivity {
         Map<String, Object> childUpdates = new HashMap<>();
 
         /*
-        Update data in FB
+        Prepare data for /USERS/#uid#
          */
-        childUpdates.put("/" + FirebasePath.USERS, userValues);
+        childUpdates.put("/" + FirebasePath.USERS + "/" + getUid(), userValues);
 
+        /*
+        Update data in Firebase
+         */
+        mDatabase.updateChildren(childUpdates);
+
+        /*
+        Propagate to other data location in FB
+         */
+        //todo: implement this!
+
+        /*
+        Hide progress bar
+         */
+        hideProgressDialog();
+
+        /*
+        Go back to Main activity
+         */
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
+
 
     /**
      * Take picture by using camera
@@ -171,114 +242,19 @@ public class ProfileEditor extends BaseActivity {
         startActivityForResult(new Intent(this, CameraActivity.class), INTENT_CAMERA);
     }
 
-    /**
-     * Take picture by picking from gallery apps
-     */
-    private void openGalleryApps() {
-        /*
-        Create file save location
-         */
-        File directoryPath = new File(this.getFilesDir(), "post");
-        if (!directoryPath.exists()) {
-            directoryPath.mkdirs();
-        }
-        File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
-        mPictureUri = Uri.parse(filePath.getPath());
-
-        /*
-        Call action pick intent
-         */
-        try {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, mPictureUri);
-            startActivityForResult(intent, INTENT_GALLERY);
-        } catch (ActivityNotFoundException error) {
-            Log.e(TAG, error.getStackTrace().toString());
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case INTENT_GALLERY:
-                showGalleryImage(data);
-                break;
             case INTENT_CAMERA:
-                showCameraImage(data);
+                showCameraImage();
                 break;
-        }
-    }
-
-    /**
-     * Show image selected by gallery
-     *
-     * @param intent picture file
-     */
-    private void showGalleryImage(Intent intent) {
-        try {
-
-            OutputStream fOut;
-            File directoryPath;
-            File filePath;
-
-            /*
-            Get bitmap from intent
-             */
-            Bitmap myBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), intent.getData());
-
-            /*
-            Get bitmap rotation
-             */
-            directoryPath = new File(this.getFilesDir(), "post");
-            if (!directoryPath.exists()) {
-                directoryPath.mkdirs();
-            }
-            filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
-
-            ExifInterface exif = new ExifInterface(filePath.getPath());
-            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-
-            Log.d(TAG, "Picture orientation: " + orientation);
-
-            /*
-            Prepare the matrix for bitmap rotation
-             */
-            Matrix matrix = new Matrix();
-            if (orientation == 6) {
-                matrix.postRotate(90);
-            } else if (orientation == 3) {
-                matrix.postRotate(180);
-            } else if (orientation == 8) {
-                matrix.postRotate(270);
-            }
-
-            /*
-            Rotate the bitmap
-             */
-            myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true);
-
-            /*
-            Save bitmap after rotated
-            */
-            fOut = new FileOutputStream(filePath);
-            myBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-            fOut.flush();
-            fOut.close();
-
-            /*
-            Show bitmap to image view
-             */
-            mImageView.setImageBitmap(myBitmap);
-        } catch (Exception exception) {
-            Log.e(TAG, exception.getStackTrace().toString());
         }
     }
 
     /**
      * Show image taken by camera
      */
-    private void showCameraImage(Intent data) {
+    private void showCameraImage() {
         /*
         Get access to picture file
          */

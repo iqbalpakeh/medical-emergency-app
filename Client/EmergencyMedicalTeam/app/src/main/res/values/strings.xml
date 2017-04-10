@@ -24,6 +24,7 @@
     <string name="str_Connection_suspended">Connection suspended</string>
     <string name="str_Connection_failed">Connection failed: ConnectionResult.getErrorCode() = </string>
     <string name="str_Posting">Posting…</string>
+    <string name="str_Update_profile">Ubah data diri…</string>
     <string name="str_Service_is_not_available">Service is not available…</string>
     <string name="str_Invalid_latitude_or_longitude_values">Invalid latitude or longitude values…</string>
     <string name="str_No_addresses_found">No addresses found…</string>
