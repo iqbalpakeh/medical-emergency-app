@@ -23,13 +23,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
                     android:scaleType="centerCrop"
-                    android:background="@drawable/indonesia_background" />
+                    android:background="@drawable/bg_indonesia" />
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
                     android:layout_marginTop="25dp"
-                    android:src="@mipmap/ic_launcher_tbm_3" />
+                    android:src="@mipmap/ic_launcher" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -61,10 +61,11 @@
                         android:layout_width="150dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/google_login_background"
+                        android:background="@drawable/bg_google_login"
                         android:padding="8dp"
                         android:text="GOOGLE"
-                        android:textColor="@android:color/white" />
+                        android:textColor="@android:color/white"
+                        android:visibility="visible"/>
 
                     <Space
                         android:layout_width="32dp"
@@ -75,10 +76,11 @@
                         android:layout_width="150dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/bg_login_fb_active"
+                        android:background="@drawable/bg_facebook_login"
                         android:padding="8dp"
                         android:text="FACEBOOK"
-                        android:textColor="@android:color/white" />
+                        android:textColor="@android:color/white"
+                        android:visibility="visible"/>
 
                 </LinearLayout>
 
@@ -101,7 +103,7 @@
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_weight="0.17"
-                android:background="@drawable/edit_text_background"
+                android:background="@drawable/bg_edit_text"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:hint="email"
@@ -115,7 +117,7 @@
                 android:layout_width="250dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:background="@drawable/edit_text_background"
+                android:background="@drawable/bg_edit_text"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:hint="password"
@@ -135,7 +137,7 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sign_in_button_background"
+                    android:background="@drawable/bg_sign_in_button"
                     android:padding="8dp"
                     android:text="Masuk"
                     android:textColor="@android:color/holo_blue_light" />
@@ -145,7 +147,7 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
-                    android:background="@drawable/sign_in_button_background"
+                    android:background="@drawable/bg_sign_in_button"
                     android:padding="8dp"
                     android:text="Registrasi"
                     android:textColor="@android:color/holo_blue_light" />

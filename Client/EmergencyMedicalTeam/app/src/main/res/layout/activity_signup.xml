@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/chat_wallpaper" />
+        android:src="@drawable/bg_wallpaper" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/edit_text_background"
+            android:background="@drawable/bg_edit_text"
             android:ellipsize="end"
             android:gravity="center"
             android:hint="nama"
@@ -56,7 +56,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/edit_text_background"
+            android:background="@drawable/bg_edit_text"
             android:ellipsize="end"
             android:gravity="center"
             android:hint="email"
@@ -71,7 +71,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/edit_text_background"
+            android:background="@drawable/bg_edit_text"
             android:ellipsize="end"
             android:gravity="center"
             android:hint="password"
@@ -86,7 +86,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/edit_text_background"
+            android:background="@drawable/bg_edit_text"
             android:ellipsize="end"
             android:gravity="center"
             android:hint="nomor telepon"

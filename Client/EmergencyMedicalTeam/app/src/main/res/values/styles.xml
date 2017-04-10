@@ -17,7 +17,7 @@
     </style>
 
     <style name="menu_labels_style">
-        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:background">@drawable/bg_fab_label</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 

@@ -5,7 +5,7 @@
     <string name="app_company">imobilenet-id</string>
     <string name="menu_logut">Keluar App</string>
     <string name="menu_about">Tentang Tbm</string>
-    <string name="menu_profile">Data pengguna</string>
+    <string name="menu_profile">Data Pengguna</string>
     <string name="menu_settings">Pengaturan</string>
     <string name="menu_search">Pencarian</string>
     <string name="heading_location">Lokasi Pengguna</string>
