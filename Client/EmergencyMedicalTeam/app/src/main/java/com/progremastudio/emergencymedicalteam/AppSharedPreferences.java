@@ -25,6 +25,11 @@ public class AppSharedPreferences {
     public static final String DEFAULT_LONGITUDE = "98.66667";
     public static final String DEFAULT_ADDRESS = "Kota Medan";
 
+    /*
+    Public constant
+     */
+    public static final String NO_URL = "no-url";
+
     public static void logOutCurrentUser(Context context) {
         storeCurrentUser(context, "", "", "", "", "");
     }

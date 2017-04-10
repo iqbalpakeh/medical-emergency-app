@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.models.Post;
 
@@ -71,7 +72,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         /*
         Show profile picture if exist
          */
-        if (!post.profileUrl.equals("No Picture")) {
+        if (!post.profileUrl.equals(AppSharedPreferences.NO_URL)) {
             StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(post.profileUrl);
             Glide.with(context)
                     .using(new FirebaseImageLoader())
@@ -82,7 +83,7 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         /*
         Show accident picture if exist
          */
-        if (!post.pictureUrl.equals("No Picture")) {
+        if (!post.pictureUrl.equals(AppSharedPreferences.NO_URL)) {
             mAccidentPictureField.setVisibility(View.VISIBLE);
             StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(post.pictureUrl);
             Glide.with(context)

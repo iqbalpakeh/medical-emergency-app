@@ -376,7 +376,7 @@ public class SignUpActivity extends BaseActivity {
             /*
             Create new user without picture
              */
-            createNewUserData(firebaseUser, "No picture");
+            createNewUserData(firebaseUser, AppSharedPreferences.NO_URL);
         }
     }
 

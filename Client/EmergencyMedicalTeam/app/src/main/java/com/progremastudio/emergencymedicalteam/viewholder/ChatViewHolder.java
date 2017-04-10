@@ -94,7 +94,7 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
             Show profile picture if exist
             */
             String profileUrl = chat.profileUrl;
-            if (!profileUrl.equals("No Picture")) {
+            if (!profileUrl.equals(AppSharedPreferences.NO_URL)) {
                 StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(profileUrl);
                 Glide.with(context)
                         .using(new FirebaseImageLoader())

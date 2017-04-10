@@ -117,7 +117,7 @@ public class PostEditor extends BaseActivity {
         Show profile picture if exist
          */
         String profileUrl = AppSharedPreferences.getCurrentUserPictureUrl(this);
-        if (!profileUrl.equals("No picture")) {
+        if (!profileUrl.equals(AppSharedPreferences.NO_URL)) {
             StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(profileUrl);
             Glide.with(this)
                     .using(new FirebaseImageLoader())
@@ -329,7 +329,7 @@ public class PostEditor extends BaseActivity {
             /*
             Write remaining details of post without image exist
              */
-            writeNewPost(userId, message, "No Picture", key);
+            writeNewPost(userId, message, AppSharedPreferences.NO_URL, key);
         }
     }
 

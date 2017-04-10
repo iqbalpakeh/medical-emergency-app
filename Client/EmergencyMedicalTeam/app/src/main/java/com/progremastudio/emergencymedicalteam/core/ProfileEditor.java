@@ -111,7 +111,7 @@ public class ProfileEditor extends BaseActivity {
         Show profile picture if exist
          */
         String pictureUrl = AppSharedPreferences.getCurrentUserPictureUrl(this);
-        if (!pictureUrl.equals("No picture")) {
+        if (!pictureUrl.equals(AppSharedPreferences.NO_URL)) {
             StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(pictureUrl);
             Glide.with(this)
                     .using(new FirebaseImageLoader())
@@ -195,7 +195,7 @@ public class ProfileEditor extends BaseActivity {
             /*
             Update user credential without picture
              */
-            updateUserCredential("No Picture");
+            updateUserCredential(AppSharedPreferences.NO_URL);
         }
     }
 

@@ -94,7 +94,7 @@ public class ChatFragment extends Fragment {
         Show profile picture if exist
          */
         String pictureUrl = AppSharedPreferences.getCurrentUserPictureUrl(getContext());
-        if (!pictureUrl.equals("No picture")) {
+        if (!pictureUrl.equals(AppSharedPreferences.NO_URL)) {
             StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(pictureUrl);
             Glide.with(this)
                     .using(new FirebaseImageLoader())
