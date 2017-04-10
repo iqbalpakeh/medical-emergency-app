@@ -132,9 +132,15 @@ public class ProfileEditor extends BaseActivity {
         showProgressDialog();
 
         /*
+        Generate random key for addressing every new post
+         */
+        final String key = mDatabase.child(FirebasePath.USERS).child(getUid()).push().getKey();
+
+        /*
         Create storage reference used by Firebase
          */
-        StorageReference pictureReference = mStorage.getReference().child(FirebasePath.USERS).child(getUid()).child("profile_picture.jpg");
+        StorageReference pictureReference = mStorage.getReference()
+                .child(FirebasePath.USERS).child(getUid()).child(key).child("profile_picture.jpg");
 
         /*
         Create access to posting image and check if it's exist
@@ -217,12 +223,29 @@ public class ProfileEditor extends BaseActivity {
         }
 
         /*
+        Email can't be changed. Need to change from FB Authentication object too.
+         */
+        String email = AppSharedPreferences.getCurrentUserEmail(this);
+
+        /*
+        Store current user details to shared-preference
+         */
+        AppSharedPreferences.storeCurrentUser(
+                this,
+                getUid(),
+                displayName,
+                email,
+                phoneNumber,
+                pictureUrl
+        );
+
+        /*
         Create new User object
          */
         User user = new User(
                 getUid(),
                 displayName,
-                AppSharedPreferences.getCurrentUserEmail(this),
+                email,
                 phoneNumber,
                 pictureUrl
         );

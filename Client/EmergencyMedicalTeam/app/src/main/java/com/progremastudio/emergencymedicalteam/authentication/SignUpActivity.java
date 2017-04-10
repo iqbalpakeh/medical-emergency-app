@@ -314,10 +314,15 @@ public class SignUpActivity extends BaseActivity {
     private void onAuthSuccess(final FirebaseUser firebaseUser) {
 
         /*
+        Generate random key for addressing every new post
+         */
+        final String key = mDatabase.child(FirebasePath.USERS).child(getUid()).push().getKey();
+
+        /*
         Create storage reference used by Firebase
          */
         StorageReference pictureReference = mStorage.getReference()
-                .child(FirebasePath.USERS).child(firebaseUser.getUid()).child("profile_picture.jpg");
+                .child(FirebasePath.USERS).child(firebaseUser.getUid()).child(key).child("profile_picture.jpg");
 
         /*
         Create access to profile picture and check if it's exist
