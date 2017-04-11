@@ -105,7 +105,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="Iqbal Pakeh"
-                    android:textColor="@color/text_primary_dark"
+                    android:textColor="@color/text_primary_white"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -115,7 +115,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text=" - 5m"
-                    android:textColor="@color/text_secondary_dark"
+                    android:textColor="@color/text_primary_white"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -125,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Now, if we fast forward 40 years, the Roth IRA account will hold roughly $1.6M whereas the traditional IRA will hold closer to $2.2M. This makes sense, as the Traditional IRA account had a larger basis on which to grow annually. However, if we assume that the $2.2M is taxed as the same 25% rate that the Roth money was taxed going in, then we end up with the same $1.6M that is present in the Roth account."
-                android:textColor="@color/text_primary_dark"
+                android:textColor="@color/text_primary_white"
                 android:textSize="14sp" />
 
         </LinearLayout>

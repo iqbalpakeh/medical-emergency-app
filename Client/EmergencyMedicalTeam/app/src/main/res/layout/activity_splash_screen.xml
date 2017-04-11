@@ -23,14 +23,10 @@
             android:gravity="center">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:src="@mipmap/ic_launcher" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="16dp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -44,7 +40,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:text="@string/app_company"
                 android:textColor="@color/text_secondary_dark"
@@ -62,7 +58,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:text="Team Bantuan Medis"
                 android:textColor="@color/text_secondary_dark"
