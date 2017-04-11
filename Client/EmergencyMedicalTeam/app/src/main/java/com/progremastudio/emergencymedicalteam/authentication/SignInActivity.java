@@ -46,7 +46,7 @@ public class SignInActivity extends BaseActivity {
         /*
         Initiate activity layout
          */
-        setContentView(R.layout.activity_signin);
+        setContentView(R.layout.activity_signin_new);
 
         /*
         Initiate firebase authentication instance
@@ -79,24 +79,6 @@ public class SignInActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 signUp();
-            }
-        });
-        Button googleSignInButton = (Button) findViewById(R.id.google_sign_in_button);
-        googleSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: to implement Google Sign-In procedure
-                Toast.makeText(SignInActivity.this, "To be implemented...",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-        Button facebookSignInButton = (Button) findViewById(R.id.facebook_sign_in_button);
-        facebookSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: to implement Faceboook Sign-In procedure
-                Toast.makeText(SignInActivity.this, "To be implemented...",
-                        Toast.LENGTH_SHORT).show();
             }
         });
         Button forgetPasswordButton = (Button) findViewById(R.id.forget_password_button);
