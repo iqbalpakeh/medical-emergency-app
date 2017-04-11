@@ -46,7 +46,7 @@ public class SignInActivity extends BaseActivity {
         /*
         Initiate activity layout
          */
-        setContentView(R.layout.activity_signin_new);
+        setContentView(R.layout.activity_signin);
 
         /*
         Initiate firebase authentication instance

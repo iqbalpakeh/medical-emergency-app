@@ -34,14 +34,14 @@
             android:layout_height="wrap_content">
 
             <android.support.v7.widget.AppCompatImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="@dimen/profile_picture_size"
+                android:layout_height="@dimen/profile_picture_size"
                 app:srcCompat="@drawable/ic_account_circle_black_36dp" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_picture_field"
-                android:layout_width="36dp"
-                android:layout_height="36dp" />
+                android:layout_width="@dimen/profile_picture_size"
+                android:layout_height="@dimen/profile_picture_size" />
 
         </FrameLayout>
 
