@@ -353,6 +353,9 @@ public class ProfileEditor extends BaseActivity {
                 Log.d(TAG, "canceled by user ");
             }
         };
+        if (mChatListener != null) {
+            mDatabase.child(FirebasePath.CHAT).removeEventListener(mChatListener);
+        }
         mDatabase.child(FirebasePath.CHAT).addListenerForSingleValueEvent(mChatListener);
 
         /*
@@ -413,6 +416,9 @@ public class ProfileEditor extends BaseActivity {
                 Log.d(TAG, "canceled by user ");
             }
         };
+        if (mPostListener != null) {
+            mDatabase.child(FirebasePath.POSTS).removeEventListener(mPostListener);
+        }
         mDatabase.child(FirebasePath.POSTS).addListenerForSingleValueEvent(mPostListener);
     }
 
