@@ -1,5 +1,6 @@
 package com.progremastudio.emergencymedicalteam.core;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,8 +21,11 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -30,6 +34,8 @@ import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.CameraActivity;
 import com.progremastudio.emergencymedicalteam.FirebasePath;
 import com.progremastudio.emergencymedicalteam.R;
+import com.progremastudio.emergencymedicalteam.models.Chat;
+import com.progremastudio.emergencymedicalteam.models.Post;
 import com.progremastudio.emergencymedicalteam.models.User;
 
 import java.io.ByteArrayOutputStream;
@@ -56,6 +62,10 @@ public class ProfileEditor extends BaseActivity {
     private EditText mDisplayName;
 
     private EditText mPhoneNumber;
+
+    private ValueEventListener mChatListener;
+
+    private ValueEventListener mPostListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -269,7 +279,7 @@ public class ProfileEditor extends BaseActivity {
         /*
         Propagate to other data location in FB
          */
-        //todo: implement this!
+        updateAllDatabase(this, user);
 
         /*
         Hide progress bar
@@ -283,6 +293,128 @@ public class ProfileEditor extends BaseActivity {
         finish();
     }
 
+    /**
+     * Update new user information to other db location
+     *
+     * @param newUser new user credential information
+     */
+    private void updateAllDatabase(final Context context, final User newUser) {
+
+        /*
+        Update Chat branch
+         */
+        mChatListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+
+                    for(DataSnapshot children : dataSnapshot.getChildren()) {
+
+                        /*
+                        Get key and chat values
+                         */
+                        String key = children.getKey();
+                        Chat chat = children.getValue(Chat.class);
+
+                        /*
+                        Update only current user
+                         */
+                        if(AppSharedPreferences.getCurrentUserId(context).equals(chat.uid)) {
+
+                            Log.d(TAG, "key = " + children.getKey());
+                            Log.d(TAG, "chat.displayName = " + chat.displayName);
+
+                            /*
+                            Prepare new chat object
+                             */
+                            Chat updateChat = new Chat(
+                                    chat.uid,
+                                    newUser.displayName,
+                                    chat.timestamp,
+                                    chat.message,
+                                    newUser.pictureUrl
+                            );
+
+                            /*
+                            Update chat
+                             */
+                            Map<String, Object> updateChatValues = updateChat.toMap();
+                            Map<String, Object> childUpdates = new HashMap<>();
+                            childUpdates.put("/" + FirebasePath.CHAT + "/" + key, updateChatValues);
+                            mDatabase.updateChildren(childUpdates);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "canceled by user ");
+            }
+        };
+        mDatabase.child(FirebasePath.CHAT).addListenerForSingleValueEvent(mChatListener);
+
+        /*
+        Update Post branch
+         */
+        mPostListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+
+                    for(DataSnapshot children : dataSnapshot.getChildren()) {
+
+                        /*
+                        Get key and post values
+                         */
+                        String key = children.getKey();
+                        Post post = children.getValue(Post.class);
+
+                        /*
+                        Update only current user
+                         */
+                        if(AppSharedPreferences.getCurrentUserId(context).equals(post.uid)) {
+
+                            Log.d(TAG, "key = " + children.getKey());
+                            Log.d(TAG, "post.displayName = " + post.displayName);
+
+                            /*
+                            Create new Post object
+                             */
+                            Post updatedPost = new Post(
+                                    post.uid,
+                                    newUser.displayName,
+                                    post.email,
+                                    post.timestamp,
+                                    post.locationCoordinate,
+                                    post.message,
+                                    post.pictureUrl,
+                                    post.emergencyType,
+                                    post.phoneNumber,
+                                    newUser.pictureUrl
+                            );
+
+                            /*
+                            Update post
+                             */
+                            Map<String, Object> updatedPostValues = updatedPost.toMap();
+                            Map<String, Object> childUpdates = new HashMap<>();
+                            childUpdates.put("/" + FirebasePath.POSTS + "/" + key, updatedPostValues);
+                            mDatabase.updateChildren(childUpdates);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "canceled by user ");
+            }
+        };
+        mDatabase.child(FirebasePath.POSTS).addListenerForSingleValueEvent(mPostListener);
+    }
 
     /**
      * Take picture by using camera
@@ -355,5 +487,4 @@ public class ProfileEditor extends BaseActivity {
             exception.printStackTrace();
         }
     }
-
 }

@@ -69,7 +69,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:hint="nomor telepon"
-            android:inputType="numberDecimal"
+            android:inputType="phone"
             android:maxLines="1"
             android:textColor="@color/text_primary_dark"
             android:textColorHint="@color/text_secondary_dark" />
