@@ -17,6 +17,7 @@ public class AppSharedPreferences {
     private static final String LAST_LOCATION_LATITUDE = "last-location-latitude";
     private static final String LAST_LOCATION_LONGITUDE = "last-location-longitude";
     private static final String LAST_LOCATION_ADDRESS = "last-location-address";
+    private static final String MESSAGING_TOKEN = "token";
 
     /*
     Default coordinate is Medan
@@ -31,7 +32,7 @@ public class AppSharedPreferences {
     public static final String NO_URL = "no-url";
 
     public static void logOutCurrentUser(Context context) {
-        storeCurrentUser(context, "", "", "", "", "");
+        //storeCurrentUser(context, "", "", "", "", "", "");
     }
 
     /**
@@ -43,19 +44,22 @@ public class AppSharedPreferences {
      * @param email current user's email
      * @param phoneNumber current user's phone number
      * @param pictureUrl current user's picture url
+     * @param token token used by FCM messaging
      */
     public static void storeCurrentUser(Context context,
                                         String uid,
                                         String displayName,
                                         String email,
                                         String phoneNumber,
-                                        String pictureUrl) {
+                                        String pictureUrl,
+                                        String token) {
 
         storeCurrentUserId(context, uid);
         storeCurrentUserDisplayName(context, displayName);
         storeCurrentUserEmail(context, email);
         storeCurrentUserPhoneNumber(context, phoneNumber);
         storeCurrentUserPictureUrl(context, pictureUrl);
+        storeMessagingToken(context, token);
     }
 
     /**
@@ -248,6 +252,30 @@ public class AppSharedPreferences {
     public static String getCurrentUserAddress(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(LAST_LOCATION_ADDRESS, DEFAULT_ADDRESS);
+    }
+
+    /**
+     * Store Token used by FCM messaging to shared-preference
+     *
+     * @param context application context
+     * @param pictureUrl current user's phone number
+     */
+    public static void storeMessagingToken(Context context, String pictureUrl) {
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        SharedPreferences.Editor editor = appContext.edit();
+        editor.putString(MESSAGING_TOKEN, pictureUrl);
+        editor.commit();
+    }
+
+    /**
+     * Get Token from shared-preference
+     *
+     * @param context application context
+     * @return current user's picture url
+     */
+    public static String getMessagingToken(Context context) {
+        SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
+        return appContext.getString(MESSAGING_TOKEN, "");
     }
 
 }

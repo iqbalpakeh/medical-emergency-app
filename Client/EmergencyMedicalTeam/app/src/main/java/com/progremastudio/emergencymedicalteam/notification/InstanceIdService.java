@@ -2,12 +2,25 @@ package com.progremastudio.emergencymedicalteam.notification;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
+import com.progremastudio.emergencymedicalteam.FirebasePath;
+import com.progremastudio.emergencymedicalteam.models.User;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class InstanceIdService extends FirebaseInstanceIdService {
 
     private static final String TAG = "instance-id-service";
+
+    private FirebaseAuth mAuth;
+
+    private DatabaseReference mDatabase;
 
     /**
      * Called if InstanceID token is updated. This may occur if the security of
@@ -35,7 +48,36 @@ public class InstanceIdService extends FirebaseInstanceIdService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
+
+        // Store token to shared-preference
+        AppSharedPreferences.storeMessagingToken(getApplicationContext(), token);
+
+        // If user already signin, update database on server
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() != null) {
+
+            // Create new User object
+            User user = new User(
+                    AppSharedPreferences.getCurrentUserId(getApplicationContext()),
+                    AppSharedPreferences.getCurrentUserDisplayName(getApplicationContext()),
+                    AppSharedPreferences.getCurrentUserEmail(getApplicationContext()),
+                    AppSharedPreferences.getCurrentUserPhoneNumber(getApplicationContext()),
+                    AppSharedPreferences.getCurrentUserPictureUrl(getApplicationContext()),
+                    AppSharedPreferences.getMessagingToken(getApplicationContext())
+            );
+
+            // Prepare hash-map value from user object
+            Map<String, Object> userValues = user.toMap();
+            Map<String, Object> childUpdates = new HashMap<>();
+
+            //Prepare data for /USERS/#uid#
+            childUpdates.put("/" + FirebasePath.USERS + "/" +
+                    AppSharedPreferences.getCurrentUserId(getApplicationContext()), userValues);
+
+            // Update data in Firebase
+            mDatabase.updateChildren(childUpdates);
+        }
     }
 
 }

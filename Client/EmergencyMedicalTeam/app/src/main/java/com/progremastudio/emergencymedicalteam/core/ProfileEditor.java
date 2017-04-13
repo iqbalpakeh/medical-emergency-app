@@ -237,6 +237,8 @@ public class ProfileEditor extends BaseActivity {
          */
         String email = AppSharedPreferences.getCurrentUserEmail(this);
 
+        String token = AppSharedPreferences.getMessagingToken(this);
+
         /*
         Store current user details to shared-preference
          */
@@ -246,7 +248,8 @@ public class ProfileEditor extends BaseActivity {
                 displayName,
                 email,
                 phoneNumber,
-                pictureUrl
+                pictureUrl,
+                token
         );
 
         /*
@@ -257,7 +260,8 @@ public class ProfileEditor extends BaseActivity {
                 displayName,
                 email,
                 phoneNumber,
-                pictureUrl
+                pictureUrl,
+                token
         );
 
         /*

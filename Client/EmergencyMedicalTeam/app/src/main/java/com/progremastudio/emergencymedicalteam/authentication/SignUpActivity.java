@@ -394,6 +394,7 @@ public class SignUpActivity extends BaseActivity {
         String userId = firebaseUser.getUid();
         String displayName = mDisplayNameField.getText().toString();
         String phoneNumber = mPhoneNumberField.getText().toString();
+        String token = AppSharedPreferences.getMessagingToken(this);
 
         /*
         Store current user details to shared-preference
@@ -404,7 +405,8 @@ public class SignUpActivity extends BaseActivity {
                 displayName,
                 email,
                 phoneNumber,
-                pictureUrl
+                pictureUrl,
+                token
         );
 
         /*
@@ -415,7 +417,8 @@ public class SignUpActivity extends BaseActivity {
                 displayName,
                 email,
                 phoneNumber,
-                pictureUrl
+                pictureUrl,
+                token
         );
         mDatabase.child(FirebasePath.USERS).child(userId).setValue(user.toMap());
 
