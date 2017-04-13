@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_chat_user"
-            android:gravity="right"
+            android:gravity="left"
             android:orientation="vertical"
             android:padding="8dp">
 
@@ -35,20 +35,9 @@
                     android:id="@+id/user_timestamp_field"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="5m - "
+                    android:text="5m"
                     android:textColor="@color/text_secondary_dark"
                     android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/user_display_name_field"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Mochammed Iqbal Pakeh"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
 
             </LinearLayout>
 

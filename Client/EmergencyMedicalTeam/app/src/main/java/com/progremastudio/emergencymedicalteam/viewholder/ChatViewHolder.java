@@ -25,8 +25,6 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
 
     private LinearLayout mUserLayout;
 
-    private TextView mUserDisplayName;
-
     private TextView mUserTimestamp;
 
     private TextView mUserMessage;
@@ -46,7 +44,6 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         mUserLayout = (LinearLayout) itemView.findViewById(R.id.user_layout);
-        mUserDisplayName = (TextView) itemView.findViewById(R.id.user_display_name_field);
         mUserMessage = (TextView) itemView.findViewById(R.id.user_message_field);
         mUserTimestamp = (TextView) itemView.findViewById(R.id.user_timestamp_field);
         mOtherLayout = (LinearLayout) itemView.findViewById(R.id.other_layout);
@@ -77,8 +74,7 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
             Use user layout
              */
             mUserLayout.setVisibility(View.VISIBLE);
-            mUserDisplayName.setText(chat.displayName);
-            mUserTimestamp.setText(DateUtils.getRelativeTimeSpanString(Long.parseLong(chat.timestamp)) + " - ");
+            mUserTimestamp.setText(DateUtils.getRelativeTimeSpanString(Long.parseLong(chat.timestamp)));
             mUserMessage.setText(chat.message);
 
         } else {
