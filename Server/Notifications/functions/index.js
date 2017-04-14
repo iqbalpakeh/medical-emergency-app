@@ -33,7 +33,8 @@ exports.sendNotification = functions.database.ref('/chat').onWrite(event => {
         };
 
         // Listing all tokens
-        const tokens = Object.keys(tokensSnapshot.val());
+        //const tokens = Object.keys(tokensSnapshot.val());
+        const tokens = tokensSnapshot.val();
         console.log(TAG, ' tokensSnapshot.val() ', tokensSnapshot.val());
 
         // Send notificatins to all tokens.
