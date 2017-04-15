@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.core.MainActivity;
 
 public class MessagingService extends FirebaseMessagingService {
@@ -70,7 +71,7 @@ public class MessagingService extends FirebaseMessagingService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                //.setSmallIcon(R.drawable.ic_stat_ic_notification)
+                .setSmallIcon(R.drawable.ic_doctor_white_24dp)
                 .setContentTitle("FCM Message")
                 .setContentText(messageBody)
                 .setAutoCancel(true)

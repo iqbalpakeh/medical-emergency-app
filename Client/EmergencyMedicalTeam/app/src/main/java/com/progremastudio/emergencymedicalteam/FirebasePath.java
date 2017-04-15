@@ -17,4 +17,9 @@ public final class FirebasePath {
      */
     public static final String CHAT = "chat";
 
+    /*
+    Database location for messaging token
+     */
+    public static final String TOKEN = "token";
+
 }

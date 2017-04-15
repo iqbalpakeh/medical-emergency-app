@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.progremastudio.emergencymedicalteam.FirebasePath;
 
 public class InstanceIdService extends FirebaseInstanceIdService {
 
@@ -42,38 +44,12 @@ public class InstanceIdService extends FirebaseInstanceIdService {
      */
     private void sendRegistrationToServer(String token) {
 
-        /*
-        // Store token to shared-preference
-        AppSharedPreferences.storeMessagingToken(getApplicationContext(), token);
-
         // If user already signin, update database on server
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
-
-            // Create new User object
-            User user = new User(
-                    AppSharedPreferences.getCurrentUserId(getApplicationContext()),
-                    AppSharedPreferences.getCurrentUserDisplayName(getApplicationContext()),
-                    AppSharedPreferences.getCurrentUserEmail(getApplicationContext()),
-                    AppSharedPreferences.getCurrentUserPhoneNumber(getApplicationContext()),
-                    AppSharedPreferences.getCurrentUserPictureUrl(getApplicationContext()),
-                    AppSharedPreferences.getMessagingToken(getApplicationContext())
-            );
-
-            // Prepare hash-map value from user object
-            Map<String, Object> userValues = user.toMap();
-            Map<String, Object> childUpdates = new HashMap<>();
-
-            //Prepare data for /USERS/#uid#
-            childUpdates.put("/" + FirebasePath.USERS + "/" +
-                    AppSharedPreferences.getCurrentUserId(getApplicationContext()), userValues);
-
-            // Update data in Firebase
-            mDatabase.updateChildren(childUpdates);
-
+            mDatabase.child(FirebasePath.TOKEN).child(token).setValue("true");
         }
-        */
     }
 
 }

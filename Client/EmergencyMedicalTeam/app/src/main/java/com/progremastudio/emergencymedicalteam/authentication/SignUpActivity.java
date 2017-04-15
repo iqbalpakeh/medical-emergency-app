@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -418,6 +419,14 @@ public class SignUpActivity extends BaseActivity {
                 pictureUrl
         );
         mDatabase.child(FirebasePath.USERS).child(userId).setValue(user.toMap());
+
+        /*
+        Create new messaging token from notification
+         */
+        String token = FirebaseInstanceId.getInstance().getToken();
+        if (token != null) {
+            mDatabase.child(FirebasePath.TOKEN).child(token).setValue("true");
+        }
 
         /*
         Go to main activity and close this activity

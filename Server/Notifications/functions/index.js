@@ -1,6 +1,6 @@
 'use strict';
 
-const TAG = 'DBG#7'
+const TAG = 'DBG#8'
 
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
@@ -19,10 +19,16 @@ exports.sendNotification = functions.database.ref('/chat').onWrite(event => {
     console.log(TAG, ' New messages are posted by user');
 
     // Get the list of device notification tokens.
-    const getDeviceTokensPromise = admin.database().ref(`/users/RjqlkkTE7YdSw1gM8gFZZ4DzVDG3/token`).once('value');
+    const getDeviceTokensPromise = admin.database().ref(`/token`).once('value');
 
     return Promise.all([getDeviceTokensPromise]).then(results => {
         const tokensSnapshot = results[0];
+
+        // Check if there are any device tokens.
+        if (!tokensSnapshot.hasChildren()) {
+          return console.log('There are no notification tokens to send to.');
+        }
+        console.log('There are', tokensSnapshot.numChildren(), 'tokens to send notifications to.');
 
         // Notification details.
         const payload = {
@@ -33,9 +39,10 @@ exports.sendNotification = functions.database.ref('/chat').onWrite(event => {
         };
 
         // Listing all tokens
-        //const tokens = Object.keys(tokensSnapshot.val());
-        const tokens = tokensSnapshot.val();
+        const tokens = Object.keys(tokensSnapshot.val());
+        //const tokens = tokensSnapshot.val();
         console.log(TAG, ' tokensSnapshot.val() ', tokensSnapshot.val());
+        console.log(TAG, ' tokens ', tokens);
 
         // Send notificatins to all tokens.
         return admin.messaging().sendToDevice(tokens, payload).then(response => {
