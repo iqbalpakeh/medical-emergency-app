@@ -133,8 +133,7 @@ public class SignInActivity extends BaseActivity {
                         user.displayName,
                         user.email,
                         user.phoneNumber,
-                        user.pictureUrl,
-                        user.token
+                        user.pictureUrl
                 );
 
                 /*

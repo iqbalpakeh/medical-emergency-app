@@ -19,19 +19,16 @@ public class User {
 
     public String pictureUrl;
 
-    public String token;
-
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String uid, String displayName, String email, String phoneNumber, String pictureUrl, String token) {
+    public User(String uid, String displayName, String email, String phoneNumber, String pictureUrl) {
         this.uid = uid;
         this.email = email;
         this.displayName = displayName;
         this.phoneNumber = phoneNumber;
         this.pictureUrl = pictureUrl;
-        this.token = token;
     }
 
     @Exclude
@@ -42,7 +39,6 @@ public class User {
         result.put("email", email);
         result.put("phoneNumber", phoneNumber);
         result.put("pictureUrl", pictureUrl);
-        result.put("token", token);
         return result;
     }
 }

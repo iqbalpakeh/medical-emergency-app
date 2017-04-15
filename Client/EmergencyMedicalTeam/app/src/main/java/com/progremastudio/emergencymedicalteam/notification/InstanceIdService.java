@@ -4,15 +4,8 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
-import com.progremastudio.emergencymedicalteam.AppSharedPreferences;
-import com.progremastudio.emergencymedicalteam.FirebasePath;
-import com.progremastudio.emergencymedicalteam.models.User;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class InstanceIdService extends FirebaseInstanceIdService {
 
@@ -49,6 +42,7 @@ public class InstanceIdService extends FirebaseInstanceIdService {
      */
     private void sendRegistrationToServer(String token) {
 
+        /*
         // Store token to shared-preference
         AppSharedPreferences.storeMessagingToken(getApplicationContext(), token);
 
@@ -77,7 +71,9 @@ public class InstanceIdService extends FirebaseInstanceIdService {
 
             // Update data in Firebase
             mDatabase.updateChildren(childUpdates);
+
         }
+        */
     }
 
 }
