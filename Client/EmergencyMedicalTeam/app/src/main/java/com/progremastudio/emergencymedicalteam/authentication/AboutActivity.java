@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.authentication;
 
 import android.content.Intent;
@@ -17,10 +21,14 @@ public class AboutActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Set activity layout
+        /*
+        Set activity layout
+         */
         setContentView(R.layout.activity_splash_screen);
 
-        // Set application version
+        /*
+        Set application version
+         */
         try {
             String packageName = getPackageName();
             String version = getPackageManager().getPackageInfo(packageName, 0).versionName;

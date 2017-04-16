@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.authentication;
 
 import android.content.Intent;
@@ -155,8 +159,8 @@ public class SignInActivity extends BaseActivity {
         /*
         Add user listener object
          */
-        mDatabase.child(FirebasePath.USERS).child(getUid())
-                .addListenerForSingleValueEvent(listener);
+        mDatabase.child(FirebasePath.USERS)
+                .child(getUid()).addListenerForSingleValueEvent(listener);
     }
 
     /**

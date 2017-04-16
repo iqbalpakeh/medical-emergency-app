@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.authentication;
 
 import android.content.Intent;
@@ -12,6 +16,8 @@ import com.progremastudio.emergencymedicalteam.BaseActivity;
 import com.progremastudio.emergencymedicalteam.core.MainActivity;
 import com.progremastudio.emergencymedicalteam.R;
 
+import java.util.Arrays;
+
 public class SplashScreenActivity extends BaseActivity {
 
     private final String TAG = "splash-screen-activity";
@@ -25,7 +31,7 @@ public class SplashScreenActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         /*
-        Set activity layout
+        Initiate activity layout
          */
         setContentView(R.layout.activity_splash_screen);
 
@@ -43,7 +49,7 @@ public class SplashScreenActivity extends BaseActivity {
             TextView applicationVersion = (TextView) findViewById(R.id.app_version);
             applicationVersion.setText(getString(R.string.str_version) + " " + version);
         } catch (PackageManager.NameNotFoundException error) {
-            Log.e("ERROR", error.getStackTrace().toString());
+            Log.e("ERROR", Arrays.toString(error.getStackTrace()));
         }
 
         /*

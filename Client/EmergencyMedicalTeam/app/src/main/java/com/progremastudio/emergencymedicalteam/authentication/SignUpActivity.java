@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.authentication;
 
 import android.content.Intent;
@@ -364,7 +368,7 @@ public class SignUpActivity extends BaseActivity {
                     Handle successful uploads
                      */
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                    Log.d(TAG, "donwload Url " + downloadUrl.toString());
+                    Log.d(TAG, "Download Url " + downloadUrl.toString());
 
                     /*
                     Write remaining details of post with image exist
@@ -388,6 +392,7 @@ public class SignUpActivity extends BaseActivity {
      * @param pictureUrl reference to user profile picture
      */
     private void createNewUserData(final FirebaseUser firebaseUser, String pictureUrl) {
+
         /*
         Prepare user data
          */
