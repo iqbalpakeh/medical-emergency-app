@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.viewholder;
 
 import android.annotation.SuppressLint;
@@ -35,9 +39,11 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     private CircleImageView mProfilePictureField;
 
     public PostViewHolder(View itemView) {
-
         super(itemView);
 
+        /*
+        Initiate view holder
+         */
         mNameField = (TextView) itemView.findViewById(R.id.other_display_name_field);
         mMessageField = (TextView) itemView.findViewById(R.id.other_message_field);
         mAddressField = (TextView) itemView.findViewById(R.id.address_field);
@@ -82,15 +88,15 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
         /*
         Show accident picture if exist
-         */
-        if (!post.pictureUrl.equals(AppSharedPreferences.NO_URL)) {
-            mAccidentPictureField.setVisibility(View.VISIBLE);
-            StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(post.pictureUrl);
-            Glide.with(context)
-                    .using(new FirebaseImageLoader())
-                    .load(storageReference)
-                    .into(mAccidentPictureField);
-        } else {
+                */
+            if (!post.pictureUrl.equals(AppSharedPreferences.NO_URL)) {
+                mAccidentPictureField.setVisibility(View.VISIBLE);
+                StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(post.pictureUrl);
+                Glide.with(context)
+                        .using(new FirebaseImageLoader())
+                        .load(storageReference)
+                        .into(mAccidentPictureField);
+            } else {
             mAccidentPictureField.setVisibility(View.GONE);
         }
 

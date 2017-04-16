@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.viewholder;
 
 import android.annotation.SuppressLint;
@@ -40,9 +44,11 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
     private CircleImageView mImageView;
 
     public ChatViewHolder(View itemView) {
-
         super(itemView);
 
+        /*
+        Initiate view holder
+         */
         mUserLayout = (LinearLayout) itemView.findViewById(R.id.user_layout);
         mUserMessage = (TextView) itemView.findViewById(R.id.user_message_field);
         mUserTimestamp = (TextView) itemView.findViewById(R.id.user_timestamp_field);
@@ -62,14 +68,15 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
         mUserLayout.setVisibility(View.GONE);
         mOtherLayout.setVisibility(View.GONE);
 
-        /*
-        Check which layout is used
-         */
         Log.d(TAG, "chat.uid = " + chat.uid);
         Log.d(TAG, "chat.displayName = " + chat.displayName);
         Log.d(TAG, "current uid = " + AppSharedPreferences.getUserId(context));
 
+        /*
+        Check which layout is used
+         */
         if (chat.uid.equals(AppSharedPreferences.getUserId(context))) {
+
             /*
             Use user layout
              */
