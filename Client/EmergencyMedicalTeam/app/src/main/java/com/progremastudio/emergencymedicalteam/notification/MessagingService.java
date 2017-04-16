@@ -98,12 +98,17 @@ public class MessagingService extends FirebaseMessagingService {
      */
     private void sendChatNotification(String title, String body) {
 
-        // prepare pending intent
+        /*
+        Prepare pending intent
+         */
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(MainActivity.EXTRA_OPEN_PAGE, MainActivity.PAGE_CHAT);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // prepare notification
+        /*
+        Prepare notification
+         */
         if (mChatNotificationBuilder == null) {
             Log.d(TAG, "new builder");
             mChatNotificationBuilder = new NotificationCompat.Builder(this)
@@ -115,12 +120,16 @@ public class MessagingService extends FirebaseMessagingService {
                     .setContentIntent(pendingIntent);
         }
 
-        // prepare notification manager
+        /*
+        Prepare notification manager
+         */
         if (mChatNotificationManager == null) {
             mChatNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         }
 
-        // fire notification
+        /*
+        Fire notification
+         */
         mChatNotificationManager.notify(1, mChatNotificationBuilder.build());
     }
 
@@ -132,12 +141,17 @@ public class MessagingService extends FirebaseMessagingService {
      */
     private void sendPostNotification(String title, String body) {
 
-        // prepare pending intent
+        /*
+        Prepare pending intent
+         */
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(MainActivity.EXTRA_OPEN_PAGE, MainActivity.PAGE_POST);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // prepare notification
+        /*
+        Prepare notification
+         */
         if (mPostNotificationBuilder == null) {
             Log.d(TAG, "new builder");
             mPostNotificationBuilder = new NotificationCompat.Builder(this)
@@ -149,12 +163,16 @@ public class MessagingService extends FirebaseMessagingService {
                     .setContentIntent(pendingIntent);
         }
 
-        // prepare notification manager
+        /*
+        Prepare notification manager
+         */
         if (mPostNotificationManager == null) {
             mPostNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         }
 
-        // fire notification
+        /*
+        Fire notification
+         */
         mPostNotificationManager.notify(2, mPostNotificationBuilder.build());
     }
 

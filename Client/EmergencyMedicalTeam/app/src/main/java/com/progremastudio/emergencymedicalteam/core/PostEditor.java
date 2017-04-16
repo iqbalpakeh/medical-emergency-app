@@ -400,7 +400,9 @@ public class PostEditor extends BaseActivity {
         /*
         Go back to Main activity
          */
-        startActivity(new Intent(this, MainActivity.class));
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(MainActivity.EXTRA_OPEN_PAGE, MainActivity.PAGE_POST);
+        startActivity(intent);
         finish();
     }
 

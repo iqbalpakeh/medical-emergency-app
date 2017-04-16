@@ -37,6 +37,14 @@ public class MainActivity extends BaseActivity {
 
     private static final int PERMISSION_TO_CALL_PHONE = 0;
 
+    public static final String EXTRA_OPEN_PAGE = "com.progremastudio.emergencymedicalteam.core.PAGE";
+
+    public static final int PAGE_LOCATION = 0;
+
+    public static final int PAGE_POST = 1;
+
+    public static final int PAGE_CHAT = 2;
+
     private Toolbar mToolbar;
 
     private TabLayout mTabLayout;
@@ -46,6 +54,8 @@ public class MainActivity extends BaseActivity {
     private ViewPager mViewPager;
 
     private FloatingActionsMenu mFabMenu;
+
+    private int mPageOpen;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -144,12 +154,17 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        /*
+        Define open page
+         */
+        mPageOpen = getIntent().getIntExtra(EXTRA_OPEN_PAGE, PAGE_LOCATION);
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mViewPager.setCurrentItem(2);
+        mViewPager.setCurrentItem(mPageOpen);
     }
 
     @Override
