@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
-import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -14,20 +13,31 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.progremastudio.emergencymedicalteam.R;
 import com.progremastudio.emergencymedicalteam.core.MainActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Map;
+
 public class MessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "messaging-service";
+
+    private NotificationCompat.Builder mChatNotificationBuilder;
+
+    private NotificationManager mChatNotificationManager;
+
+    private NotificationCompat.Builder mPostNotificationBuilder;
+
+    private NotificationManager mPostNotificationManager;
 
     /**
      * Called when message is received.
      *
      * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
      */
-    // [START receive_message]
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        // [START_EXCLUDE]
         // There are two types of messages data messages and notification messages. Data messages are handled
         // here in onMessageReceived whether the app is in the foreground or background. Data messages are the type
         // traditionally used with GCM. Notification messages are only received here in onMessageReceived when the app
@@ -35,54 +45,117 @@ public class MessagingService extends FirebaseMessagingService {
         // When the user taps on the notification they are returned to the app. Messages containing both notification
         // and data payloads are treated as notification messages. The Firebase console always sends notification
         // messages. For more see: https://firebase.google.com/docs/cloud-messaging/concept-options
-        // [END_EXCLUDE]
 
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+
+            // Also if you intend on generating your own notifications as a result of a received FCM
+            // message, here is where that should be initiated. See sendNotification method below.
+            sendNotification(remoteMessage.getData());
         }
-
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-        }
-
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
-
-        sendNotification(remoteMessage.getNotification().getBody());
     }
 
 
     /**
      * Create and show a simple notification containing the received FCM message.
      *
-     * @param messageBody FCM message body received.
+     * @param messageData FCM message body received.
      */
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+    private void sendNotification(Map<String, String> messageData) {
 
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_doctor_white_24dp)
-                .setContentTitle("FCM Message")
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
+        JSONObject data = new JSONObject(messageData);
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        String messageTitle = "";
+        String messageBody = "";
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        try {
+            messageTitle = data.getString("title");
+            messageBody = data.getString("body");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d(TAG, "data = " + data.toString());
+        Log.d(TAG, "title = " + messageTitle);
+        Log.d(TAG, "body = " + messageBody);
+
+        if (messageTitle.equals(getString(R.string.heading_chat))) {
+            sendChatNotification(messageTitle, messageBody);
+        } else {
+            sendPostNotification(messageTitle, messageBody);
+        }
+
     }
 
+    /**
+     * Send chat notification
+     *
+     * @param title message's title
+     * @param body message's body
+     */
+    private void sendChatNotification(String title, String body) {
+
+        // prepare pending intent
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // prepare notification
+        if (mChatNotificationBuilder == null) {
+            Log.d(TAG, "new builder");
+            mChatNotificationBuilder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.ic_doctor_white_24dp)
+                    .setContentTitle(title)
+                    .setContentText(body)
+                    .setAutoCancel(true)
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                    .setContentIntent(pendingIntent);
+        }
+
+        // prepare notification manager
+        if (mChatNotificationManager == null) {
+            mChatNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+
+        // fire notification
+        mChatNotificationManager.notify(1, mChatNotificationBuilder.build());
+    }
+
+    /**
+     * Send Post notification
+     *
+     * @param title message's title
+     * @param body message's body
+     */
+    private void sendPostNotification(String title, String body) {
+
+        // prepare pending intent
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // prepare notification
+        if (mPostNotificationBuilder == null) {
+            Log.d(TAG, "new builder");
+            mPostNotificationBuilder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.ic_electrocardiogram_report_24dp)
+                    .setContentTitle(title)
+                    .setContentText(body)
+                    .setAutoCancel(true)
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                    .setContentIntent(pendingIntent);
+        }
+
+        // prepare notification manager
+        if (mPostNotificationManager == null) {
+            mPostNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+
+        // fire notification
+        mPostNotificationManager.notify(2, mPostNotificationBuilder.build());
+    }
 
 }

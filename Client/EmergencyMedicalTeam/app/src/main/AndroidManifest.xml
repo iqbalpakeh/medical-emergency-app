@@ -34,11 +34,12 @@
 
         <activity
             android:name=".authentication.SignInActivity"
-            android:label="@string/app_name"/>
+            android:label="@string/app_name" />
 
         <activity
             android:name=".authentication.SignUpActivity"
             android:label="@string/app_name"
+            android:parentActivityName=".authentication.SignInActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -48,6 +49,7 @@
         <activity
             android:name=".CameraActivity"
             android:label="@string/app_name"
+            android:parentActivityName=".core.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeFullscreen">
             <meta-data
@@ -68,6 +70,7 @@
         <activity
             android:name=".authentication.AboutActivity"
             android:label="@string/app_name"
+            android:parentActivityName=".core.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -77,6 +80,7 @@
         <activity
             android:name=".settings.AppSettingsActivity"
             android:label="@string/heading_settings"
+            android:parentActivityName=".core.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/action_bar_activity">
             <meta-data
@@ -87,6 +91,7 @@
         <activity
             android:name=".core.PostEditor"
             android:label="@string/str_Accident_report"
+            android:parentActivityName=".core.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/action_bar_activity"
             android:windowSoftInputMode="stateVisible">
@@ -98,6 +103,7 @@
         <activity
             android:name=".core.ProfileEditor"
             android:label="@string/str_Profile_update"
+            android:parentActivityName=".core.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/action_bar_activity">
             <meta-data
@@ -109,17 +115,15 @@
             android:name=".AddressService"
             android:exported="false" />
 
-        <service
-            android:name=".notification.MessagingService">
+        <service android:name=".notification.MessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <service
-            android:name=".notification.InstanceIdService">
+        <service android:name=".notification.InstanceIdService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
