@@ -404,7 +404,7 @@ public class SignUpActivity extends BaseActivity {
         /*
         Store current user details to shared-preference
          */
-        AppSharedPreferences.storeCurrentUser(
+        AppSharedPreferences.storeUserInformation(
                 this,
                 getUid(),
                 displayName,

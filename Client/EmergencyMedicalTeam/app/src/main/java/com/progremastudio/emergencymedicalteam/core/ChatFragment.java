@@ -93,7 +93,7 @@ public class ChatFragment extends Fragment {
         /*
         Show profile picture if exist
          */
-        String pictureUrl = AppSharedPreferences.getCurrentUserPictureUrl(getContext());
+        String pictureUrl = AppSharedPreferences.getUserPictureUrl(getContext());
         if (!pictureUrl.equals(AppSharedPreferences.NO_URL)) {
             StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(pictureUrl);
             Glide.with(this)
@@ -225,8 +225,8 @@ public class ChatFragment extends Fragment {
         /*
         Prepare local data for chat object creation
          */
-        String displayName = AppSharedPreferences.getCurrentUserDisplayName(getContext());
-        String profileUrl = AppSharedPreferences.getCurrentUserPictureUrl(getContext());
+        String displayName = AppSharedPreferences.getUserDisplayName(getContext());
+        String profileUrl = AppSharedPreferences.getUserPictureUrl(getContext());
         String timestamp = ((BaseActivity)getActivity()).currentTimestamp();
 
         /*

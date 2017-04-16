@@ -114,13 +114,13 @@ public class ProfileEditor extends BaseActivity {
         /*
         Show current profile information
          */
-        mDisplayName.setHint(AppSharedPreferences.getCurrentUserDisplayName(this));
-        mPhoneNumber.setHint(AppSharedPreferences.getCurrentUserPhoneNumber(this));
+        mDisplayName.setHint(AppSharedPreferences.getUserDisplayName(this));
+        mPhoneNumber.setHint(AppSharedPreferences.getUserPhoneNumber(this));
 
         /*
         Show profile picture if exist
          */
-        String pictureUrl = AppSharedPreferences.getCurrentUserPictureUrl(this);
+        String pictureUrl = AppSharedPreferences.getUserPictureUrl(this);
         if (!pictureUrl.equals(AppSharedPreferences.NO_URL)) {
             StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(pictureUrl);
             Glide.with(this)
@@ -235,12 +235,12 @@ public class ProfileEditor extends BaseActivity {
         /*
         Email can't be changed. Need to change from FB Authentication object too.
          */
-        String email = AppSharedPreferences.getCurrentUserEmail(this);
+        String email = AppSharedPreferences.getUserEmail(this);
 
         /*
         Store current user details to shared-preference
          */
-        AppSharedPreferences.storeCurrentUser(
+        AppSharedPreferences.storeUserInformation(
                 this,
                 getUid(),
                 displayName,
@@ -320,7 +320,7 @@ public class ProfileEditor extends BaseActivity {
                         /*
                         Update only current user
                          */
-                        if(AppSharedPreferences.getCurrentUserId(context).equals(chat.uid)) {
+                        if(AppSharedPreferences.getUserId(context).equals(chat.uid)) {
 
                             Log.d(TAG, "key = " + children.getKey());
                             Log.d(TAG, "chat.displayName = " + chat.displayName);
@@ -378,7 +378,7 @@ public class ProfileEditor extends BaseActivity {
                         /*
                         Update only current user
                          */
-                        if(AppSharedPreferences.getCurrentUserId(context).equals(post.uid)) {
+                        if(AppSharedPreferences.getUserId(context).equals(post.uid)) {
 
                             Log.d(TAG, "key = " + children.getKey());
                             Log.d(TAG, "post.displayName = " + post.displayName);

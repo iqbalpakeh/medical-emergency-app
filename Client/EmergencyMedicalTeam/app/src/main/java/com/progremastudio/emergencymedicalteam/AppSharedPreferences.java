@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam;
 
 import android.content.Context;
@@ -13,7 +17,7 @@ public class AppSharedPreferences {
     private static final String USER_EMAIL = "user-email";
     private static final String USER_PHONE_NUMBER = "user-phone-number";
     private static final String USER_DISPLAY_NAME = "user-display-name";
-    private static final String USER_PICURE_URL = "user-picture-url";
+    private static final String USER_PICTURE_URL = "user-picture-url";
     private static final String LAST_LOCATION_LATITUDE = "last-location-latitude";
     private static final String LAST_LOCATION_LONGITUDE = "last-location-longitude";
     private static final String LAST_LOCATION_ADDRESS = "last-location-address";
@@ -31,7 +35,7 @@ public class AppSharedPreferences {
     public static final String NO_URL = "no-url";
 
     public static void logOutCurrentUser(Context context) {
-        storeCurrentUser(context, "", "", "", "", "");
+        storeUserInformation(context, "", "", "", "", "");
     }
 
     /**
@@ -44,18 +48,18 @@ public class AppSharedPreferences {
      * @param phoneNumber current user's phone number
      * @param pictureUrl current user's picture url
      */
-    public static void storeCurrentUser(Context context,
-                                        String uid,
-                                        String displayName,
-                                        String email,
-                                        String phoneNumber,
-                                        String pictureUrl) {
+    public static void storeUserInformation(Context context,
+                                            String uid,
+                                            String displayName,
+                                            String email,
+                                            String phoneNumber,
+                                            String pictureUrl) {
 
-        storeCurrentUserId(context, uid);
-        storeCurrentUserDisplayName(context, displayName);
-        storeCurrentUserEmail(context, email);
-        storeCurrentUserPhoneNumber(context, phoneNumber);
-        storeCurrentUserPictureUrl(context, pictureUrl);
+        storeUserId(context, uid);
+        storeUserDisplayName(context, displayName);
+        storeUserEmail(context, email);
+        storeUserPhoneNumber(context, phoneNumber);
+        storeUserPictureUrl(context, pictureUrl);
     }
 
     /**
@@ -64,11 +68,11 @@ public class AppSharedPreferences {
      * @param context application context
      * @param uid current user's uid
      */
-    public static void storeCurrentUserId(Context context, String uid) {
+    public static void storeUserId(Context context, String uid) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         SharedPreferences.Editor editor = appContext.edit();
         editor.putString(USER_ID, uid);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -77,7 +81,7 @@ public class AppSharedPreferences {
      * @param context application context
      * @return current user's uid
      */
-    public static String getCurrentUserId(Context context) {
+    public static String getUserId(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(USER_ID, "");
     }
@@ -88,11 +92,11 @@ public class AppSharedPreferences {
      * @param context application context
      * @param displayName current user's display name
      */
-    public static void storeCurrentUserDisplayName(Context context, String displayName) {
+    public static void storeUserDisplayName(Context context, String displayName) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         SharedPreferences.Editor editor = appContext.edit();
         editor.putString(USER_DISPLAY_NAME, displayName);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -101,7 +105,7 @@ public class AppSharedPreferences {
      * @param context application context
      * @return current user's display name
      */
-    public static String getCurrentUserDisplayName(Context context) {
+    public static String getUserDisplayName(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(USER_DISPLAY_NAME, "");
     }
@@ -112,11 +116,11 @@ public class AppSharedPreferences {
      * @param context application context
      * @param email current user's email
      */
-    public static void storeCurrentUserEmail(Context context, String email) {
+    public static void storeUserEmail(Context context, String email) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         SharedPreferences.Editor editor = appContext.edit();
         editor.putString(USER_EMAIL, email);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -125,7 +129,7 @@ public class AppSharedPreferences {
      * @param context application context
      * @return current user's email
      */
-    public static String getCurrentUserEmail(Context context) {
+    public static String getUserEmail(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(USER_EMAIL, "");
     }
@@ -136,11 +140,11 @@ public class AppSharedPreferences {
      * @param context application context
      * @param phoneNumber current user's phone number
      */
-    public static void storeCurrentUserPhoneNumber(Context context, String phoneNumber) {
+    public static void storeUserPhoneNumber(Context context, String phoneNumber) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         SharedPreferences.Editor editor = appContext.edit();
         editor.putString(USER_PHONE_NUMBER, phoneNumber);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -149,7 +153,7 @@ public class AppSharedPreferences {
      * @param context application context
      * @return current user's phone number
      */
-    public static String getCurrentUserPhoneNumber(Context context) {
+    public static String getUserPhoneNumber(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(USER_PHONE_NUMBER, "");
     }
@@ -160,11 +164,11 @@ public class AppSharedPreferences {
      * @param context application context
      * @param pictureUrl current user's phone number
      */
-    public static void storeCurrentUserPictureUrl(Context context, String pictureUrl) {
+    public static void storeUserPictureUrl(Context context, String pictureUrl) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         SharedPreferences.Editor editor = appContext.edit();
-        editor.putString(USER_PICURE_URL, pictureUrl);
-        editor.commit();
+        editor.putString(USER_PICTURE_URL, pictureUrl);
+        editor.apply();
     }
 
     /**
@@ -173,9 +177,9 @@ public class AppSharedPreferences {
      * @param context application context
      * @return current user's picture url
      */
-    public static String getCurrentUserPictureUrl(Context context) {
+    public static String getUserPictureUrl(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
-        return appContext.getString(USER_PICURE_URL, "");
+        return appContext.getString(USER_PICTURE_URL, "");
     }
 
     /**
@@ -184,11 +188,11 @@ public class AppSharedPreferences {
      * @param context application context
      * @param latitude current's user last latitude location
      */
-    public static void storeCurrentUserLastLatitudeLocation(Context context, String latitude) {
+    public static void storeUserLastLatitudeLocation(Context context, String latitude) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         SharedPreferences.Editor editor = appContext.edit();
         editor.putString(LAST_LOCATION_LATITUDE, latitude);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -197,7 +201,7 @@ public class AppSharedPreferences {
      * @param context application context
      * @return current user's last latitude location
      */
-    public static String getCurrentUserLastLatitudeLocation(Context context) {
+    public static String getUserLastLatitudeLocation(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(LAST_LOCATION_LATITUDE, DEFAULT_LATITUDE);
     }
@@ -208,11 +212,11 @@ public class AppSharedPreferences {
      * @param context application context
      * @param longitude current user's last longitude location
      */
-    public static void storeCurrentUserLastLongitudeLocation(Context context, String longitude) {
+    public static void storeUserLastLongitudeLocation(Context context, String longitude) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         SharedPreferences.Editor editor = appContext.edit();
         editor.putString(LAST_LOCATION_LONGITUDE, longitude);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -221,7 +225,7 @@ public class AppSharedPreferences {
      * @param context application context
      * @return current user's last longitude location
      */
-    public static String getCurrentUserLastLongitudeLocation(Context context) {
+    public static String getUserLastLongitudeLocation(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(LAST_LOCATION_LONGITUDE, DEFAULT_LONGITUDE);
     }
@@ -232,11 +236,11 @@ public class AppSharedPreferences {
      * @param context application context
      * @param address current user's last address
      */
-    public static void storeCurrentUserLastAddress(Context context, String address) {
+    public static void storeUserLastAddress(Context context, String address) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         SharedPreferences.Editor editor = appContext.edit();
         editor.putString(LAST_LOCATION_ADDRESS, address);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -245,7 +249,7 @@ public class AppSharedPreferences {
      * @param context application context
      * @return current user's last address
      */
-    public static String getCurrentUserAddress(Context context) {
+    public static String getUserAddress(Context context) {
         SharedPreferences appContext = context.getSharedPreferences(APP_CONTEXT, 0);
         return appContext.getString(LAST_LOCATION_ADDRESS, DEFAULT_ADDRESS);
     }

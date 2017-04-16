@@ -111,12 +111,12 @@ public class PostEditor extends BaseActivity {
         /*
         Show user address
          */
-        mAddressView.setText(AppSharedPreferences.getCurrentUserAddress(this));
+        mAddressView.setText(AppSharedPreferences.getUserAddress(this));
 
         /*
         Show profile picture if exist
          */
-        String profileUrl = AppSharedPreferences.getCurrentUserPictureUrl(this);
+        String profileUrl = AppSharedPreferences.getUserPictureUrl(this);
         if (!profileUrl.equals(AppSharedPreferences.NO_URL)) {
             StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(profileUrl);
             Glide.with(this)
@@ -347,13 +347,13 @@ public class PostEditor extends BaseActivity {
         /*
         Prepare local data for Post object creation
          */
-        String displayName = AppSharedPreferences.getCurrentUserDisplayName(this);
-        String email = AppSharedPreferences.getCurrentUserEmail(this);
+        String displayName = AppSharedPreferences.getUserDisplayName(this);
+        String email = AppSharedPreferences.getUserEmail(this);
         String timestamp = currentTimestamp();
-        String locationCoordinate = AppSharedPreferences.getCurrentUserAddress(this);
+        String locationCoordinate = AppSharedPreferences.getUserAddress(this);
         String emergencyType = "Kecelakaan"; // todo: to have list option
-        String phoneNumber = AppSharedPreferences.getCurrentUserPhoneNumber(this);
-        String profileUrl = AppSharedPreferences.getCurrentUserPictureUrl(this);
+        String phoneNumber = AppSharedPreferences.getUserPhoneNumber(this);
+        String profileUrl = AppSharedPreferences.getUserPictureUrl(this);
 
         /*
         Create new Post object

@@ -285,7 +285,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         }
         mUserMarker = mGoogleMap.addMarker(new MarkerOptions()
                 .position(location)
-                .title(AppSharedPreferences.getCurrentUserDisplayName(getContext())));
+                .title(AppSharedPreferences.getUserDisplayName(getContext())));
         mUserMarker.showInfoWindow();
     }
 
@@ -359,7 +359,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
         }
         mUserMarker = mGoogleMap.addMarker(new MarkerOptions()
                 .position(getCurrentLocation())
-                .title(AppSharedPreferences.getCurrentUserDisplayName(getContext()))
+                .title(AppSharedPreferences.getUserDisplayName(getContext()))
                 .snippet("jarak " + distance + ", waktu " + duration));
         mUserMarker.showInfoWindow();
     }
@@ -399,8 +399,8 @@ public class LocationFragment extends Fragment implements RoutingListener,
             Log.d(TAG, "Latitude = " + latitude);
             Log.d(TAG, "Longitude = " + longitude);
 
-            AppSharedPreferences.storeCurrentUserLastLatitudeLocation(getActivity(), latitude);
-            AppSharedPreferences.storeCurrentUserLastLongitudeLocation(getActivity(), longitude);
+            AppSharedPreferences.storeUserLastLatitudeLocation(getActivity(), latitude);
+            AppSharedPreferences.storeUserLastLongitudeLocation(getActivity(), longitude);
 
             /*
             Start address provider service if location coordinate returned by Google Map Api
@@ -445,8 +445,8 @@ public class LocationFragment extends Fragment implements RoutingListener,
      */
     private LatLng getCurrentLocation() {
 
-        String latitude = AppSharedPreferences.getCurrentUserLastLatitudeLocation(getActivity());
-        String longitude = AppSharedPreferences.getCurrentUserLastLongitudeLocation(getActivity());
+        String latitude = AppSharedPreferences.getUserLastLatitudeLocation(getActivity());
+        String longitude = AppSharedPreferences.getUserLastLongitudeLocation(getActivity());
 
         Log.d(TAG, "Latitude = " + latitude);
         Log.d(TAG, "Longitude = " + longitude);
@@ -587,7 +587,7 @@ public class LocationFragment extends Fragment implements RoutingListener,
             /*
             Store current address
              */
-            AppSharedPreferences.storeCurrentUserLastAddress(getContext(), lastLocationAddress);
+            AppSharedPreferences.storeUserLastAddress(getContext(), lastLocationAddress);
 
             /*
             Hide progress bar if service success.
