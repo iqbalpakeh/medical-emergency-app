@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam;
 
 import android.app.IntentService;
@@ -39,7 +43,7 @@ public class AddressService extends IntentService {
         List<Address> addresses = null;
 
         /*
-        Initiate Geocoder object
+        Initiate Geo-coder object
          */
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
@@ -143,6 +147,5 @@ public class AddressService extends IntentService {
         public static final String LOCATION_DATA_EXTRA = PACKAGE_NAME + ".LOCATION_DATA_EXTRA";
 
     }
-
 
 }

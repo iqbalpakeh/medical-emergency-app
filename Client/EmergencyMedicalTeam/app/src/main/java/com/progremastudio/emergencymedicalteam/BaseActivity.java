@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam;
 
 import android.app.ProgressDialog;
@@ -13,6 +17,9 @@ public class BaseActivity extends AppCompatActivity {
 
     private ProgressDialog mProgressDialog;
 
+    /**
+     * Show progress dialog
+     */
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
@@ -22,16 +29,29 @@ public class BaseActivity extends AppCompatActivity {
         mProgressDialog.show();
     }
 
+    /**
+     * Hide progress dialog
+     */
     public void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
     }
 
+    /**
+     * Get Firebase user id
+     *
+     * @return user id
+     */
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
+    /**
+     * Get current time stamp
+     *
+     * @return current timestamp in milisecond
+     */
     public String currentTimestamp() {
         return String.valueOf(Calendar.getInstance().getTimeInMillis());
     }

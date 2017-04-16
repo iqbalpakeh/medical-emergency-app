@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam;
 
 import android.Manifest;
@@ -43,31 +47,21 @@ public class CameraActivity extends AppCompatActivity {
 
     private static final int REQUEST_CAMERA_PERMISSIONS = 931;
 
-    private static final int REQUEST_PREVIEW_CODE = 1001;
+    @Bind(R.id.settings_view) CameraSettingsView settingsView;
 
-    @Bind(R.id.settings_view)
-    CameraSettingsView settingsView;
+    @Bind(R.id.flash_switch_view) FlashSwitchView flashSwitchView;
 
-    @Bind(R.id.flash_switch_view)
-    FlashSwitchView flashSwitchView;
+    @Bind(R.id.front_back_camera_switcher) CameraSwitchView cameraSwitchView;
 
-    @Bind(R.id.front_back_camera_switcher)
-    CameraSwitchView cameraSwitchView;
+    @Bind(R.id.record_button) RecordButton recordButton;
 
-    @Bind(R.id.record_button)
-    RecordButton recordButton;
+    @Bind(R.id.photo_video_camera_switcher) MediaActionSwitchView mediaActionSwitchView;
 
-    @Bind(R.id.photo_video_camera_switcher)
-    MediaActionSwitchView mediaActionSwitchView;
+    @Bind(R.id.record_duration_text) TextView recordDurationText;
 
-    @Bind(R.id.record_duration_text)
-    TextView recordDurationText;
+    @Bind(R.id.record_size_mb_text) TextView recordSizeText;
 
-    @Bind(R.id.record_size_mb_text)
-    TextView recordSizeText;
-
-    @Bind(R.id.cameraLayout)
-    View cameraLayout;
+    @Bind(R.id.cameraLayout) View cameraLayout;
 
     private Uri mUri;
 
@@ -80,13 +74,17 @@ public class CameraActivity extends AppCompatActivity {
         requestPermissions();
     }
 
+    /**
+     * Request Camera permission
+     */
     private void requestPermissions() {
         if (Build.VERSION.SDK_INT > 15) {
             final String[] permissions = {
                     Manifest.permission.CAMERA,
                     Manifest.permission.RECORD_AUDIO,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE};
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            };
 
             final List<String> permissionsToRequest = new ArrayList<>();
             for (String permission : permissions) {
@@ -135,7 +133,8 @@ public class CameraActivity extends AppCompatActivity {
                         }
                     },
                     mUri.toString(),
-                    "accident");
+                    "accident"
+            );
         }
     }
 
@@ -176,12 +175,12 @@ public class CameraActivity extends AppCompatActivity {
         final CameraFragment cameraFragment =
                 CameraFragment.newInstance(new Configuration.Builder().setCamera(Configuration.CAMERA_FACE_REAR).build());
 
-        getSupportFragmentManager().beginTransaction()
+        getSupportFragmentManager()
+                .beginTransaction()
                 .replace(R.id.content, cameraFragment, FRAGMENT_TAG)
                 .commitAllowingStateLoss();
 
         if (cameraFragment != null) {
-
             cameraFragment.setStateListener(new CameraFragmentStateAdapter() {
 
                 @Override
@@ -212,7 +211,6 @@ public class CameraActivity extends AppCompatActivity {
                 @Override
                 public void onCameraSetupForPhoto() {
                     mediaActionSwitchView.displayActionWillSwitchVideo();
-
                     recordButton.displayPhotoState();
                     flashSwitchView.setVisibility(View.VISIBLE);
                 }
@@ -220,7 +218,6 @@ public class CameraActivity extends AppCompatActivity {
                 @Override
                 public void onCameraSetupForVideo() {
                     mediaActionSwitchView.displayActionWillSwitchPhoto();
-
                     recordButton.displayVideoRecordStateReady();
                     flashSwitchView.setVisibility(View.GONE);
                 }
@@ -252,7 +249,6 @@ public class CameraActivity extends AppCompatActivity {
                 @Override
                 public void onStopVideoRecord() {
                     recordSizeText.setVisibility(View.GONE);
-                    //cameraSwitchView.setVisibility(View.VISIBLE);
                     settingsView.setVisibility(View.VISIBLE);
                 }
 
@@ -318,25 +314,28 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Get camera fragment
+     *
+     * @return camera fragment
+     */
     private CameraFragmentApi getCameraFragment() {
         return (CameraFragmentApi) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
     }
 
+    /**
+     * Create file path for image location
+     */
     private void createFilePath() {
-
         try {
-
             File directoryPath = new File(this.getFilesDir(), "post");
             if (!directoryPath.exists()) {
                 directoryPath.mkdirs();
             }
-
             mUri = Uri.parse(directoryPath.getPath());
-
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-
     }
 
     @Override
