@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.core;
 
 import android.Manifest;
@@ -292,9 +296,6 @@ public class LocationFragment extends Fragment implements RoutingListener,
 
     @Override
     public void onRoutingFailure(RouteException e) {
-        /*
-        The Routing request failed
-         */
         ((BaseActivity) getActivity()).hideProgressDialog();
         if (e != null) {
             Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();

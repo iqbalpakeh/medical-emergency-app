@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.core;
 
 import android.content.Intent;
@@ -142,13 +146,6 @@ public class PostEditor extends BaseActivity {
         File directoryPath = new File(this.getFilesDir(), "post");
         File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
 
-        /*
-        Shows nothing if picture is not exist
-         */
-        if (!filePath.exists()) {
-            return;
-        }
-
         try {
             /*
             Get picture bitmap
@@ -283,7 +280,7 @@ public class PostEditor extends BaseActivity {
         File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
 
         /*
-        Check image file existency
+        Check image file existence
          */
         if(filePath.exists()) {
 
@@ -335,7 +332,7 @@ public class PostEditor extends BaseActivity {
 
     /**
      * Write post details to Firebase-RealtimeDb. Details are written at two location
-     * "/posts/" and "/user-post/" for efficient data retrieval.
+     * "/posts" for efficient data retrieval.
      *
      * @param userId userId of current posting action
      * @param message message to show at post fragment

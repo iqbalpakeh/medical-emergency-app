@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.core;
 
 import android.content.Context;
@@ -159,7 +163,7 @@ public class ProfileEditor extends BaseActivity {
         File filePath = new File(directoryPath.getPath() + File.separator + "accident.jpg");
 
         /*
-        Check image file existency
+        Check image file existence
          */
         if(filePath.exists()) {
 
@@ -191,7 +195,7 @@ public class ProfileEditor extends BaseActivity {
                     taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                      */
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                    Log.d(TAG, "donwload Url " + downloadUrl.toString());
+                    Log.d(TAG, "download Url " + downloadUrl.toString());
 
                     /*
                     Write remaining details of post with image exist
@@ -238,7 +242,7 @@ public class ProfileEditor extends BaseActivity {
         String email = AppSharedPreferences.getUserEmail(this);
 
         /*
-        Store current user details to shared-preference
+        Store new user details to shared-preference
          */
         AppSharedPreferences.storeUserInformation(
                 this,
@@ -303,6 +307,9 @@ public class ProfileEditor extends BaseActivity {
         /*
         Update Chat branch
          */
+        if (mChatListener != null) {
+            mDatabase.child(FirebasePath.CHAT).removeEventListener(mChatListener);
+        }
         mChatListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -353,14 +360,14 @@ public class ProfileEditor extends BaseActivity {
                 Log.d(TAG, "canceled by user ");
             }
         };
-        if (mChatListener != null) {
-            mDatabase.child(FirebasePath.CHAT).removeEventListener(mChatListener);
-        }
         mDatabase.child(FirebasePath.CHAT).addListenerForSingleValueEvent(mChatListener);
 
         /*
         Update Post branch
          */
+        if (mPostListener != null) {
+            mDatabase.child(FirebasePath.POSTS).removeEventListener(mPostListener);
+        }
         mPostListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -416,9 +423,6 @@ public class ProfileEditor extends BaseActivity {
                 Log.d(TAG, "canceled by user ");
             }
         };
-        if (mPostListener != null) {
-            mDatabase.child(FirebasePath.POSTS).removeEventListener(mPostListener);
-        }
         mDatabase.child(FirebasePath.POSTS).addListenerForSingleValueEvent(mPostListener);
     }
 

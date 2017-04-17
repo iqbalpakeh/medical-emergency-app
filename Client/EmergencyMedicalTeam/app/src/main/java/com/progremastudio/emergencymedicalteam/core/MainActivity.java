@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.core;
 
 import android.Manifest;
@@ -45,12 +49,6 @@ public class MainActivity extends BaseActivity {
 
     public static final int PAGE_CHAT = 2;
 
-    private Toolbar mToolbar;
-
-    private TabLayout mTabLayout;
-
-    private FragmentPagerAdapter mPagerAdapter;
-
     private ViewPager mViewPager;
 
     private FloatingActionsMenu mFabMenu;
@@ -69,15 +67,15 @@ public class MainActivity extends BaseActivity {
         /*
         Set up home toolbar
          */
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.heading_location));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         /*
         Create the adapter that will return a fragment for each section
          */
-        mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+        FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[]{
                     new LocationFragment(),
                     new PostFragment(),
@@ -99,7 +97,7 @@ public class MainActivity extends BaseActivity {
         Set up the ViewPager with the sections adapter.
          */
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mPagerAdapter);
+        mViewPager.setAdapter(pagerAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -129,11 +127,11 @@ public class MainActivity extends BaseActivity {
         /*
         Initiate tab layout
          */
-        mTabLayout = (TabLayout) findViewById(R.id.tabs);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_ambulance_light_24dp);
-        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_electrocardiogram_report_24dp);
-        mTabLayout.getTabAt(2).setIcon(R.drawable.ic_doctor_white_24dp);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_ambulance_light_24dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_electrocardiogram_report_24dp);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_doctor_white_24dp);
 
         /*
         Initiate floating action button

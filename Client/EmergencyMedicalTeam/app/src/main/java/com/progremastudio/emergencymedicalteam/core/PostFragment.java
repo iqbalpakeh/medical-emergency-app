@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.core;
 
 import android.os.Bundle;
@@ -9,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
@@ -25,8 +28,6 @@ public class PostFragment extends Fragment {
     private static final String TAG = "post-fragment";
 
     private DatabaseReference mDatabase;
-
-    private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
 
     private RecyclerView mRecyclerView;
 
@@ -70,7 +71,7 @@ public class PostFragment extends Fragment {
         Set up FirebaseRecyclerAdapter with the Query
          */
         Query postsQuery = getQuery(mDatabase);
-        mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_post, PostViewHolder.class, postsQuery) {
+        FirebaseRecyclerAdapter<Post, PostViewHolder> adapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_post, PostViewHolder.class, postsQuery) {
             @Override
             protected void populateViewHolder(final PostViewHolder viewHolder, final Post post, final int position) {
 
@@ -93,15 +94,20 @@ public class PostFragment extends Fragment {
                 viewHolder.bindToPost(getContext(), post, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getActivity(), "To be implemented...",
-                                Toast.LENGTH_SHORT).show();
+                        //TODO: implement click action when user click post item
                     }
                 });
             }
         };
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Query firebase at /chat. Limited only for 100 most recent item
+     *
+     * @param databaseReference firebase reference
+     * @return 100 recent post query
+     */
     private Query getQuery(DatabaseReference databaseReference) {
         /*
         Last 100 posts, these are automatically the 100 most recent

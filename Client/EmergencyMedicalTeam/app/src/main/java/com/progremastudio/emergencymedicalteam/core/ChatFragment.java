@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.core;
 
 import android.os.Bundle;
@@ -43,8 +47,6 @@ public class ChatFragment extends Fragment {
     private static final String TAG = "chat-fragment";
 
     private DatabaseReference mDatabase;
-
-    private FirebaseRecyclerAdapter<Chat, ChatViewHolder> mAdapter;
 
     private RecyclerView mRecyclerView;
 
@@ -120,7 +122,7 @@ public class ChatFragment extends Fragment {
         Set up FirebaseRecyclerAdapter with the Query
          */
         Query query = getQuery(mDatabase);
-        mAdapter = new FirebaseRecyclerAdapter<Chat, ChatViewHolder>(Chat.class, R.layout.item_chat, ChatViewHolder.class, query) {
+        FirebaseRecyclerAdapter<Chat, ChatViewHolder> adapter = new FirebaseRecyclerAdapter<Chat, ChatViewHolder>(Chat.class, R.layout.item_chat, ChatViewHolder.class, query) {
             @Override
             protected void populateViewHolder(final ChatViewHolder viewHolder, final Chat chat, final int position) {
 
@@ -144,9 +146,15 @@ public class ChatFragment extends Fragment {
                 });
             }
         };
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Query firebase at /chat. Limited only for 100 most recent item
+     *
+     * @param databaseReference firebase reference
+     * @return 100 recent post query
+     */
     private Query getQuery(DatabaseReference databaseReference) {
         /*
         Last 100 posts, these are automatically the 100 most recent
