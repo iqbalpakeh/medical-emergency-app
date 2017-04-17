@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.notification;
 
 import android.util.Log;
@@ -24,6 +28,7 @@ public class InstanceIdService extends FirebaseInstanceIdService {
      */
     @Override
     public void onTokenRefresh() {
+
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Refreshed token: " + refreshedToken);

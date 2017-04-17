@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.notification;
 
 import android.app.NotificationManager;
@@ -21,6 +25,10 @@ import java.util.Map;
 public class MessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "messaging-service";
+
+    private static final int CHAT_NOTIFICATION_ID = 1;
+
+    private static final int POST_NOTIFICATION_ID = 2;
 
     private NotificationCompat.Builder mChatNotificationBuilder;
 
@@ -71,6 +79,9 @@ public class MessagingService extends FirebaseMessagingService {
         String messageTitle = "";
         String messageBody = "";
 
+        /*
+        Get information from json object
+         */
         try {
             messageTitle = data.getString("title");
             messageBody = data.getString("body");
@@ -82,6 +93,9 @@ public class MessagingService extends FirebaseMessagingService {
         Log.d(TAG, "title = " + messageTitle);
         Log.d(TAG, "body = " + messageBody);
 
+        /*
+        Determine which type of notification to show
+         */
         if (messageTitle.equals(getString(R.string.heading_chat))) {
             sendChatNotification(messageTitle, messageBody);
         } else {
@@ -130,7 +144,7 @@ public class MessagingService extends FirebaseMessagingService {
         /*
         Fire notification
          */
-        mChatNotificationManager.notify(1, mChatNotificationBuilder.build());
+        mChatNotificationManager.notify(CHAT_NOTIFICATION_ID, mChatNotificationBuilder.build());
     }
 
     /**
@@ -173,7 +187,7 @@ public class MessagingService extends FirebaseMessagingService {
         /*
         Fire notification
          */
-        mPostNotificationManager.notify(2, mPostNotificationBuilder.build());
+        mPostNotificationManager.notify(POST_NOTIFICATION_ID, mPostNotificationBuilder.build());
     }
 
 }

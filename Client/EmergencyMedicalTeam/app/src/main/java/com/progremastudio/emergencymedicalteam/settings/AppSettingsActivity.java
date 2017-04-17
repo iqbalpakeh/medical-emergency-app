@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017, Progrema Studio. All rights reserved.
+ */
+
 package com.progremastudio.emergencymedicalteam.settings;
 
 import android.os.Bundle;
@@ -10,7 +14,8 @@ public class AppSettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getFragmentManager().beginTransaction()
+        getFragmentManager()
+                .beginTransaction()
                 .replace(android.R.id.content, new AppSettingsFragment())
                 .commit();
     }
