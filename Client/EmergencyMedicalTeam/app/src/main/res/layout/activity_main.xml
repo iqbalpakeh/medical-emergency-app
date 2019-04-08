@@ -39,7 +39,6 @@
     </FrameLayout>
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
-        android:id="@+id/fab_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -50,7 +49,7 @@
         fab:fab_labelStyle="@style/menu_labels_style">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_call"
+            android:id="@+id/fab_nfc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
